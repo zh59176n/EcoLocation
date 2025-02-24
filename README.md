@@ -5,6 +5,11 @@
 ## Team members
 
 TOADD names of the team members
+Grace Langton
+Donovan Lane
+Zara Hameedi
+Patrick Casseus
+
 TOADD picture of the team
 
 ## App description
