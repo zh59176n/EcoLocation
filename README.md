@@ -19,7 +19,7 @@ TOADD picture of the team
 [Calendar](https://calendar.google.com/calendar/u/0?cid=aXZoMmU3NjhzMjRkdGlxZWYwcXZvbzhxcjBAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ)
 
 ## Product Backlog
-[Requirements Discovery]()
+[Requirements Discovery](https://docs.google.com/document/d/16X1yzg3AdO9H6APF4BPhv2etBvdd28b6hR-P6vI2YK8/edit?tab=t.0)
 [Product Backlog Validation]()
 [Product Backlog](https://docs.google.com/spreadsheets/d/1V1j0ffJiR_iQvUImlrDzco2Sz34ZC-l-Mt9YnEWp6GI/edit?gid=8#gid=8)
 
