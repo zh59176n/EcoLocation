@@ -22,7 +22,11 @@ EcoLocation is a clean energy navigation app designed to help people nationwide 
 
 ## Product Backlog
 [Requirements Discovery](https://docs.google.com/document/d/16X1yzg3AdO9H6APF4BPhv2etBvdd28b6hR-P6vI2YK8/edit?tab=t.0)
+
+
 [Product Backlog Validation]()
+
+
 [Product Backlog](https://docs.google.com/spreadsheets/d/1V1j0ffJiR_iQvUImlrDzco2Sz34ZC-l-Mt9YnEWp6GI/edit?gid=8#gid=8)
 
 ## Architecture & Design
