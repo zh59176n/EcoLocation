@@ -4,12 +4,12 @@
 EcoLocation
 
 ## Team members
-Grace Langton    
-Donovan Lane  
-Zara Hameedi  
-Patrick Casseus
+1. Grace Langton    
+2. Donovan Lane  
+3. Zara Hameedi  
+4. Patrick Casseus
 
-TOADD picture of the team
+* TO ADD picture of the team !
 
 ## App description
 EcoLocation is a clean energy navigation app designed to help people nationwide transition to renewable energy solutions. It consolidates data on EV charging stations, solar panel providers, and government clean energy incentives into a user-friendly platform. The app features resources such as an EV Charging Station Finder, a Solar Provider Directory, and a Local Green Energy News Feed. By leveraging the Google Maps API and open-source clean energy databases, EcoLocation simplifies access to sustainable resources, encourages clean energy adoption, and reduces reliance on fossil fuels.
