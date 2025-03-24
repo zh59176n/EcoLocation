@@ -26,7 +26,11 @@ We are currently at the **start of Sprint 1**, focusing on foundational app stru
 - **Zara** – Accessibility, Testing, Docs
 
 
+<<<<<<< HEAD
 ---
+=======
+[Product Backlog Validation]()
+>>>>>>> parent of f19e5de (Update README.md)
 
 ### 📊 Sprint Planning Sheet  
 [📄 View Sprint 1 Spreadsheet](https://docs.google.com/spreadsheets/d/1V1j0ffJiR_iQvUImlrDzco2Sz34ZC-l-Mt9YnEWp6GI/edit?gid=8#gid=8)
