@@ -29,4 +29,4 @@ If you are developing a production application, we recommend using TypeScript an
 - Patrick – 16 hours (Counter, Routing, Responsive UI)
 
 **Sprint 1 Spreadsheet:**  
-[[Sprint Planning Sheet]([url](https://docs.google.com/spreadsheets/d/1V1j0ffJiR_iQvUImlrDzco2Sz34ZC-l-Mt9YnEWp6GI/edit?gid=8#gid=8))]
+[Sprint Planning Sheet](https://docs.google.com/spreadsheets/d/1V1j0ffJiR_iQvUImlrDzco2Sz34ZC-l-Mt9YnEWp6GI/edit?gid=8#gid=8)
