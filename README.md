@@ -39,5 +39,3 @@ We are currently at the **start of Sprint 1**, focusing on foundational app stru
 - 🧪 Jest or built-in testing support
 
 ---
-
-## 📁 File Structure (early stage)
