@@ -24,7 +24,7 @@ By leveraging the **Google Maps API** and **open-source clean energy databases**
 1. Grace Langton  
 2. Donovan Lane  
 3. Zara Hameedi  
-4. Patrick Casseus <img src="/patrick.jpg" alt="Patrick Casseus" width="150"/><br>
+4. Patrick Casseus <img src="https://github.com/paceuniversity/cs491s2025team5/blob/main/public/patrick.jpg?raw=true" width="150"/><br>
 
 > *📸 To be updated with a team photo!*
 
