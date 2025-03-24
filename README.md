@@ -25,7 +25,7 @@ By leveraging the **Google Maps API** and **open-source clean energy databases**
 2. Donovan Lane  
 3. Zara Hameedi  
 4. <img src="https://github.com/paceuniversity/cs491s2025team5/blob/main/public/patrick.jpg?raw=true" width="150"/><br>
-*Patrick Casseus*
+Patrick Casseus
 
 > *📸 To be updated with a team photo!*
 
