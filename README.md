@@ -1,66 +1,12 @@
-# TEAM 5
+# React + Vite
 
-## App name
-EcoLocation
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## Team members
-1. Grace Langton    
-2. Donovan Lane  
-3. Zara Hameedi  
-4. Patrick Casseus
+Currently, two official plugins are available:
 
-* TO ADD picture of the team !
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## App description
-EcoLocation is a clean energy navigation app designed to help people nationwide transition to renewable energy solutions. It consolidates data on EV charging stations, solar panel providers, and government clean energy incentives into a user-friendly platform. The app features resources such as an EV Charging Station Finder, a Solar Provider Directory, and a Local Green Energy News Feed. By leveraging the Google Maps API and open-source clean energy databases, EcoLocation simplifies access to sustainable resources, encourages clean energy adoption, and reduces reliance on fossil fuels.
+## Expanding the ESLint configuration
 
-## Idea Proposal
-[Idea Proposal](https://docs.google.com/document/d/1p9ygoiYIbuHljajCr72dQITItc8PGiHo/edit?usp=sharing&ouid=104667057289979061367&rtpof=true&sd=true)
-
-## Calendar
-[Calendar](https://calendar.google.com/calendar/u/0?cid=aXZoMmU3NjhzMjRkdGlxZWYwcXZvbzhxcjBAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ)
-
-## Product Backlog
-[Requirements Discovery](https://docs.google.com/document/d/16X1yzg3AdO9H6APF4BPhv2etBvdd28b6hR-P6vI2YK8/edit?tab=t.0)
-
-
-[Product Backlog Validation](https://docs.google.com/document/d/1xiTEGXpSIJWw-BiDMn5NYWY0mI_-y0AU1b1AS8UWnJ8/edit?tab=t.0)
-
-
-[Product Backlog](https://docs.google.com/spreadsheets/d/1V1j0ffJiR_iQvUImlrDzco2Sz34ZC-l-Mt9YnEWp6GI/edit?gid=8#gid=8)
-
-## Architecture & Design
-[Architecture & Design]()
-
-## Process
-
-### Sprint 1
-
-* [Sprint planning]()
-* [Scrums]()
-* [Sprint demo video]()
-* [Sprint retrospective]()
-
-### Sprint 2
-
-* [Sprint planning]()
-* [Scrums]()
-* [Sprint demo video]()
-* [Sprint retrospective]()
-
-### Sprint 3
-
-* [Sprint planning]()
-* [Scrums]()
-* [Sprint demo video]()
-* [Sprint retrospective]()
-
-## Tools & APIs
-
-## Final delivery
-
-* [Final presentation]()
-* [Poster]()
-* [Process description]()
-
-
+If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
