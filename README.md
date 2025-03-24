@@ -22,7 +22,9 @@ We are currently at the **start of Sprint 1**, focusing on foundational app stru
 ### 👥 Team Member Hours (16 hrs each):
 - **Donovan** – Firebase integration, authentication logic, ESLint config, unit testing  
 - **Grace** – Login UI, app styling, initial Home/About pages  
-- **Patrick** – Counter component, routing setup, mobile responsiveness  
+- **Patrick** – Counter component, routing setup, mobile responsiveness
+- **Zara** – Accessibility, Testing, Docs
+
 
 ---
 
