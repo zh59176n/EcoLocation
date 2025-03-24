@@ -1,32 +1,43 @@
-# React + Vite
+# EcoLocation 🌱⚡  
+**Sustainable Energy Found Simple**
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+EcoLocation is a web app that helps users discover clean energy resources like EV charging stations, government incentives, and solar providers. Built with **React + Vite**, this app will consolidate fragmented information into one easy-to-use platform.
 
 ---
 
-## Sprint 1 Planning
+## 📅 Sprint 1 Planning
 
-**User Stories Selected:**
-- US1: User Login System (7 pts)
-- US2: Firebase Setup (5 pts)
-- US3: Counter Component (3 pts)
+We are currently at the **start of Sprint 1**, focusing on foundational app structure and core components.
 
-**Planned Velocity:** 15 points  
-(We focused on core functionality for Sprint 1.)
+### ✅ User Stories Selected:
+- **US1:** User Login System *(7 pts)*  
+- **US2:** Firebase Setup *(5 pts)*  
+- **US3:** Counter Component *(3 pts)*
 
-**Team Member Hours:**
-- Donovan – 16 hours (Firebase setup, Auth, ESLint, testing)
-- Grace – 16 hours (Login UI, Styling, Home/About Pages)
-- Patrick – 16 hours (Counter, Routing, Responsive UI)
+> **Planned Velocity:** 15 points  
+> *(Focus: Core functionality + foundational setup)*
 
-**Sprint 1 Spreadsheet:**  
-[Sprint Planning Sheet](https://docs.google.com/spreadsheets/d/1V1j0ffJiR_iQvUImlrDzco2Sz34ZC-l-Mt9YnEWp6GI/edit?gid=8#gid=8)
+---
+
+### 👥 Team Member Hours (16 hrs each):
+- **Donovan** – Firebase integration, authentication logic, ESLint config, unit testing  
+- **Grace** – Login UI, app styling, initial Home/About pages  
+- **Patrick** – Counter component, routing setup, mobile responsiveness  
+
+---
+
+### 📊 Sprint Planning Sheet  
+[📄 View Sprint 1 Spreadsheet](https://docs.google.com/spreadsheets/d/1V1j0ffJiR_iQvUImlrDzco2Sz34ZC-l-Mt9YnEWp6GI/edit?gid=8#gid=8)
+
+---
+
+## 🧪 Tech Stack
+
+- ⚛️ React + Vite
+- 🔥 Firebase (Auth & backend)
+- 🎨 CSS Modules / custom styles
+- 🧪 Jest or built-in testing support
+
+---
+
+## 📁 File Structure (early stage)
