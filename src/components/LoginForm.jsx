@@ -21,16 +21,16 @@ function LoginForm() {
         <input
           type="email"
           placeholder="Email"
-          className="w-full px-4 py-2 border border-gray-300 rounded"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          className="w-full px-4 py-2 border border-gray-300 rounded"
         />
         <input
           type="password"
           placeholder="Password"
-          className="w-full px-4 py-2 border border-gray-300 rounded"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          className="w-full px-4 py-2 border border-gray-300 rounded"
         />
         <button
           type="submit"
