@@ -22,8 +22,8 @@ By leveraging the **Google Maps API** and **open-source clean energy databases**
 
 ## 👥 Team Members
 1. Grace Langton  
-2. Donovan Lane  
-3. Zara Hameedi  
+2. Donovan Lane
+3. <img src="https://github.com/paceuniversity/cs491s2025team5/blob/main/public/zara.jpg?raw=true" width="150"/><br>  Zara Hameedi  
 4. <img src="https://github.com/paceuniversity/cs491s2025team5/blob/main/public/patrick.jpg?raw=true" width="150"/><br>
 Patrick Casseus
 
