@@ -84,3 +84,10 @@ We are currently at the **start of Sprint 1**, focusing on foundational app stru
 - 🧪 Jest or built-in testing support
 
 ---
+# EcoLocation – Setup Instructions (Grace)
+
+## 🧪 Local Development Setup
+
+1. Clone the repo:
+```bash
+git clone https://github.com/paceuniversity/cs491s2025team5.git
