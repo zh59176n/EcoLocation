@@ -24,14 +24,16 @@ Powered by the **Google Maps API** and **open-source clean energy databases**, E
 - 🧹 ESLint + Prettier
 
 ---
-
 ## 👥 Team Members  
 
-| ![Grace](https://avatars.githubusercontent.com/u/placeholder?s=100) | ![Donovan](https://avatars.githubusercontent.com/u/placeholder?s=100) | <img src="https://github.com/paceuniversity/cs491s2025team5/blob/main/public/zara.jpg?raw=true" width="100"/> | <img src="https://github.com/paceuniversity/cs491s2025team5/blob/main/public/patrick.jpg?raw=true" width="100"/> |
+| <img src="https://i.imgur.com/RfHET4T.jpeg" width="100" height="100" style="border-radius: 8px; object-fit: cover;"/> | <img src="https://i.imgur.com/oJf7LVY.png" width="100" height="100" style="border-radius: 8px; object-fit: cover;"/> | <img src="https://github.com/paceuniversity/cs491s2025team5/blob/main/public/zara.jpg?raw=true" width="100" height="100" style="border-radius: 8px; object-fit: cover;"/> | <img src="https://github.com/paceuniversity/cs491s2025team5/blob/main/public/patrick.jpg?raw=true" width="100" height="100" style="border-radius: 8px; object-fit: cover;"/> |
 |:--:|:--:|:--:|:--:|
 | **Grace Langton**<br>UI, styling, dark mode, login, home/about | **Donovan Lane**<br>Firebase, auth, testing, ESLint setup | **Zara Hameedi**<br>Accessibility, docs, testing | **Patrick Casseus**<br>Counter, routing, responsiveness |
 
 > 📸 *To be updated with a full team photo soon!*
+
+
+
 
 ---
 
