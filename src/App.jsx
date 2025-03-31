@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import LoginForm from './components/LoginForm';
-import RegisterForm from './components/RegisterForm';
-import PublicRoute from './components/PublicRoute';
 import About from './components/About';
+import Home from './components/Home';
+import RegisterForm from './components/RegisterForm';
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -22,15 +21,14 @@ function App() {
   return (
     <Router>
       <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
-
-      <main className="min-h-screen bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100">
+      <main className="min-h-screen bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white">
         <Routes>
-          <Route path="/" element={<LoginForm />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />
           <Route path="/about" element={<About />} />
         </Routes>
       </main>
-
       <Footer />
     </Router>
   );
