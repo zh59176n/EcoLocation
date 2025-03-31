@@ -1,7 +1,7 @@
 // src/components/LoginForm.jsx
 import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase"; // Adjust path to your firebase.js
+import { auth } from "../Firebase"; // Adjust path to your firebase.js
 
 function LoginForm() {
   const [email, setEmail] = useState("");
