@@ -1,96 +1,86 @@
 # EcoLocation 🌱⚡  
-**Sustainable Energy Found Simple**
+### *Sustainable Energy Found Simple*
 
-EcoLocation is a clean energy navigation app designed to help people nationwide transition to renewable energy solutions. It consolidates data on EV charging stations, solar panel providers, and government clean energy incentives into a user-friendly platform. The app features resources such as:
-
-- 🔌 EV Charging Station Finder  
-- ☀️ Solar Provider Directory  
-- 📰 Local Green Energy News Feed  
-
-By leveraging the **Google Maps API** and **open-source clean energy databases**, EcoLocation simplifies access to sustainable resources, encourages clean energy adoption, and reduces reliance on fossil fuels.
+EcoLocation is a clean energy navigation app that helps people transition to renewable energy with ease. It consolidates nationwide data on EV charging stations, solar panel providers, and government incentives into a seamless and beautiful experience.
 
 ---
 
-## 🧪 Tech Stack
+## 🚀 Features  
+- 🔌 **EV Charging Station Finder**  
+- ☀️ **Solar Provider Directory**  
+- 📰 **Local Green Energy News Feed**  
+- 🌗 **Dark/Light Mode Toggle**  
+- 🔐 **Secure Firebase Authentication**
 
-- ⚛️ React + Vite
-- 🔥 Firebase (Authentication & Backend)
-- 🎨 CSS Modules / Custom Styles
-- 🧪 Jest or built-in testing support
-
----
-
-## 👥 Team Members
-1. Grace Langton  
-2. Donovan Lane
-3. <img src="https://github.com/paceuniversity/cs491s2025team5/blob/main/public/zara.jpg?raw=true" width="150"/><br>  Zara Hameedi  
-4. <img src="https://github.com/paceuniversity/cs491s2025team5/blob/main/public/patrick.jpg?raw=true" width="150"/><br>
-Patrick Casseus
-
-> *📸 To be updated with a team photo!*
+Powered by the **Google Maps API** and **open-source clean energy databases**, EcoLocation empowers users to make sustainable choices and reduce their carbon footprint.
 
 ---
 
-## Idea Proposal  
-[Idea Proposal](https://docs.google.com/document/d/1p9ygoiYIbuHljajCr72dQITItc8PGiHo/edit?usp=sharing&ouid=104667057289979061367&rtpof=true&sd=true)
+## 🧪 Tech Stack  
+- ⚛️ React + Vite  
+- 🔥 Firebase (Auth + Firestore backend)  
+- 🌬️ Tailwind CSS (Dark mode enabled)  
+- 🧪 Jest + React Testing Library  
+- 🧹 ESLint + Prettier
 
 ---
 
-## Calendar  
-[Calendar](https://calendar.google.com/calendar/u/0?cid=aXZoMmU3NjhzMjRkdGlxZWYwcXZvbzhxcjBAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ)
+## 👥 Team Members  
+
+| ![Grace](https://avatars.githubusercontent.com/u/placeholder?s=100) | ![Donovan](https://avatars.githubusercontent.com/u/placeholder?s=100) | <img src="https://github.com/paceuniversity/cs491s2025team5/blob/main/public/zara.jpg?raw=true" width="100"/> | <img src="https://github.com/paceuniversity/cs491s2025team5/blob/main/public/patrick.jpg?raw=true" width="100"/> |
+|:--:|:--:|:--:|:--:|
+| **Grace Langton**<br>UI, styling, dark mode, login, home/about | **Donovan Lane**<br>Firebase, auth, testing, ESLint setup | **Zara Hameedi**<br>Accessibility, docs, testing | **Patrick Casseus**<br>Counter, routing, responsiveness |
+
+> 📸 *To be updated with a full team photo soon!*
 
 ---
 
-## Product Backlog  
-[Requirements Discovery](https://docs.google.com/document/d/16X1yzg3AdO9H6APF4BPhv2etBvdd28b6hR-P6vI2YK8/edit?tab=t.0)  
-[Product Backlog Validation](https://docs.google.com/document/d/1xiTEGXpSIJWw-BiDMn5NYWY0mI_-y0AU1b1AS8UWnJ8/edit?tab=t.0)  
-[Product Backlog](https://docs.google.com/spreadsheets/d/1V1j0ffJiR_iQvUImlrDzco2Sz34ZC-l-Mt9YnEWp6GI/edit?gid=8#gid=8)
+## 🧠 Idea Proposal  
+📄 [View Proposal Doc](https://docs.google.com/document/d/1p9ygoiYIbuHljajCr72dQITItc8PGiHo/edit?usp=sharing)
 
 ---
 
-## 📅 Sprint 1 Planning
+## 🗓️ Team Calendar  
+📅 [Open Calendar](https://calendar.google.com/calendar/u/0?cid=aXZoMmU3NjhzMjRkdGlxZWYwcXZvbzhxcjBAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ)
 
-We are currently at the **start of Sprint 1**, focusing on foundational app structure and core components.
+---
+
+## 📦 Product Backlog
+
+- 📖 [Requirements Discovery](https://docs.google.com/document/d/16X1yzg3AdO9H6APF4BPhv2etBvdd28b6hR-P6vI2YK8/edit?tab=t.0)  
+- ✅ [Product Backlog Validation](https://docs.google.com/document/d/1xiTEGXpSIJWw-BiDMn5NYWY0mI_-y0AU1b1AS8UWnJ8/edit?tab=t.0)  
+- 📊 [Full Product Backlog Sheet](https://docs.google.com/spreadsheets/d/1V1j0ffJiR_iQvUImlrDzco2Sz34ZC-l-Mt9YnEWp6GI/edit?usp=sharing)
+
+---
+
+## 📅 Sprint 1 — Planning & Progress
+
+We’ve kicked off **Sprint 1**, laying down our foundation and building the core structure of the app.
 
 ### ✅ Selected User Stories:
-- **US1:** User Login System *(7 pts)*  
-- **US2:** Firebase Setup *(5 pts)*  
-- **US3:** Counter Component *(3 pts)*
+- **US1:** Login system *(7 pts)*  
+- **US2:** Firebase setup *(5 pts)*  
+- **US3:** Counter component *(3 pts)*  
 
-> **Planned Velocity:** 15 points  
-> *(Focus: Core functionality + foundational setup)*
+> 🏁 **Planned Velocity:** 15 points  
+> *(Core functionality & foundational setup)*
 
----
+### 💡 Sprint Docs:
+- 📄 [Sprint 1 Spreadsheet](https://docs.google.com/spreadsheets/d/1V1j0ffJiR_iQvUImlrDzco2Sz34ZC-l-Mt9YnEWp6GI/edit?usp=sharing)  
+- 🗒️ [Scrum 1 Notes](https://docs.google.com/document/d/1bnLyXPCKPVjfwZvzAg-fsqB9oC3pqbDjBiXTS9wzOGI/edit?usp=sharing)
 
-### 👥 Team Member Hours (16 hrs each):
-- **Donovan** – Firebase integration, authentication logic, ESLint config, unit testing  
-- **Grace** – Login UI, app styling, initial Home/About pages  
-- **Patrick** – Counter component, routing setup, mobile responsiveness
-- **Zara** – Accessibility, Testing, Docs
-
-
----
-
-### 📊 Sprint Planning Sheet  
-[📄 View Sprint 1 Spreadsheet](https://docs.google.com/spreadsheets/d/1V1j0ffJiR_iQvUImlrDzco2Sz34ZC-l-Mt9YnEWp6GI/edit?gid=8#gid=8)
-
-### 💬 Scrum 1
-[📄 View Sprint 1 Scrum](https://docs.google.com/document/d/1bnLyXPCKPVjfwZvzAg-fsqB9oC3pqbDjBiXTS9wzOGI/edit?tab=t.0)
+### 👥 Team Workload — 16 hrs each:
+- **Grace** – Login UI, Tailwind, dark mode, Home/About
+- **Donovan** – Firebase setup, Auth, ESLint, testing
+- **Patrick** – Counter, routing, responsiveness
+- **Zara** – Accessibility, documentation, test scaffolding
 
 ---
 
-## 🧪 Tech Stack
+## 🛠 Setup Instructions
 
-- ⚛️ React + Vite
-- 🔥 Firebase (Auth & backend)
-- 🎨 CSS Modules / custom styles
-- 🧪 Jest or built-in testing support
-
----
-# EcoLocation – Setup Instructions 
-
-## 🧪 Local Development Setup
-
-1. Clone the repo:
+### 🧪 Local Development
+1. **Clone the repository**
 ```bash
 git clone https://github.com/paceuniversity/cs491s2025team5.git
+cd cs491s2025team5
