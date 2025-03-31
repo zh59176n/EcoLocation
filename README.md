@@ -74,6 +74,9 @@ We are currently at the **start of Sprint 1**, focusing on foundational app stru
 ### 📊 Sprint Planning Sheet  
 [📄 View Sprint 1 Spreadsheet](https://docs.google.com/spreadsheets/d/1V1j0ffJiR_iQvUImlrDzco2Sz34ZC-l-Mt9YnEWp6GI/edit?gid=8#gid=8)
 
+### Scrum
+[📄 View Sprint 1 Scrum](https://docs.google.com/document/d/1bnLyXPCKPVjfwZvzAg-fsqB9oC3pqbDjBiXTS9wzOGI/edit?tab=t.0)
+
 ---
 
 ## 🧪 Tech Stack
