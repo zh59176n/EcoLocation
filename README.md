@@ -87,7 +87,7 @@ We are currently at the **start of Sprint 1**, focusing on foundational app stru
 - 🧪 Jest or built-in testing support
 
 ---
-# EcoLocation – Setup Instructions (Grace)
+# EcoLocation – Setup Instructions 
 
 ## 🧪 Local Development Setup
 
