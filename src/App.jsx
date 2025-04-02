@@ -1,3 +1,4 @@
+// App.jsx
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
@@ -21,7 +22,8 @@ function App() {
   return (
     <Router>
       <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
-      <main className="min-h-screen bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white">
+      {/* Use a consistent gradient background that works in both light and dark modes */}
+      <main className="min-h-screen bg-gradient-to-r from-green-100 to-green-300 dark:from-green-800 dark:to-green-900 text-gray-900 dark:text-white transition-all duration-300">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<LoginForm />} />
