@@ -2,6 +2,7 @@
 import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent, waitFor, cleanup } from '@testing-library/react';
 import LoginForm from './LoginForm';
+import { axe } from 'jest-axe';
 
 // Partially mock firebase/auth to override signInWithEmailAndPassword while preserving other exports
 vi.mock('firebase/auth', async () => {
@@ -56,5 +57,12 @@ describe('LoginForm', () => {
     await waitFor(() => {
       expect(signInWithEmailAndPassword).toHaveBeenCalledWith(auth, 'test@example.com', 'password123');
     });
+  });
+
+  // New accessibility test using jest-axe
+  test('has no accessibility violations', async () => {
+    const { container } = render(<LoginForm />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
   });
 });
