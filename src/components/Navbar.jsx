@@ -11,13 +11,14 @@ function Navbar({ darkMode, setDarkMode }) {
   return (
     <nav className="bg-green-600 text-white px-4 py-3 flex items-center justify-between relative">
       {/* Logo */}
-      <div className="text-xl font-bold">
-        <Link to="/" className={linkClasses}>
+      <div className="flex items-center space-x-2">
+        <img src="/logo.png" alt="EcoLocation Logo" className="h-8 w-8" />
+        <Link to="/" className={`${linkClasses} text-xl font-bold`} >
           EcoLocation
         </Link>
       </div>
 
-      {/* Hamburger menu for mobile */}
+      {/* Menu for mobile */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="md:hidden focus:outline-none focus:ring-2 focus:ring-white"
