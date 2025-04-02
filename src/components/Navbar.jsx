@@ -40,9 +40,10 @@ function Navbar({ darkMode, setDarkMode }) {
   return (
     <nav className="bg-green-600 text-white px-4 py-3 flex items-center justify-between relative">
       {/* Logo */}
-      <div className="text-xl font-bold">
-        <Link to="/" className={linkClasses}>
-          EcoLocation
+      <div className="flex items-center space-x-2">
+        <Link to="/" className="flex items-center space-x-2 hover:opacity-90">
+        <img src="/logo.png" alt="EcoLocation Logo" className="h-8 w-8" />
+        <span className="text-xl font-bold text-white">EcoLocation</span>
         </Link>
       </div>
 
