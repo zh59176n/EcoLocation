@@ -1,4 +1,3 @@
-// components/Navbar.jsx
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -42,6 +41,7 @@ function Navbar({ darkMode, setDarkMode }) {
         <Link to="/" className={linkClasses}>Home</Link>
         <Link to="/login" className={linkClasses}>Login</Link>
         <Link to="/register" className={linkClasses}>Register</Link>
+        <Link to="/solar" className={linkClasses}>Solar Providers</Link>
         <Link to="/about" className={linkClasses}>About</Link>
         <button
           onClick={() => setDarkMode(!darkMode)}
@@ -80,6 +80,13 @@ function Navbar({ darkMode, setDarkMode }) {
             onClick={() => setIsOpen(false)}
             className={linkClasses}
           >
+            Solar Providers
+          </Link>
+          <Link
+            to="/solar"
+            onClick={() => setIsOpen(false)}
+            className={linkClasses}
+          > 
             About
           </Link>
           <button

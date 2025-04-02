@@ -7,6 +7,7 @@ import LoginForm from './components/LoginForm';
 import About from './components/About';
 import Home from './components/Home';
 import RegisterForm from './components/RegisterForm';
+import SolarProviderList from './components/SolarProviderList';
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -28,6 +29,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />
+          <Route path="/solar" element={<SolarProviderList />} />
           <Route path="/about" element={<About />} />
         </Routes>
       </main>
