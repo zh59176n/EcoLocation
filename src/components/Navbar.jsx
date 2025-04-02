@@ -1,18 +1,48 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../Firebase"; // Re-added Firebase Implementation
+import { signOut } from "firebase/auth";
 
 function Navbar({ darkMode, setDarkMode }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [user] = useAuthState(auth);
+
+  const handleLogout = () => {
+    signOut(auth);
+  };
 
   const linkClasses =
     "hover:underline hover:bg-green-700 hover:text-white px-2 py-1 rounded focus:outline-none focus:ring-2 focus:ring-white";
 
+  const renderLinks = () => (
+    <>
+      <Link to="/" className={linkClasses}>Home</Link>
+      {!user && <Link to="/login" className={linkClasses}>Login</Link>}
+      {!user && <Link to="/register" className={linkClasses}>Register</Link>}
+      <Link to="/about" className={linkClasses}>About</Link>
+      {user && (
+        <>
+          <span className="text-sm">Welcome, {user.email}</span>
+          <button onClick={handleLogout} className={`${linkClasses} underline`}>Logout</button>
+        </>
+      )}
+      <button
+        onClick={() => setDarkMode(!darkMode)}
+        className="bg-white text-green-700 px-2 py-1 rounded transition-colors duration-200 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-300 active:bg-gray-200"
+      >
+        {darkMode ? "Light Mode" : "Dark Mode"}
+      </button>
+    </>
+  );
+
   return (
     <nav className="bg-green-600 text-white px-4 py-3 flex items-center justify-between relative">
       {/* Logo */}
-      <div className="flex items-center space-x-2">
-        <img src="/logo.png" alt="EcoLocation Logo" className="h-8 w-8" />
-        <Link to="/" className={`${linkClasses} text-xl font-bold`} >
+      <div className="text-xl font-bold">
+        <Link to="/" className={linkClasses}>
           EcoLocation
         </Link>
       </div>
@@ -49,6 +79,7 @@ function Navbar({ darkMode, setDarkMode }) {
         >
           {darkMode ? 'Light Mode' : 'Dark Mode'}
         </button>
+        {renderLinks()}
       </div>
 
       {/* Mobile Dropdown Menu */}
@@ -98,6 +129,7 @@ function Navbar({ darkMode, setDarkMode }) {
           >
             {darkMode ? 'Light Mode' : 'Dark Mode'}
           </button>
+          {renderLinks()}
         </div>
       )}
     </nav>
