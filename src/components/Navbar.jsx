@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../Firebase"; // Re-added Firebase Implementation
+import { auth } from "../Firebase";
 import { signOut } from "firebase/auth";
 
 function Navbar({ darkMode, setDarkMode }) {
@@ -20,6 +20,7 @@ function Navbar({ darkMode, setDarkMode }) {
       <Link to="/" className={linkClasses}>Home</Link>
       {!user && <Link to="/login" className={linkClasses}>Login</Link>}
       {!user && <Link to="/register" className={linkClasses}>Register</Link>}
+      <Link to="/solar" className={linkClasses}>Solar Providers</Link>
       <Link to="/about" className={linkClasses}>About</Link>
       {user && (
         <>
@@ -45,7 +46,7 @@ function Navbar({ darkMode, setDarkMode }) {
         </Link>
       </div>
 
-      {/* Menu for mobile */}
+      {/* Hamburger for Mobile */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="md:hidden focus:outline-none focus:ring-2 focus:ring-white"
@@ -55,78 +56,19 @@ function Navbar({ darkMode, setDarkMode }) {
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
-            d={
-              isOpen
-                ? "M6 18L18 6M6 6l12 12"
-                : "M4 6h16M4 12h16M4 18h16"
-            }
+            d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
           />
         </svg>
       </button>
 
       {/* Desktop Menu */}
       <div className="hidden md:flex items-center gap-4">
-        <Link to="/" className={linkClasses}>Home</Link>
-        <Link to="/login" className={linkClasses}>Login</Link>
-        <Link to="/register" className={linkClasses}>Register</Link>
-        <Link to="/solar" className={linkClasses}>Solar Providers</Link>
-        <Link to="/about" className={linkClasses}>About</Link>
-        <button
-          onClick={() => setDarkMode(!darkMode)}
-          className="bg-white text-green-700 px-2 py-1 rounded transition-colors duration-200 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-300 active:bg-gray-200"
-        >
-          {darkMode ? 'Light Mode' : 'Dark Mode'}
-        </button>
         {renderLinks()}
       </div>
 
       {/* Mobile Dropdown Menu */}
       {isOpen && (
         <div className="absolute top-16 left-0 w-full bg-green-600 flex flex-col items-center space-y-4 py-4 md:hidden z-50">
-          <Link
-            to="/"
-            onClick={() => setIsOpen(false)}
-            className={linkClasses}
-          >
-            Home
-          </Link>
-          <Link
-            to="/login"
-            onClick={() => setIsOpen(false)}
-            className={linkClasses}
-          >
-            Login
-          </Link>
-          <Link
-            to="/register"
-            onClick={() => setIsOpen(false)}
-            className={linkClasses}
-          >
-            Register
-          </Link>
-          <Link
-            to="/about"
-            onClick={() => setIsOpen(false)}
-            className={linkClasses}
-          >
-            Solar Providers
-          </Link>
-          <Link
-            to="/solar"
-            onClick={() => setIsOpen(false)}
-            className={linkClasses}
-          > 
-            About
-          </Link>
-          <button
-            onClick={() => {
-              setDarkMode(!darkMode);
-              setIsOpen(false);
-            }}
-            className="bg-white text-green-700 px-2 py-1 rounded transition-colors duration-200 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-300 active:bg-gray-200"
-          >
-            {darkMode ? 'Light Mode' : 'Dark Mode'}
-          </button>
           {renderLinks()}
         </div>
       )}
