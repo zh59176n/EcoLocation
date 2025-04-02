@@ -1,5 +1,5 @@
-// components/Home.jsx
-import React from 'react';
+import React from "react";
+import { Link } from "react-router-dom";
 
 function Home() {
   return (
@@ -9,18 +9,18 @@ function Home() {
         This is the home page for your awesome app! Use this space to explain what your app does, why it’s helpful, or show sample data.
       </p>
       <div className="space-x-4">
-        <a
-          href="/login"
+        <Link
+          to="/login"
           className="bg-green-600 text-white px-6 py-3 rounded-md transition-colors duration-200 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-300"
         >
           Go to Login
-        </a>
-        <a
-          href="/about"
+        </Link>
+        <Link
+          to="/about"
           className="bg-white border border-green-600 text-green-800 px-6 py-3 rounded-md transition-colors duration-200 hover:bg-green-50 focus:outline-none focus:ring-2 focus:ring-green-300"
         >
           About Page
-        </a>
+        </Link>
       </div>
     </div>
   );
