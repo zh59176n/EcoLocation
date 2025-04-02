@@ -77,6 +77,9 @@ We’ve kicked off **Sprint 1**, laying down our foundation and building the cor
 - **Patrick** – Counter, routing, responsiveness
 - **Zara** – Accessibility, documentation, test scaffolding
 
+### 👥 Team Roles
+- **Scrum Master** - Patrick Casseus
+- **Product Owner** - Grace Langton
 ---
 
 ## 🛠 Setup Instructions
