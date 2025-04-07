@@ -24,12 +24,12 @@ function RegisterForm() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-green-100 to-green-300">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md transition-all duration-300 ease-in-out">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-green-100 to-green-300 dark:from-green-900 dark:to-green-950 transition-colors duration-300">
+      <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6 text-green-800 text-center">Register</h2>
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Username</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Username</label>
             <input
               type="text"
               value={username}
@@ -39,7 +39,7 @@ function RegisterForm() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Email</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
             <input
               type="email"
               value={email}
@@ -49,7 +49,7 @@ function RegisterForm() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Password</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
             <input
               type="password"
               value={password}
