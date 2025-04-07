@@ -70,9 +70,9 @@ We’ve kicked off **Sprint 1**, laying down our foundation and building the cor
 ### 💡 Sprint Docs:
 - 📄 [Sprint 1 Spreadsheet](https://docs.google.com/spreadsheets/d/1V1j0ffJiR_iQvUImlrDzco2Sz34ZC-l-Mt9YnEWp6GI/edit?usp=sharing)  
 - 🗒️ [Scrum 1 Notes](https://docs.google.com/document/d/1bnLyXPCKPVjfwZvzAg-fsqB9oC3pqbDjBiXTS9wzOGI/edit?usp=sharing)
-- 🗒️ [Retro](https://docs.google.com/document/d/1GbeDqYc5blDBnmV19-KofSS-fLuVNXIREOjp3Q_22ds/edit?tab=t.0)
+- 🗒️ [Retro Document](https://docs.google.com/document/d/1GbeDqYc5blDBnmV19-KofSS-fLuVNXIREOjp3Q_22ds/edit?tab=t.0)
 
-Demo 1 Video
+**📷 Demo 1 Video**
 -  (https://drive.google.com/drive/folders/1YX6_qybbskUXy9_Le9vRIS5nhmcBNPZr?usp=sharing)
   
 ### 👥 Team Workload — 16 hrs each:
