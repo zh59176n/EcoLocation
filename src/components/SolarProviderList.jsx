@@ -1,95 +1,48 @@
-<<<<<<< HEAD
+// src/components/SolarProviderList.jsx
 import React, { useState } from 'react';
 import SolarProviderDetails from './SolarProviderDetails.jsx';
-import House from './House'; // ✅ import Leaflet map
-
-const solarProviders = [
-  {
-    id: 1,
-    name: "SunPower Solar",
-    distance: "3.2 miles",
-    rating: 4.8,
-    address: "123 Solar Ave, San Diego, CA",
-    description: "Leading provider of clean solar energy solutions for homes and businesses.",
-  },
-  {
-    id: 2,
-    name: "GreenLight Energy",
-    distance: "5.1 miles",
-    rating: 4.5,
-    address: "456 Eco Rd, Austin, TX",
-    description: "Affordable and efficient residential solar installations.",
-  },
-];
-=======
-// src/components/SolarProviderList.jsx
-import React, { useState, useEffect } from "react";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "../firebase";
-import SolarProviderDetails from "./SolarProviderDetails.jsx";
-import House from "./House"; // ✅ include map
->>>>>>> 700eb06 (✅ T2.1 complete: Embedded Leaflet map centered on user location in Solar Providers page)
+import House from './House';
 
 const SolarProviderList = () => {
   const [selectedProvider, setSelectedProvider] = useState(null);
-  const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredProviders = solarProviders.filter((provider) =>
-    provider.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    provider.address.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const solarProviders = [
+    { id: 1, name: 'SunPower', location: 'California', rating: 4.5 },
+    { id: 2, name: 'Tesla Solar', location: 'Nevada', rating: 4.7 },
+    { id: 3, name: 'Vivint Solar', location: 'Utah', rating: 4.3 },
+  ];
 
   const handleMoreInfo = (provider) => setSelectedProvider(provider);
-  const handleCloseModal = () => setSelectedProvider(null); // ✅ THIS WAS CUT OFF
+  const handleCloseModal = () => setSelectedProvider(null);
 
   return (
-    <div className="p-6 max-w-3xl mx-auto text-gray-800 dark:text-gray-100">
-      <h1 className="text-3xl font-bold text-green-700 dark:text-green-300 mb-6 text-center">
-        🌞 Solar Providers Near You
-      </h1>
-
-      <input
-        type="text"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        placeholder="Search providers or locations..."
-        className="w-full mb-4 px-4 py-2 border border-gray-300 dark:border-gray-700 rounded shadow-sm dark:bg-gray-800 dark:text-white"
-      />
-
-<<<<<<< HEAD
-      {/* ✅ Map Debug Box */}
-      <div className="mb-6 rounded-xl overflow-hidden shadow-md border border-green-300 dark:border-green-700">
-  <House />
-</div>
-=======
-          {/* ✅ Map embedded here */}
-          <div className="mb-6 rounded-xl overflow-hidden shadow-md border border-green-300 dark:border-green-700">
-            <House />
-          </div>
->>>>>>> 700eb06 (✅ T2.1 complete: Embedded Leaflet map centered on user location in Solar Providers page)
-
-
-      {filteredProviders.map((provider) => (
-        <div
-          key={provider.id}
-          className="bg-white dark:bg-gray-800 rounded shadow-md p-4 mb-4 transition-transform transform hover:scale-105"
-        >
-          <h2 className="text-xl font-semibold text-green-700 dark:text-green-300">
-            {provider.name}
-          </h2>
-          <p className="dark:text-gray-300">📍 Distance: {provider.distance}</p>
-          <p className="dark:text-gray-300">⭐ Rating: {provider.rating}</p>
-          <button
-            onClick={() => handleMoreInfo(provider)}
-            className="mt-3 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-4">Nearby Solar Providers</h1>
+      <House /> {/* Leaflet map */}
+      <ul className="space-y-4 mt-6">
+        {solarProviders.map((provider) => (
+          <li
+            key={provider.id}
+            className="border p-4 rounded shadow hover:shadow-lg transition"
           >
-            More Info ➡
-          </button>
-        </div>
-      ))}
+            <h2 className="text-lg font-semibold">{provider.name}</h2>
+            <p>{provider.location}</p>
+            <p>⭐ {provider.rating}</p>
+            <button
+              className="mt-2 px-4 py-2 bg-blue-500 text-white rounded"
+              onClick={() => handleMoreInfo(provider)}
+            >
+              More Info
+            </button>
+          </li>
+        ))}
+      </ul>
 
       {selectedProvider && (
-        <SolarProviderDetails provider={selectedProvider} onClose={handleCloseModal} />
+        <SolarProviderDetails
+          provider={selectedProvider}
+          onClose={handleCloseModal}
+        />
       )}
     </div>
   );
