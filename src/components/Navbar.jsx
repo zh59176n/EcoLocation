@@ -15,27 +15,29 @@ function Navbar({ darkMode, setDarkMode }) {
   const linkClasses =
     "hover:underline hover:bg-green-700 hover:text-white px-2 py-1 rounded focus:outline-none focus:ring-2 focus:ring-white";
 
-  const renderLinks = () => (
-    <>
-      <Link to="/" className={linkClasses}>Home</Link>
-      {!user && <Link to="/login" className={linkClasses}>Login</Link>}
-      {!user && <Link to="/register" className={linkClasses}>Register</Link>}
-      <Link to="/about" className={linkClasses}>About</Link>
-      {user && (
-        <>
-          <span className="text-sm">Welcome, {user.email}</span>
-          <button onClick={handleLogout} className={`${linkClasses} underline`}>Logout</button>
-        </>
-      )}
-      <button
-        onClick={() => setDarkMode(!darkMode)}
-        className="bg-white text-green-700 px-2 py-1 rounded transition-colors duration-200 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-300 active:bg-gray-200"
-      >
-        {darkMode ? "Light Mode" : "Dark Mode"}
-      </button>
-    </>
-  );
-
+    const renderLinks = () => (
+      <>
+        <Link to="/" className={linkClasses}>Home</Link>
+        <Link to="/solar" className={linkClasses}>Solar Providers</Link> {/* ✅ added */}
+        <Link to="/news" className={linkClasses}>News Feed</Link> {/* ✅ added */}
+        {!user && <Link to="/login" className={linkClasses}>Login</Link>}
+        {!user && <Link to="/register" className={linkClasses}>Register</Link>}
+        <Link to="/about" className={linkClasses}>About</Link>
+        {user && (
+          <>
+            <span className="text-sm">Welcome, {user.email}</span>
+            <button onClick={handleLogout} className={`${linkClasses} underline`}>Logout</button>
+          </>
+        )}
+        <button
+          onClick={() => setDarkMode(!darkMode)}
+          className="bg-white text-green-700 px-2 py-1 rounded transition-colors duration-200 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-300 active:bg-gray-200"
+        >
+          {darkMode ? "Light Mode" : "Dark Mode"}
+        </button>
+      </>
+    );
+    
   return (
     <nav className="bg-green-600 text-white px-4 py-3 flex items-center justify-between relative">
       {/* Logo */}
