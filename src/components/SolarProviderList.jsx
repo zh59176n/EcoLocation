@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState } from 'react';
 import SolarProviderDetails from './SolarProviderDetails.jsx';
 import House from './House'; // ✅ import Leaflet map
@@ -20,6 +21,14 @@ const solarProviders = [
     description: "Affordable and efficient residential solar installations.",
   },
 ];
+=======
+// src/components/SolarProviderList.jsx
+import React, { useState, useEffect } from "react";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../firebase";
+import SolarProviderDetails from "./SolarProviderDetails.jsx";
+import House from "./House"; // ✅ include map
+>>>>>>> 700eb06 (✅ T2.1 complete: Embedded Leaflet map centered on user location in Solar Providers page)
 
 const SolarProviderList = () => {
   const [selectedProvider, setSelectedProvider] = useState(null);
@@ -47,10 +56,17 @@ const SolarProviderList = () => {
         className="w-full mb-4 px-4 py-2 border border-gray-300 dark:border-gray-700 rounded shadow-sm dark:bg-gray-800 dark:text-white"
       />
 
+<<<<<<< HEAD
       {/* ✅ Map Debug Box */}
       <div className="mb-6 rounded-xl overflow-hidden shadow-md border border-green-300 dark:border-green-700">
   <House />
 </div>
+=======
+          {/* ✅ Map embedded here */}
+          <div className="mb-6 rounded-xl overflow-hidden shadow-md border border-green-300 dark:border-green-700">
+            <House />
+          </div>
+>>>>>>> 700eb06 (✅ T2.1 complete: Embedded Leaflet map centered on user location in Solar Providers page)
 
 
       {filteredProviders.map((provider) => (
