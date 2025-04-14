@@ -11,7 +11,8 @@ import About from "./components/About";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
 import PublicRoute from "./components/PublicRoute";
-import SolarProviderList from './components/SolarProviderList';
+import SolarProviderList from "./components/SolarProviderList";
+import NewsFeed from "./components/NewsFeed"; // Import the newsfeed component
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -31,6 +32,7 @@ function App() {
       <main className="min-h-screen bg-gradient-to-r from-green-100 to-green-300 dark:from-green-800 dark:to-green-900 text-gray-900 dark:text-white transition-all duration-300">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/news" element={<NewsFeed />} /> {/* New route for the newsfeed */}
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />
           <Route path="/solar" element={<SolarProviderList />} />
