@@ -13,7 +13,7 @@ const SolarProviderList = () => {
   useEffect(() => {
     const fetchSolarProviders = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, 'solarProviders'));
+        const querySnapshot = await getDocs(collection(db, 'solar_providers'));
         const providers = querySnapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data(),
