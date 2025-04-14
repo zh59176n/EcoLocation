@@ -11,6 +11,7 @@
     "test": "vitest --environment jsdom"
   },
   "dependencies": {
+    "@react-google-maps/api": "^2.20.6",
     "axios": "^1.8.4",
     "eslint-plugin-react": "^7.37.4",
     "express": "^5.1.0",
@@ -19,6 +20,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-firebase-hooks": "^5.1.1",
+    "react-leaflet": "^5.0.0",
     "react-router-dom": "^7.4.1",
     "vite-plugin-static-copy": "^2.3.1"
   },
