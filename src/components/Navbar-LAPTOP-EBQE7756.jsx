@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../firebase";
+import { auth } from "../Firebase";
 import { signOut } from "firebase/auth";
 
 function Navbar({ darkMode, setDarkMode }) {
@@ -21,7 +21,6 @@ function Navbar({ darkMode, setDarkMode }) {
       {!user && <Link to="/login" className={linkClasses}>Login</Link>}
       {!user && <Link to="/register" className={linkClasses}>Register</Link>}
       <Link to="/solar" className={linkClasses}>Solar Providers</Link>
-      <Link to="/news" className={linkClasses}>News</Link>
       <Link to="/about" className={linkClasses}>About</Link>
       {user && (
         <>
@@ -43,8 +42,8 @@ function Navbar({ darkMode, setDarkMode }) {
       {/* Logo */}
       <div className="flex items-center space-x-2">
         <Link to="/" className="flex items-center space-x-2 hover:opacity-90">
-          <img src="/logo.png" alt="EcoLocation Logo" className="h-8 w-8" />
-          <span className="text-xl font-bold text-white">EcoLocation</span>
+        <img src="/logo.png" alt="EcoLocation Logo" className="h-8 w-8" />
+        <span className="text-xl font-bold text-white">EcoLocation</span>
         </Link>
       </div>
 
