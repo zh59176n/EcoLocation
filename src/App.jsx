@@ -13,6 +13,7 @@ import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
 import PublicRoute from "./components/PublicRoute";
 import SolarProviderList from "./components/SolarProviderList";
+
 import ForgotPassword from "./components/ForgotPassword";
 import CantAccessAccount from "./components/CantAccessAccount";
 import NewsFeed from "./components/NewsFeed"; // Import the newsfeed component
@@ -21,6 +22,43 @@ function App() {
   const [darkMode, setDarkMode] = useState(false);
   const [user] = useAuthState(auth);
 
+  useEffect(() => {
+    const mockProviders = [
+      {
+        name: "SunPower Solar",
+        distance: "3.2 miles",
+        rating: 4.8,
+        address: "123 Solar Ave, San Diego, CA",
+        description: "Leading provider of clean solar energy solutions.",
+      },
+      {
+        name: "GreenLight Energy",
+        distance: "5.1 miles",
+        rating: 4.5,
+        address: "456 Eco Rd, Austin, TX",
+        description: "Affordable residential solar installations.",
+      }
+    ];
+  
+    const seedProviders = async () => {
+      try {
+        const colRef = collection(db, "solar_providers");
+  
+        for (const provider of mockProviders) {
+          await addDoc(colRef, provider);
+          console.log("✅ Added:", provider.name);
+        }
+  
+      } catch (err) {
+        console.error("❌ Firestore Seed Error:", err.message);
+      }
+    };
+  
+    // Uncomment this when ready to seed:
+    // seedProviders();
+  }, []);  
+
+  // 🌗 Handle dark mode toggle
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add("dark");
