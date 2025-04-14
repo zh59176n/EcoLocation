@@ -1,17 +1,10 @@
 import React, { useState } from "react";
-import {
-  signInWithEmailAndPassword,
-  setPersistence,
-  browserLocalPersistence,
-  browserSessionPersistence
-} from "firebase/auth";
-import { auth } from "../firebase";
-import { Link } from "react-router-dom";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../Firebase"; // Ensure the path is lowercase & correct
 
 function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,11 +15,6 @@ function LoginForm() {
     }
 
     try {
-      await setPersistence(
-        auth,
-        rememberMe ? browserLocalPersistence : browserSessionPersistence
-      );
-
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       console.log("Logged in:", user);
@@ -43,7 +31,7 @@ function LoginForm() {
         <h2 className="text-2xl font-bold mb-6 text-green-800 text-center">Login</h2>
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
             <input
               type="email"
               value={email}
@@ -53,7 +41,7 @@ function LoginForm() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
             <input
               type="password"
               value={password}
@@ -62,35 +50,12 @@ function LoginForm() {
               placeholder="••••••••"
             />
           </div>
-
-          <div className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              checked={rememberMe}
-              onChange={() => setRememberMe(!rememberMe)}
-              className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
-              id="remember"
-            />
-            <label htmlFor="remember" className="text-sm text-gray-700 dark:text-gray-300">
-              Remember Me
-            </label>
-          </div>
-
           <button
             type="submit"
             className="w-full bg-green-600 text-white py-2 rounded-md transition-colors duration-200 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-300 active:bg-green-800"
           >
             Sign In
           </button>
-
-          <div className="flex flex-col items-center mt-4 space-y-2">
-            <Link to="/forgot-password" className="text-sm text-green-700 hover:underline">
-              Forgot your password?
-            </Link>
-            <Link to="/cant-access-account" className="text-sm text-red-600 hover:underline">
-              Can’t access your account?
-            </Link>
-          </div>
         </form>
       </div>
     </div>
