@@ -22,29 +22,44 @@ const solarProviders = [
 
 const SolarProviderList = () => {
   const [selectedProvider, setSelectedProvider] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredProviders = solarProviders.filter((provider) =>
+    provider.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    provider.address.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const handleMoreInfo = (provider) => setSelectedProvider(provider);
   const handleCloseModal = () => setSelectedProvider(null);
 
   return (
-    <div className="p-6 max-w-3xl mx-auto">
-      <h1 className="text-3xl font-bold text-green-700 mb-6 text-center">Solar Providers</h1>
+    <div className="p-6 max-w-3xl mx-auto text-gray-800 dark:text-gray-100">
+      <h1 className="text-3xl font-bold text-green-700 dark:text-green-300 mb-6 text-center">
+        🌞 Solar Providers Near You
+      </h1>
 
       <input
         type="text"
-        placeholder="Enter an address..."
-        className="w-full mb-4 px-4 py-2 border rounded shadow-sm"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        placeholder="Search providers or locations..."
+        className="w-full mb-4 px-4 py-2 border border-gray-300 dark:border-gray-700 rounded shadow-sm dark:bg-gray-800 dark:text-white"
       />
 
-      <div className="bg-green-100 border border-green-300 p-4 mb-6 rounded text-center text-sm text-green-600">
+      <div className="bg-green-100 dark:bg-green-900 border border-green-300 dark:border-green-700 p-4 mb-6 rounded text-center text-sm text-green-800 dark:text-green-200">
         (🗺️ Map will be displayed here)
       </div>
 
-      {solarProviders.map((provider) => (
-        <div key={provider.id} className="bg-white rounded shadow-md p-4 mb-4">
-          <h2 className="text-xl font-semibold text-green-700">{provider.name}</h2>
-          <p>📍 Distance: {provider.distance}</p>
-          <p>⭐ Rating: {provider.rating}</p>
+      {filteredProviders.map((provider) => (
+        <div
+          key={provider.id}
+          className="bg-white dark:bg-gray-800 rounded shadow-md p-4 mb-4 transition-transform transform hover:scale-105"
+        >
+          <h2 className="text-xl font-semibold text-green-700 dark:text-green-300">
+            {provider.name}
+          </h2>
+          <p className="dark:text-gray-300">📍 Distance: {provider.distance}</p>
+          <p className="dark:text-gray-300">⭐ Rating: {provider.rating}</p>
           <button
             onClick={() => handleMoreInfo(provider)}
             className="mt-3 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
@@ -54,7 +69,6 @@ const SolarProviderList = () => {
         </div>
       ))}
 
-      {/* Modal for Details */}
       {selectedProvider && (
         <SolarProviderDetails provider={selectedProvider} onClose={handleCloseModal} />
       )}
