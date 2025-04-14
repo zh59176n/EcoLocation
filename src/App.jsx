@@ -11,7 +11,8 @@ import About from "./components/About";
 import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
 import PublicRoute from "./components/PublicRoute";
-import SolarProviderList from './components/SolarProviderList';
+import SolarProviderList from "./components/SolarProviderList";
+import House from "./components/House"; // ✅ new import
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -34,6 +35,7 @@ function App() {
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />
           <Route path="/solar" element={<SolarProviderList />} />
+          <Route path="/about" element={<About />} />
           <Route
             path="/login"
             element={
@@ -50,7 +52,7 @@ function App() {
               </PublicRoute>
             }
           />
-          <Route path="/about" element={<About />} />
+          <Route path="/map" element={<House />} /> {/* ✅ new route */}
         </Routes>
       </main>
       <Footer />

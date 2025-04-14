@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import SolarProviderDetails from './SolarProviderDetails.jsx';
+import House from './House'; // ✅ import Leaflet map
 
 const solarProviders = [
   {
@@ -30,7 +31,7 @@ const SolarProviderList = () => {
   );
 
   const handleMoreInfo = (provider) => setSelectedProvider(provider);
-  const handleCloseModal = () => setSelectedProvider(null);
+  const handleCloseModal = () => setSelectedProvider(null); // ✅ THIS WAS CUT OFF
 
   return (
     <div className="p-6 max-w-3xl mx-auto text-gray-800 dark:text-gray-100">
@@ -46,9 +47,11 @@ const SolarProviderList = () => {
         className="w-full mb-4 px-4 py-2 border border-gray-300 dark:border-gray-700 rounded shadow-sm dark:bg-gray-800 dark:text-white"
       />
 
-      <div className="bg-green-100 dark:bg-green-900 border border-green-300 dark:border-green-700 p-4 mb-6 rounded text-center text-sm text-green-800 dark:text-green-200">
-        (🗺️ Map will be displayed here)
-      </div>
+      {/* ✅ Map Debug Box */}
+      <div className="mb-6 rounded-xl overflow-hidden shadow-md border border-green-300 dark:border-green-700">
+  <House />
+</div>
+
 
       {filteredProviders.map((provider) => (
         <div
