@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../firebase";
+import { auth } from "../Firebase"; // Re-added Firebase Implementation
 import { signOut } from "firebase/auth";
 
 function Navbar({ darkMode, setDarkMode }) {
@@ -20,8 +20,6 @@ function Navbar({ darkMode, setDarkMode }) {
       <Link to="/" className={linkClasses}>Home</Link>
       {!user && <Link to="/login" className={linkClasses}>Login</Link>}
       {!user && <Link to="/register" className={linkClasses}>Register</Link>}
-      <Link to="/solar" className={linkClasses}>Solar Providers</Link>
-      <Link to="/news" className={linkClasses}>News</Link>
       <Link to="/about" className={linkClasses}>About</Link>
       {user && (
         <>
@@ -41,14 +39,11 @@ function Navbar({ darkMode, setDarkMode }) {
   return (
     <nav className="bg-green-600 text-white px-4 py-3 flex items-center justify-between relative">
       {/* Logo */}
-      <div className="flex items-center space-x-2">
-        <Link to="/" className="flex items-center space-x-2 hover:opacity-90">
-          <img src="/logo.png" alt="EcoLocation Logo" className="h-8 w-8" />
-          <span className="text-xl font-bold text-white">EcoLocation</span>
-        </Link>
+      <div className="text-xl font-bold">
+        <Link to="/" className={linkClasses}>EcoLocation</Link>
       </div>
 
-      {/* Hamburger for Mobile */}
+      {/* Hamburger menu for mobile */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="md:hidden focus:outline-none focus:ring-2 focus:ring-white"
@@ -58,7 +53,11 @@ function Navbar({ darkMode, setDarkMode }) {
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
-            d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
+            d={
+              isOpen
+                ? "M6 18L18 6M6 6l12 12"
+                : "M4 6h16M4 12h16M4 18h16"
+            }
           />
         </svg>
       </button>
