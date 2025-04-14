@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../Firebase";
+import { auth } from "../firebase";
 import { signOut } from "firebase/auth";
 
 function Navbar({ darkMode, setDarkMode }) {
