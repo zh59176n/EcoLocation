@@ -2,38 +2,40 @@
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import './House.css'; // <-- You’ll create this file below
 
 const House = () => {
   const mapRef = useRef(null);
-  const leafletMap = useRef(null); // ✅ NEW: Save the Leaflet map instance
+  const leafletMap = useRef(null);
   const [stations, setStations] = useState([]);
+  const [expandedIndex, setExpandedIndex] = useState(null);
 
   useEffect(() => {
     if (mapRef.current && mapRef.current._leaflet_id) {
       mapRef.current._leaflet_id = null;
     }
 
-    const map = L.map(mapRef.current).setView([40.7128, -74.006], 13);
-    leafletMap.current = map; // ✅ Save the instance
+    leafletMap.current = L.map(mapRef.current).setView([40.7128, -74.006], 13);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors',
-    }).addTo(map);
-
-    const customIcon = L.divIcon({
-      className: '',
-      html: '📍',
-      iconSize: [30, 30],
-      iconAnchor: [15, 30],
-    });
+    }).addTo(leafletMap.current);
 
     navigator.geolocation.getCurrentPosition(
       async (pos) => {
         const { latitude, longitude } = pos.coords;
-        map.setView([latitude, longitude], 13);
+        leafletMap.current.setView([latitude, longitude], 13);
 
-        L.marker([latitude, longitude], { icon: customIcon })
-          .addTo(map)
+        // ✅ User Location Pin
+        L.marker([latitude, longitude], {
+          icon: L.divIcon({
+            className: 'emoji-pin',
+            html: '📍',
+            iconSize: [24, 24],
+            iconAnchor: [12, 24],
+          }),
+        })
+          .addTo(leafletMap.current)
           .bindPopup('📍 You are here')
           .openPopup();
 
@@ -42,86 +44,107 @@ const House = () => {
             `https://api.openchargemap.io/v3/poi/?output=json&countrycode=US&latitude=${latitude}&longitude=${longitude}&distance=10&maxresults=20&key=4f5bc103-bb45-47c1-8c5a-d4301b503a79`
           );
           const data = await res.json();
-          setStations(data);
 
           data.forEach((station) => {
             const coords = station.AddressInfo;
             if (coords?.Latitude && coords?.Longitude) {
-              L.marker([coords.Latitude, coords.Longitude], { icon: customIcon })
-                .addTo(map)
-                .bindPopup(`<strong>${coords.Title}</strong><br/>${coords.AddressLine1}`);
+              const marker = L.marker([coords.Latitude, coords.Longitude], {
+                icon: L.divIcon({
+                  className: 'emoji-pin',
+                  html: '📍',
+                  iconSize: [24, 24],
+                  iconAnchor: [12, 24],
+                }),
+              }).addTo(leafletMap.current);
+
+              marker.bindPopup(`<strong>${coords.Title}</strong><br/>${coords.AddressLine1}`);
+              station.__marker = marker;
+              station.__coords = [coords.Latitude, coords.Longitude];
             }
           });
+
+          setStations(data);
         } catch (err) {
-          console.error('⚠️ Failed to load EV station data:', err);
+          console.error('⚠️ Error fetching EV stations:', err);
         }
       },
       () => {
         L.marker([40.7128, -74.006])
-          .addTo(map)
+          .addTo(leafletMap.current)
           .bindPopup('📍 Default location: NYC')
           .openPopup();
       }
     );
   }, []);
 
-  return (
-    <div className="space-y-8">
-      <h3 className="text-xl font-semibold text-green-800 dark:text-green-200 flex items-center gap-2">
-        📍 Nearby EV Charging Stations
-      </h3>
+  const scrollToMarker = (station) => {
+    if (leafletMap.current && station.__coords && station.__marker) {
+      leafletMap.current.setView(station.__coords, 16);
+      station.__marker.openPopup();
+    }
+  };
 
-      {/* Map */}
+  const toggleExpand = (index) => {
+    setExpandedIndex(expandedIndex === index ? null : index);
+  };
+
+  return (
+    <div className="p-4 space-y-6">
+      <h2 className="text-2xl font-bold text-green-900 mb-2">
+        🔌 Nearby EV Charging Stations
+      </h2>
+
       <div
         ref={mapRef}
-        className="w-full rounded-xl shadow-md border"
-        style={{ height: '400px' }}
+        className="w-full h-[400px] rounded-xl shadow-md border border-green-300"
       ></div>
 
-      {/* Station Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {stations.map((station) => {
-          const info = station.AddressInfo;
-          const title = info?.Title || 'Unnamed Station';
-          const address = info?.AddressLine1 || 'No address';
-          const town = info?.Town || '';
-          const state = info?.State || '';
-          const distance = info?.Distance;
-          const connectionType = station.Connections?.[0]?.ConnectionType?.Title || '';
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {stations.map((station, idx) => {
+          const info = station.AddressInfo || {};
+          const conn = station.Connections?.[0] || {};
 
           return (
             <div
-              key={station.ID}
-              className="p-4 border rounded-xl shadow-sm bg-white dark:bg-gray-800 hover:shadow-lg transition"
+              key={idx}
+              className="bg-white border border-gray-300 rounded-xl shadow p-5 space-y-2 hover:shadow-lg transition-all duration-300"
             >
-              <h4 className="text-md font-semibold text-gray-800 dark:text-white mb-1">{title}</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-300">
-                {address}, {town}, {state}
-              </p>
-              {connectionType && (
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                  🔌 {connectionType}
-                </p>
+              <h3 className="font-bold text-lg text-green-800 flex items-center gap-2">
+                📍 {info.Title}
+              </h3>
+              <p className="text-sm">🏠 {info.AddressLine1}</p>
+              <p className="text-sm">🌆 {info.Town}, {info.State}</p>
+              <p className="text-sm">📏 {info.Distance?.toFixed(2)} mi</p>
+
+              <div className="flex gap-2 mt-3">
+                <button
+                  className="bg-green-600 hover:bg-green-700 text-white text-sm px-3 py-1 rounded"
+                  onClick={() => scrollToMarker(station)}
+                >
+                  View on Map
+                </button>
+                <button
+                  className="bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm px-3 py-1 rounded"
+                  onClick={() => toggleExpand(idx)}
+                >
+                  {expandedIndex === idx ? 'Hide Info' : 'More Info'}
+                </button>
+              </div>
+
+              {expandedIndex === idx && (
+                <div className="mt-3 border-t pt-3 bg-gray-50 p-3 rounded-md text-sm space-y-1">
+                  <p>🔌 Connector: {conn.ConnectionType?.Title || 'Unknown'}</p>
+                  <p>⚡ Level: {conn.Level?.Title || 'N/A'}</p>
+                  <p>🔢 Ports: {conn.Quantity || '1'}</p>
+                  {station.UsageCost && <p>💵 Cost: {station.UsageCost}</p>}
+                  {info.ContactTelephone1 && (
+                    <p>📞 Contact: {info.ContactTelephone1}</p>
+                  )}
+                  {info.AccessComments && (
+                    <p className="text-gray-500 italic">📝 {info.AccessComments}</p>
+                  )}
+                </div>
               )}
-              {distance && (
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                  📏 {distance.toFixed(2)} miles away
-                </p>
-              )}
-              <button
-                onClick={() => {
-                  if (leafletMap.current && info?.Latitude && info?.Longitude) {
-                    leafletMap.current.setView([info.Latitude, info.Longitude], 15);
-                    L.popup()
-                      .setLatLng([info.Latitude, info.Longitude])
-                      .setContent(`<strong>${title}</strong><br/>${address}`)
-                      .openOn(leafletMap.current);
-                  }
-                }}
-                className="mt-3 inline-block px-4 py-1 text-sm font-medium bg-green-600 text-white rounded-md hover:bg-green-700 transition"
-              >
-                View on Map
-              </button>
             </div>
           );
         })}
