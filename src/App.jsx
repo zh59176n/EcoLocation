@@ -16,6 +16,8 @@ import ForgotPassword from "./components/ForgotPassword";
 import CantAccessAccount from "./components/CantAccessAccount";
 import NewsFeed from "./components/NewsFeed";
 import House from "./components/House"; // ✅ new import
+import CarbonCalculator from "./components/CarbonCalculator"; // New import for Carbon Calculator
+import EcoChallengeTracker from "./components/EcoChallengeTracker"; // New import for Challenge Tracker
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -31,9 +33,10 @@ function App() {
 
   return (
     <Router>
-      <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
-      <main className="min-h-screen bg-gradient-to-r from-green-100 to-green-300 dark:from-green-800 dark:to-green-900 text-gray-900 dark:text-white transition-all duration-300">
-        <Routes>
+       <div className="min-h-screen bg-gradient-to-r from-green-100 to-green-300 dark:from-green-800 dark:to-green-900">
+        <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
+        <main className="text-gray-900 dark:text-white transition-all duration-300">
+         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<PublicRoute><LoginForm /></PublicRoute>} />
           <Route path="/register" element={<PublicRoute><RegisterForm /></PublicRoute>} />
@@ -43,8 +46,11 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/cant-access-account" element={<CantAccessAccount />} />
           <Route path="/map" element={<House />} /> {/* ✅ Leaflet map */}
+          <Route path="/carbon" element={<CarbonCalculator />} /> {/* Carbon Calculator */}
+          <Route path="/challenges" element={<EcoChallengeTracker />} /> {/* Eco-Challenge Tracker */}
         </Routes>
       </main>
+      </div>
       <Footer />
     </Router>
   );
