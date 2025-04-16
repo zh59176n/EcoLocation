@@ -21,6 +21,7 @@ function Navbar({ darkMode, setDarkMode }) {
       <Link to="/solar" className={linkClasses}>Solar Providers</Link>
       <Link to="/news" className={linkClasses}>News Feed</Link>
       <Link to="/carbon" className={linkClasses}>Carbon Calculator</Link>
+      <Link to="/challenges" className={linkClasses}>Challenges</Link>
       <Link to="/about" className={linkClasses}>About</Link>
       {!user && <Link to="/login" className={linkClasses}>Login</Link>}
       {!user && <Link to="/register" className={linkClasses}>Register</Link>}

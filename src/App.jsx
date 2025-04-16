@@ -16,8 +16,8 @@ import ForgotPassword from "./components/ForgotPassword";
 import CantAccessAccount from "./components/CantAccessAccount";
 import NewsFeed from "./components/NewsFeed";
 import House from "./components/House"; // ✅ new import
-import CarbonCalculator from "./components/CarbonCalculator"; // New import for Carbon Calculator
-import EcoChallengeTracker from "./components/EcoChallengeTracker"; // New import for Challenge Tracker
+import CarbonCalculator from "./components/CarbonCalculator";
+import EcoChallengeTracker from "./components/EcoChallengeTracker"; 
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -45,9 +45,9 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/cant-access-account" element={<CantAccessAccount />} />
-          <Route path="/map" element={<House />} /> {/* ✅ Leaflet map */}
-          <Route path="/carbon" element={<CarbonCalculator />} /> {/* Carbon Calculator */}
-          <Route path="/challenges" element={<EcoChallengeTracker />} /> {/* Eco-Challenge Tracker */}
+          <Route path="/map" element={<House />} /> 
+          <Route path="/carbon" element={<CarbonCalculator />} /> 
+          <Route path="/challenges" element={<EcoChallengeTracker />} /> 
         </Routes>
       </main>
       </div>
