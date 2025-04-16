@@ -3,75 +3,131 @@ import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './House.css';
+import { db } from '../Firebase';
+import {
+  collection,
+  writeBatch,
+  doc,
+  onSnapshot
+} from 'firebase/firestore';
 
 const House = () => {
-  const mapRef = useRef(null);
-  const leafletMap = useRef(null);
-  const [stations, setStations] = useState([]);
+  const mapRef       = useRef(null);
+  const leafletMap   = useRef(null);
+  const markersRef   = useRef({});      // { [stationId]: LeafletMarker }
+  const [stations, setStations]     = useState([]);
   const [expandedIndex, setExpandedIndex] = useState(null);
 
   useEffect(() => {
-    if (mapRef.current && mapRef.current._leaflet_id) {
-      mapRef.current._leaflet_id = null;
+    // 1️⃣ Initialize map once
+    if (!leafletMap.current) {
+      leafletMap.current = L.map(mapRef.current).setView([40.7128, -74.0060], 13);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors',
+      }).addTo(leafletMap.current);
     }
 
-    leafletMap.current = L.map(mapRef.current).setView([40.7128, -74.006], 13);
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors',
-    }).addTo(leafletMap.current);
-
+    // 2️⃣ Geolocate → fetch API → batch‑write to Firestore
     navigator.geolocation.getCurrentPosition(
-      async (pos) => {
-        const { latitude, longitude } = pos.coords;
+      async ({ coords }) => {
+        const { latitude, longitude } = coords;
         leafletMap.current.setView([latitude, longitude], 13);
 
         L.marker([latitude, longitude], {
           icon: L.divIcon({ html: '📍', className: 'emoji-pin' })
-        }).addTo(leafletMap.current).bindPopup('📍 You are here').openPopup();
+        })
+        .addTo(leafletMap.current)
+        .bindPopup('📍 You are here')
+        .openPopup();
 
         try {
-          const res = await fetch(
+          const res  = await fetch(
             `https://api.openchargemap.io/v3/poi/?output=json&countrycode=US&latitude=${latitude}&longitude=${longitude}&distance=10&maxresults=20&key=4f5bc103-bb45-47c1-8c5a-d4301b503a79`
           );
           const data = await res.json();
 
-          data.forEach((station) => {
-            const coords = station.AddressInfo;
-            if (coords?.Latitude && coords?.Longitude) {
-              const marker = L.marker([coords.Latitude, coords.Longitude], {
-                icon: L.divIcon({ html: '📍', className: 'emoji-pin' })
-              }).addTo(leafletMap.current);
-
-              marker.bindPopup(`<strong>${coords.Title}</strong><br/>${coords.AddressLine1}`);
-              station.__marker = marker;
-              station.__coords = [coords.Latitude, coords.Longitude];
-            }
+          // batch‑write all to Firestore
+          const batch = writeBatch(db);
+          data.forEach(station => {
+            const id  = station.ID.toString();
+            const ref = doc(db, 'chargingStations', id);
+            batch.set(ref, station);
           });
-
-          setStations(data);
+          await batch.commit();
         } catch (err) {
-          console.error('⚠️ Error fetching EV stations:', err);
+          console.error('⚠️ Fetch/Write error:', err);
         }
       },
       () => {
-        L.marker([40.7128, -74.006])
-          .addTo(leafletMap.current)
-          .bindPopup('📍 Default location: NYC')
-          .openPopup();
+        // fallback marker in NYC
+        L.marker([40.7128, -74.0060], {
+          icon: L.divIcon({ html: '📍', className: 'emoji-pin' })
+        })
+        .addTo(leafletMap.current)
+        .bindPopup('📍 Default location: NYC')
+        .openPopup();
       }
     );
+
+    // 3️⃣ Real‑time listener for chargingStations
+    const unsub = onSnapshot(collection(db, 'chargingStations'), snapshot => {
+      snapshot.docChanges().forEach(change => {
+        const data   = change.doc.data();
+        const id     = change.doc.id;
+        const info   = data.AddressInfo || {};
+        const coords = info.Latitude && info.Longitude
+          ? [info.Latitude, info.Longitude]
+          : null;
+
+        if (change.type === 'added' && coords) {
+          // add new marker
+          const m = L.marker(coords, {
+            icon: L.divIcon({ html: '📍', className: 'emoji-pin' })
+          })
+          .addTo(leafletMap.current)
+          .bindPopup(`<strong>${info.Title}</strong><br/>${info.AddressLine1}`);
+          markersRef.current[id] = m;
+
+        } else if (change.type === 'modified') {
+          // update existing marker (position or popup)
+          const m = markersRef.current[id];
+          if (m && coords) {
+            m.setLatLng(coords);
+            m.getPopup().setContent(`<strong>${info.Title}</strong><br/>${info.AddressLine1}`);
+          }
+
+        } else if (change.type === 'removed') {
+          // remove marker
+          const m = markersRef.current[id];
+          if (m) {
+            m.remove();
+            delete markersRef.current[id];
+          }
+        }
+      });
+
+      // keep React list in sync
+      setStations(snapshot.docs.map(d => ({ id: d.id, ...d.data() })));
+    });
+
+    // cleanup on unmount
+    return () => {
+      unsub();
+      Object.values(markersRef.current).forEach(m => m.remove());
+    };
   }, []);
 
-  const scrollToMarker = (station) => {
-    if (leafletMap.current && station.__coords && station.__marker) {
-      leafletMap.current.setView(station.__coords, 15);
-      station.__marker.openPopup();
+  const scrollToMarker = station => {
+    const m = markersRef.current[station.id];
+    if (leafletMap.current && m) {
+      const latlng = m.getLatLng();
+      leafletMap.current.setView(latlng, 15);
+      m.openPopup();
     }
   };
 
-  const toggleExpand = (index) => {
-    setExpandedIndex(expandedIndex === index ? null : index);
+  const toggleExpand = idx => {
+    setExpandedIndex(expandedIndex === idx ? null : idx);
   };
 
   return (
@@ -83,7 +139,7 @@ const House = () => {
       <div
         ref={mapRef}
         className="w-full h-[400px] rounded-xl shadow-md border border-green-300 dark:border-green-700"
-      ></div>
+      />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {stations.map((station, idx) => {
@@ -92,10 +148,12 @@ const House = () => {
 
           return (
             <div
-              key={idx}
+              key={station.id}
               className="bg-white dark:bg-green-900 text-gray-900 dark:text-white border border-gray-300 dark:border-green-700 rounded-xl shadow p-5 space-y-2 hover:shadow-lg transition-all duration-300"
             >
-              <h3 className="font-semibold text-lg text-green-800 dark:text-green-200">📍 {info.Title}</h3>
+              <h3 className="font-semibold text-lg text-green-800 dark:text-green-200">
+                📍 {info.Title}
+              </h3>
               <p className="text-sm">🏠 {info.AddressLine1}</p>
               <p className="text-sm">🗺️ {info.Town}, {info.State}</p>
               <p className="text-sm">📏 {info.Distance?.toFixed(2)} mi</p>
@@ -125,7 +183,9 @@ const House = () => {
                     <p>📞 Contact: {info.ContactTelephone1}</p>
                   )}
                   {info.AccessComments && (
-                    <p className="text-gray-500 italic dark:text-gray-300">📝 {info.AccessComments}</p>
+                    <p className="text-gray-500 italic dark:text-gray-300">
+                      📝 {info.AccessComments}
+                    </p>
                   )}
                 </div>
               )}
