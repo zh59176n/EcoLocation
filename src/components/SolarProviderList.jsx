@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
 import app from '../Firebase';
-import SolarProviderDetails from './SolarProviderDetails.jsx';
 import House from './House';
 
 const db = getFirestore(app);
@@ -36,7 +35,7 @@ const SolarProviderList = () => {
       <House /> {/* Leaflet map */}
       <ul className="space-y-4 mt-6">
         {solarProviders.length === 0 ? (
-          <p className="text-gray-500">No solar providers available.</p>
+          <p className="text-gray-500"></p>
         ) : (
           solarProviders.map((provider) => (
             <li
@@ -56,13 +55,6 @@ const SolarProviderList = () => {
           ))
         )}
       </ul>
-
-      {selectedProvider && (
-        <SolarProviderDetails
-          provider={selectedProvider}
-          onClose={handleCloseModal}
-        />
-      )}
     </div>
   );
 };
