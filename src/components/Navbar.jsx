@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../Firebase";
 import { signOut } from "firebase/auth";
+import logo from "../assets/logo.png"; // make sure this path is correct
 
 function Navbar({ darkMode, setDarkMode }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -41,13 +42,18 @@ function Navbar({ darkMode, setDarkMode }) {
   );
 
   return (
-    <nav className="bg-green-600 text-white px-4 py-3 flex items-center justify-between relative">
-      {/* Logo */}
-      <div className="text-xl font-bold">
-        <Link to="/" className={linkClasses}>EcoLocation</Link>
-      </div>
+    <nav className="bg-green-600 dark:bg-gray-900 text-white px-4 py-3 flex items-center justify-between relative shadow-md z-50">
+      {/* 🌱 Logo + Title */}
+      <Link to="/" className="flex items-center gap-2 h-full">
+        <img
+          src={logo}
+          alt="Logo"
+          className="h-full max-h-12 w-auto object-contain"
+        />
+        <span className="text-xl font-bold">EcoLocation</span>
+      </Link>
 
-      {/* Hamburger menu for mobile */}
+      {/* 🍔 Hamburger */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="md:hidden focus:outline-none focus:ring-2 focus:ring-white"
@@ -62,14 +68,12 @@ function Navbar({ darkMode, setDarkMode }) {
         </svg>
       </button>
 
-      {/* Desktop Menu */}
-      <div className="hidden md:flex items-center gap-4">
-        {renderLinks()}
-      </div>
+      {/* 🖥️ Desktop Links */}
+      <div className="hidden md:flex items-center gap-4">{renderLinks()}</div>
 
-      {/* Mobile Dropdown Menu */}
+      {/* 📱 Mobile Links */}
       {isOpen && (
-        <div className="absolute top-16 left-0 w-full bg-green-600 flex flex-col items-center space-y-4 py-4 md:hidden z-50">
+        <div className="absolute top-16 left-0 w-full bg-green-600 dark:bg-gray-900 flex flex-col items-center space-y-4 py-4 md:hidden z-50">
           {renderLinks()}
         </div>
       )}

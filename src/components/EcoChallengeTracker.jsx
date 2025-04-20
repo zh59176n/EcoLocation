@@ -1,16 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import Confetti, { useWindowSize } from "react-confetti";
+import Confetti from "react-confetti";
 import { auth, db } from "../Firebase";
 import { collection, doc, setDoc, onSnapshot } from "firebase/firestore";
 import Leaderboard from "./Leaderboard";
 
-/* ────────────────────────── helpers ────────────────────────── */
-const msPerWeek = 6048e5; // 1000*60*60*24*7
+/* ──────────────── custom hook: useWindowSize ──────────────── */
+function useWindowSize() {
+  const [size, setSize] = useState([window.innerWidth, window.innerHeight]);
+  useEffect(() => {
+    const handleResize = () => setSize([window.innerWidth, window.innerHeight]);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  return { width: size[0], height: size[1] };
+}
+
+/* ──────────────── helpers ──────────────── */
+const msPerWeek = 6048e5;
 function getWeekStart(date) {
   const d = new Date(date);
   const day = d.getDay();
-  const diff = day === 0 ? -6 : 1 - day; // Monday start
+  const diff = day === 0 ? -6 : 1 - day;
   d.setDate(d.getDate() + diff);
   d.setHours(0, 0, 0, 0);
   return d;
@@ -25,18 +36,16 @@ function getWeekDates(start) {
 function dateKey(date) {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 }
-/* ───────────────────────────────────────────────────────────── */
 
+/* ──────────────── Main Component ──────────────── */
 export default function EcoChallengeTracker() {
   const [user] = useAuthState(auth);
   const { width, height } = useWindowSize();
 
-  /* ───────── week context ───────── */
   const [weekStart, setWeekStart] = useState(() => getWeekStart(new Date()));
-  const weekKey   = dateKey(weekStart);
+  const weekKey = dateKey(weekStart);
   const weekDates = getWeekDates(weekStart);
 
-  /* ───────── rotating challenge ───────── */
   const challenges = [
     { title: "No‑Plastic Week", description: "Avoid single‑use plastics every day." },
     { title: "Green Commuter Week", description: "Bike, walk, or use transit for all trips." },
@@ -44,16 +53,13 @@ export default function EcoChallengeTracker() {
     { title: "Meat‑Free Days", description: "Eat vegetarian meals." },
     { title: "Water Watch Week", description: "Take short showers & fix any water leaks." },
   ];
-  const challenge = challenges[(Math.floor(+weekStart / msPerWeek)) % challenges.length];
+  const challenge = challenges[Math.floor(+weekStart / msPerWeek) % challenges.length];
 
-  /* ───────── progress state ───────── */
   const [progress, setProgress] = useState(Array(7).fill(false));
   const completedDays = progress.filter(Boolean).length;
-
-  /* ───────── confetti state ───────── */
   const [showConfetti, setShowConfetti] = useState(false);
 
-  /* ───────── real‑time load of saved progress ───────── */
+  /* Load saved progress */
   useEffect(() => {
     if (!user) return;
     const ref = doc(db, "challengeProgress", `${weekKey}_${user.uid}`);
@@ -65,7 +71,6 @@ export default function EcoChallengeTracker() {
     });
   }, [user, weekKey]);
 
-  /* ───────── save progress on each toggle ───────── */
   const saveProgress = updated => {
     if (!user) return;
     setDoc(doc(db, "challengeProgress", `${weekKey}_${user.uid}`), {
@@ -76,13 +81,14 @@ export default function EcoChallengeTracker() {
       completedDays: updated.filter(Boolean).length,
     }, { merge: true }).catch(console.error);
   };
+
   const toggleDay = idx => {
     const updated = progress.map((v, i) => (i === idx ? !v : v));
     setProgress(updated);
     saveProgress(updated);
   };
 
-  /* ───────── show confetti when user hits #1 ───────── */
+  /* Confetti for top user */
   useEffect(() => {
     if (!user) return;
     const unsub = onSnapshot(collection(db, "challengeProgress"), snap => {
@@ -92,13 +98,13 @@ export default function EcoChallengeTracker() {
         .sort((a, b) => b.completedDays - a.completedDays);
       if (top.length && top[0].uid === user.uid) {
         setShowConfetti(true);
-        setTimeout(() => setShowConfetti(false), 7000); // 7 s rain
+        setTimeout(() => setShowConfetti(false), 7000);
       }
     });
     return unsub;
   }, [user, weekKey]);
 
-  /* ───────── auto‑rollover Monday ───────── */
+  /* Auto-reset each Monday */
   useEffect(() => {
     const id = setInterval(() => {
       const monday = getWeekStart(new Date());
@@ -110,22 +116,20 @@ export default function EcoChallengeTracker() {
     return () => clearInterval(id);
   }, [weekStart]);
 
-  /* ───────────────────── UI ───────────────────── */
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white dark:bg-gray-800 rounded-lg shadow relative">
-      {/* full‑page confetti */}
       {showConfetti && (
         <Confetti
           width={width}
           height={height}
-          numberOfPieces={300}
+          numberOfPieces={250}
           recycle={false}
           className="pointer-events-none fixed inset-0 z-50"
         />
       )}
 
-      <p className="mb-6 text-gray-700 dark:text-gray-300">
-        Small, consistent actions add up—track your daily eco‑wins and see how you rank!
+      <p className="mb-6 text-gray-700 dark:text-gray-300 text-sm">
+        Small, consistent actions add up—track your daily eco-wins and see how you rank!
       </p>
 
       {user && (
@@ -140,16 +144,24 @@ export default function EcoChallengeTracker() {
       <h1 className="text-2xl font-bold mb-1 text-gray-800 dark:text-white">{challenge.title}</h1>
       <p className="mb-4 text-gray-700 dark:text-gray-300">{challenge.description}</p>
 
-      <h2 className="font-semibold mb-2 text-gray-800 dark:text-white">Week of {weekStart.toLocaleDateString()}</h2>
+      <div className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+        <strong>✅ Progress:</strong> {completedDays}/7 days completed
+        {completedDays === 7 && " — You did it! 🎉"}
+      </div>
+
+      <h2 className="font-semibold mb-2 text-gray-800 dark:text-white">
+        Week of {weekStart.toLocaleDateString()}
+      </h2>
 
       <div className="grid grid-cols-7 gap-2 mb-4">
         {weekDates.map((d, i) => (
           <button
             key={i}
+            title="Click to mark this day"
             onClick={() => toggleDay(i)}
-            className={`flex flex-col items-center justify-center p-2 border rounded focus:outline-none focus:ring-2 ${
+            className={`flex flex-col items-center justify-center p-2 border rounded transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 ${
               progress[i]
-                ? "bg-green-600 text-white border-green-600"
+                ? "bg-green-600 text-white border-green-600 shadow-md"
                 : "bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 border-gray-300"
             }`}
           >
@@ -157,6 +169,10 @@ export default function EcoChallengeTracker() {
             <span className="text-sm">{d.getDate()}</span>
           </button>
         ))}
+      </div>
+
+      <div className="mt-4 text-center text-sm italic text-gray-500 dark:text-gray-400">
+        “Your small actions lead to lasting change.”
       </div>
     </div>
   );
