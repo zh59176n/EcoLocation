@@ -30,12 +30,17 @@ const SolarProviderList = () => {
   const handleCloseModal = () => setSelectedProvider(null);
 
   return (
-    <div className="p-6">
+    <div className="pt-20 px-6">
       <h1 className="text-2xl font-bold mb-4">Nearby Solar Providers</h1>
-      <House /> {/* Leaflet map */}
+
+      {/* ✅ Wrap map in relative container with z-10 */}
+      <div className="relative z-10">
+        <House />
+      </div>
+
       <ul className="space-y-4 mt-6">
         {solarProviders.length === 0 ? (
-          <p className="text-gray-500"></p>
+          <p className="text-gray-500">No providers found.</p>
         ) : (
           solarProviders.map((provider) => (
             <li
