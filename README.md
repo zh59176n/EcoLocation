@@ -113,7 +113,7 @@ We’ve wrapped up **Sprint 2**, implementing advanced features, eco-specific UI
 ---
 
 ### 🎥 Demo 2 Video
-- [Watch Demo 2](https://drive.google.com/file/d/11trK8i3VXlzeEzoZ2BjrgXbcZC5eaETp/view?usp=sharing)
+- [Watch Demo 2]([https://drive.google.com/file/d/11trK8i3VXlzeEzoZ2BjrgXbcZC5eaETp/view?usp=sharing](https://drive.google.com/file/d/1TM1KpxXYniXd2FSQomR9vh7G0q352vCT/view?usp=sharing))
 
 ---
 
