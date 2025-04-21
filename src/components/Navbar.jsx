@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../Firebase";
 import { signOut } from "firebase/auth";
-import logo from "../assets/logo.png"; // make sure this path is correct
+import logo from "../assets/logo.png"; // confirm this path is valid
 
 function Navbar({ darkMode, setDarkMode }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,15 +42,16 @@ function Navbar({ darkMode, setDarkMode }) {
   );
 
   return (
-    <nav className="bg-green-600 dark:bg-gray-900 text-white px-4 py-3 flex items-center justify-between relative shadow-md z-50">
+    <nav className="bg-green-600 dark:bg-gray-900 text-white px-4 py-3 flex items-center justify-between relative shadow-md z-50 h-16">
       {/* 🌱 Logo + Title */}
-      <Link to="/" className="flex items-center gap-2 h-full">
+      <Link to="/" className="flex items-center">
         <img
           src={logo}
-          alt="Logo"
-          className="h-full max-h-12 w-auto object-contain"
+          alt="EcoLocation Logo"
+          style={{ height: "55px", width: "auto" }}
+          className="object-contain relative top-[5px]"
         />
-        <span className="text-xl font-bold">EcoLocation</span>
+        <span className="text-xl font-bold leading-none -ml-1">EcoLocation</span>
       </Link>
 
       {/* 🍔 Hamburger */}
