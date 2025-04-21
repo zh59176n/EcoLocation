@@ -86,6 +86,49 @@ We’ve kicked off **Sprint 1**, laying down our foundation and building the cor
 - **Product Owner** - Grace Langton
 ---
 
+## 🚀 Sprint 2 — Planning & Progress
+
+We’ve wrapped up **Sprint 2**, implementing advanced features, eco-specific UI enhancements, and expanding the app’s news and solar tracking capabilities.
+
+---
+
+### ✅ Selected User Stories:
+- **T2.15**: Build Solar Provider UI *(4 pts)*
+- **T2.16**: Build basic News Feed layout *(3 pts)*
+- **T2.17**: Fetch dummy news or live feed *(3 pts)*
+- **T2.18**: Display articles in scrollable list *(2 pts)*
+- **T2.19–T2.22**: Dark mode + mobile responsiveness + links *(6 pts total)*
+- **T2.27**: Add carbon calculator UI *(3 pts)*
+
+> **Planned Velocity**: 21 points  
+> *Eco functionality + green interface expansion*
+
+---
+
+### 📄 Sprint Docs:
+- [Sprint 2 Spreadsheet](#)
+- [Scrum 2 Notes](#)
+- [Retro Document](#)
+
+---
+
+### 🎥 Demo 2 Video
+- [Watch Demo 2](https://drive.google.com)
+
+---
+
+### 👥 Team Workload — *16 hrs each*:
+- **Grace** – Home/About redesign, dark mode QA, news styling
+- **Donovan** – Firebase structure, solar API loader, page protection
+- **Patrick** – News feed, modal UI, carbon calculator
+- **Zara** – Dark mode logic, usability feedback, test cleanup
+
+---
+
+### 👑 Team Roles:
+- **Scrum Master** – *Patrick Casseus*
+- **Product Owner** – *Grace Langton*
+
 ## 🛠 Setup Instructions
 
 ### 🧪 Local Development
