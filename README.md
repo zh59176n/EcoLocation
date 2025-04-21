@@ -106,14 +106,14 @@ We’ve wrapped up **Sprint 2**, implementing advanced features, eco-specific UI
 ---
 
 ### 📄 Sprint Docs:
-- [Sprint 2 Spreadsheet](#https://docs.google.com/spreadsheets/d/1V1j0ffJiR_iQvUImlrDzco2Sz34ZC-l-Mt9YnEWp6GI/edit?usp=drivesdk)
-- [Scrum 2 Notes](#https://docs.google.com/document/d/1bnLyXPCKPVjfwZvzAg-fsqB9oC3pqbDjBiXTS9wzOGI/edit?usp=drivesdk)
-- [Retro Document](#https://docs.google.com/document/d/1p6QRJ5_DuGICe584cZBOos4Pocob7prhDT4nd-K0WYE/edit?usp=drivesdk)
+- [Sprint 2 Spreadsheet](https://docs.google.com/spreadsheets/d/1V1j0ffJiR_iQvUImlrDzco2Sz34ZC-l-Mt9YnEWp6GI/edit?usp=drivesdk)
+- [Sprint 2 Notes](https://docs.google.com/document/d/1bnLyXPCKPVjfwZvzAg-fsqB9oC3pqbDjBiXTS9wzOGI/edit?usp=drivesdk)
+- [Retro Document](https://docs.google.com/document/d/1p6QRJ5_DuGICe584cZBOos4Pocob7prhDT4nd-K0WYE/edit?usp=drivesdk)
 
 ---
 
 ### 🎥 Demo 2 Video
-- [Watch Demo 2](https://drive.google.com)
+- [Watch Demo 2](https://drive.google.com) <!-- Replace this with your actual link -->
 
 ---
 
@@ -128,6 +128,8 @@ We’ve wrapped up **Sprint 2**, implementing advanced features, eco-specific UI
 ### 👑 Team Roles:
 - **Scrum Master** – *Patrick Casseus*
 - **Product Owner** – *Grace Langton*
+
+___
 
 ## 🛠 Setup Instructions
 
