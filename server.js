@@ -1,34 +1,35 @@
+// server.js  (root of repo)
+import "dotenv/config.js";          // ← add this line                             
 import express from "express";
 import axios from "axios";
 
-const app = express();
-const port = process.env.PORT || 3001;
+const app  = express();
+const PORT = process.env.PORT || 3001;
 
-// Your Guardian API key
-const GUARDIAN_API_KEY = "4f14c9e8-77a2-419a-8333-56e7c8ca2ba8";
+const GUARDIAN_API_KEY = process.env.GUARDIAN_API_KEY;
 
 function stripHtmlTags(str) {
   return str.replace(/<[^>]*>/g, "");
 }
 
-app.get("/eco-news", async (req, res) => {
+app.get("/eco-news", async (_, res) => {
   try {
     const url = `https://content.guardianapis.com/search?section=environment&order-by=newest&page-size=50&show-fields=trailText,headline&api-key=${GUARDIAN_API_KEY}`;
-    const response = await axios.get(url);
+    const { data } = await axios.get(url);
 
-    const articles = response.data.response.results.map((item) => ({
-      title: stripHtmlTags(item.fields.headline),
-      description: stripHtmlTags(item.fields.trailText),
-      url: item.webUrl,
+    const articles = data.response.results.map((it) => ({
+      title: stripHtmlTags(it.fields.headline),
+      description: stripHtmlTags(it.fields.trailText),
+      url: it.webUrl,
     }));
 
     res.json({ articles });
-  } catch (error) {
-    console.error("Error fetching news:", error);
-    res.status(500).send("Error fetching news");
+  } catch (err) {
+    console.error("Guardian fetch error →", err.message);
+    res.status(502).json({ message: "Guardian API error" });
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+app.listen(PORT, () =>
+  console.log(`🌱  Eco API up → http://localhost:${PORT}/eco-news`)
+);
