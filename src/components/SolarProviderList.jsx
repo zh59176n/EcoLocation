@@ -1,18 +1,11 @@
-<<<<<<< Updated upstream
 import React, { useEffect, useState } from 'react';
 import { getFirestore, collection, getDocs } from 'firebase/firestore';
 import app from '../Firebase';
-import House from './House';
-=======
-// src/components/SolarProviderList.jsx
-import React from 'react';
 import House from './House'; // map component
->>>>>>> Stashed changes
 
 const db = getFirestore(app);
 
 const SolarProviderList = () => {
-<<<<<<< Updated upstream
   const [solarProviders, setSolarProviders] = useState([]);
   const [selectedProvider, setSelectedProvider] = useState(null);
 
@@ -67,12 +60,6 @@ const SolarProviderList = () => {
           ))
         )}
       </ul>
-=======
-  return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4">Nearby Solar Providers</h2>
-      <House />
->>>>>>> Stashed changes
     </div>
   );
 };
