@@ -1,33 +1,45 @@
-// src/components/House.jsx
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import './House.css';
-import { db } from '../Firebase';
-import {
-  collection,
-  writeBatch,
-  doc,
-  onSnapshot
-} from 'firebase/firestore';
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+import 'leaflet.markercluster';
+
+// 📌 Red pin icon
+const redIcon = new L.Icon({
+  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+  shadowSize: [41, 41],
+});
 
 const House = () => {
-  const mapRef       = useRef(null);
-  const leafletMap   = useRef(null);
-  const markersRef   = useRef({});      // { [stationId]: LeafletMarker }
-  const [stations, setStations]     = useState([]);
+  const mapRef = useRef(null);
+  const leafletMap = useRef(null);
+  const markerCluster = useRef(null);
+  const markersRef = useRef({});
+  const [stations, setStations] = useState([]);
   const [expandedIndex, setExpandedIndex] = useState(null);
 
   useEffect(() => {
-    // 1️⃣ Initialize map once
     if (!leafletMap.current) {
-      leafletMap.current = L.map(mapRef.current).setView([40.7128, -74.0060], 13);
+      leafletMap.current = L.map(mapRef.current).setView([40.7128, -74.006], 13);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors',
       }).addTo(leafletMap.current);
     }
 
-    // 2️⃣ Geolocate → fetch API → batch‑write to Firestore
+    if (!markerCluster.current) {
+      markerCluster.current = L.markerClusterGroup({
+        disableClusteringAtZoom: 16,
+        spiderfyOnMaxZoom: true,
+        showCoverageOnHover: false,
+      });
+      leafletMap.current.addLayer(markerCluster.current);
+    }
+
     navigator.geolocation.getCurrentPosition(
       async ({ coords }) => {
         const { latitude, longitude } = coords;
@@ -36,97 +48,59 @@ const House = () => {
         L.marker([latitude, longitude], {
           icon: L.divIcon({ html: '📍', className: 'emoji-pin' })
         })
-        .addTo(leafletMap.current)
-        .bindPopup('📍 You are here')
-        .openPopup();
+          .addTo(leafletMap.current)
+          .bindPopup('📍 You are here')
+          .openPopup();
 
         try {
-          const res  = await fetch(
-            `https://api.openchargemap.io/v3/poi/?output=json&countrycode=US&latitude=${latitude}&longitude=${longitude}&distance=10&maxresults=20&key=4f5bc103-bb45-47c1-8c5a-d4301b503a79`
+          const res = await fetch(
+            `https://api.openchargemap.io/v3/poi/?output=json&countrycode=US&latitude=${latitude}&longitude=${longitude}&distance=10&maxresults=30&key=4f5bc103-bb45-47c1-8c5a-d4301b503a79`
           );
           const data = await res.json();
+          setStations(data);
 
-          // batch‑write all to Firestore
-          const batch = writeBatch(db);
+          markerCluster.current.clearLayers();
+          markersRef.current = {};
+
           data.forEach(station => {
-            const id  = station.ID.toString();
-            const ref = doc(db, 'chargingStations', id);
-            batch.set(ref, station);
+            const info = station.AddressInfo;
+            const coords = [info.Latitude, info.Longitude];
+
+            const marker = L.marker(coords, {
+              icon: redIcon, // ✅ use red Leaflet marker
+            }).bindPopup(`<strong>${info.Title}</strong><br/>${info.AddressLine1}`);
+
+            markerCluster.current.addLayer(marker);
+            markersRef.current[station.ID.toString()] = marker;
           });
-          await batch.commit();
+
         } catch (err) {
-          console.error('⚠️ Fetch/Write error:', err);
+          console.error('⚠️ Fetch error:', err);
         }
       },
       () => {
-        // fallback marker in NYC
-        L.marker([40.7128, -74.0060], {
+        L.marker([40.7128, -74.006], {
           icon: L.divIcon({ html: '📍', className: 'emoji-pin' })
         })
-        .addTo(leafletMap.current)
-        .bindPopup('📍 Default location: NYC')
-        .openPopup();
+          .addTo(leafletMap.current)
+          .bindPopup('📍 Default location: NYC')
+          .openPopup();
       }
     );
-
-    // 3️⃣ Real‑time listener for chargingStations
-    const unsub = onSnapshot(collection(db, 'chargingStations'), snapshot => {
-      snapshot.docChanges().forEach(change => {
-        const data   = change.doc.data();
-        const id     = change.doc.id;
-        const info   = data.AddressInfo || {};
-        const coords = info.Latitude && info.Longitude
-          ? [info.Latitude, info.Longitude]
-          : null;
-
-        if (change.type === 'added' && coords) {
-          // add new marker
-          const m = L.marker(coords, {
-            icon: L.divIcon({ html: '📍', className: 'emoji-pin' })
-          })
-          .addTo(leafletMap.current)
-          .bindPopup(`<strong>${info.Title}</strong><br/>${info.AddressLine1}`);
-          markersRef.current[id] = m;
-
-        } else if (change.type === 'modified') {
-          // update existing marker (position or popup)
-          const m = markersRef.current[id];
-          if (m && coords) {
-            m.setLatLng(coords);
-            m.getPopup().setContent(`<strong>${info.Title}</strong><br/>${info.AddressLine1}`);
-          }
-
-        } else if (change.type === 'removed') {
-          // remove marker
-          const m = markersRef.current[id];
-          if (m) {
-            m.remove();
-            delete markersRef.current[id];
-          }
-        }
-      });
-
-      // keep React list in sync
-      setStations(snapshot.docs.map(d => ({ id: d.id, ...d.data() })));
-    });
-
-    // cleanup on unmount
-    return () => {
-      unsub();
-      Object.values(markersRef.current).forEach(m => m.remove());
-    };
   }, []);
 
-  const scrollToMarker = station => {
-    const m = markersRef.current[station.id];
-    if (leafletMap.current && m) {
-      const latlng = m.getLatLng();
-      leafletMap.current.setView(latlng, 15);
-      m.openPopup();
+  const scrollToMarker = (station) => {
+    const marker = markersRef.current[station.ID.toString()];
+    if (marker && leafletMap.current) {
+      const latlng = marker.getLatLng();
+      leafletMap.current.setView(latlng, 17);
+      markerCluster.current.zoomToShowLayer(marker, () => {
+        marker.openPopup();
+      });
     }
   };
 
-  const toggleExpand = idx => {
+  const toggleExpand = (idx) => {
     setExpandedIndex(expandedIndex === idx ? null : idx);
   };
 
@@ -148,7 +122,7 @@ const House = () => {
 
           return (
             <div
-              key={station.id}
+              key={station.ID}
               className="bg-white dark:bg-green-900 text-gray-900 dark:text-white border border-gray-300 dark:border-green-700 rounded-xl shadow p-5 space-y-2 hover:shadow-lg transition-all duration-300"
             >
               <h3 className="font-semibold text-lg text-green-800 dark:text-green-200">
@@ -179,9 +153,7 @@ const House = () => {
                   <p>⚡ Level: {conn.Level?.Title || 'N/A'}</p>
                   <p>🔢 Ports: {conn.Quantity || '1'}</p>
                   {station.UsageCost && <p>💵 Cost: {station.UsageCost}</p>}
-                  {info.ContactTelephone1 && (
-                    <p>📞 Contact: {info.ContactTelephone1}</p>
-                  )}
+                  {info.ContactTelephone1 && <p>📞 Contact: {info.ContactTelephone1}</p>}
                   {info.AccessComments && (
                     <p className="text-gray-500 italic dark:text-gray-300">
                       📝 {info.AccessComments}

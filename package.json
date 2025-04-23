@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "server": "nodemon server.js",     
+    "server": "nodemon server.js",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
@@ -21,6 +21,7 @@
     "firebase": "^11.6.0",
     "firestore": "^1.1.6",
     "leaflet": "^1.9.4",
+    "leaflet.markercluster": "^1.5.3",
     "node-fetch": "^2.7.0",
     "react": "^19.0.0",
     "react-confetti": "^6.4.0",
