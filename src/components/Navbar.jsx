@@ -1,9 +1,10 @@
+// src/components/Navbar.jsx
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../Firebase";
+import { auth } from "../firebase";
 import { signOut } from "firebase/auth";
-import logo from "../assets/logo.png"; // confirm this path is valid
+import logo from "../assets/logo.png";
 
 function Navbar({ darkMode, setDarkMode }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,19 +20,41 @@ function Navbar({ darkMode, setDarkMode }) {
   const renderLinks = () => (
     <>
       <Link to="/" className={linkClasses}>Home</Link>
-      <Link to="/solar" className={linkClasses}>Solar Providers</Link>
+
+      {user && (
+        <Link to="/solar" className={linkClasses}>
+          Solar Providers
+        </Link>
+      )}
+
       <Link to="/news" className={linkClasses}>News Feed</Link>
-      <Link to="/carbon" className={linkClasses}>Carbon Calculator</Link>
-      <Link to="/challenges" className={linkClasses}>Challenges</Link>
+
+      {user && (
+        <Link to="/carbon" className={linkClasses}>
+          Carbon Calculator
+        </Link>
+      )}
+
+      {user && (
+        <Link to="/challenges" className={linkClasses}>
+          Challenges
+        </Link>
+      )}
+
       <Link to="/about" className={linkClasses}>About</Link>
+
       {!user && <Link to="/login" className={linkClasses}>Login</Link>}
       {!user && <Link to="/register" className={linkClasses}>Register</Link>}
+
       {user && (
         <>
           <span className="text-sm">Welcome, {user.email}</span>
-          <button onClick={handleLogout} className={`${linkClasses} underline`}>Logout</button>
+          <button onClick={handleLogout} className={`${linkClasses} underline`}>
+            Logout
+          </button>
         </>
       )}
+
       <button
         onClick={() => setDarkMode(!darkMode)}
         className="bg-white text-green-700 px-2 py-1 rounded transition-colors duration-200 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-300 active:bg-gray-200"
@@ -43,7 +66,7 @@ function Navbar({ darkMode, setDarkMode }) {
 
   return (
     <nav className="bg-green-600 dark:bg-gray-900 text-white px-4 py-3 flex items-center justify-between relative shadow-md z-50 h-16">
-      {/* 🌱 Logo + Title */}
+      {/* Logo + Title */}
       <Link to="/" className="flex items-center">
         <img
           src={logo}
@@ -54,7 +77,7 @@ function Navbar({ darkMode, setDarkMode }) {
         <span className="text-xl font-bold leading-none -ml-1">EcoLocation</span>
       </Link>
 
-      {/* 🍔 Hamburger */}
+      {/* Hamburger for mobile */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="md:hidden focus:outline-none focus:ring-2 focus:ring-white"
@@ -69,10 +92,10 @@ function Navbar({ darkMode, setDarkMode }) {
         </svg>
       </button>
 
-      {/* 🖥️ Desktop Links */}
+      {/* Desktop Links */}
       <div className="hidden md:flex items-center gap-4">{renderLinks()}</div>
 
-      {/* 📱 Mobile Links */}
+      {/* Mobile Links */}
       {isOpen && (
         <div className="absolute top-16 left-0 w-full bg-green-600 dark:bg-gray-900 flex flex-col items-center space-y-4 py-4 md:hidden z-50">
           {renderLinks()}

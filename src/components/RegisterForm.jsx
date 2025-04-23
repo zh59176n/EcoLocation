@@ -1,11 +1,12 @@
+// src/components/RegisterForm.jsx
 import React, { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../Firebase"; // Re-added Firebase Implementation
+import { auth } from "../firebase";
 
 function RegisterForm() {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -13,9 +14,12 @@ function RegisterForm() {
       alert("Please fill out both email and password.");
       return;
     }
-
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       alert(`Account created for: ${userCredential.user.email}`);
     } catch (error) {
       console.error("Registration error:", error.message);
@@ -23,39 +27,69 @@ function RegisterForm() {
     }
   };
 
+  const inputClasses = `
+    mt-1 block w-full px-4 py-2 border
+    border-gray-300 dark:border-gray-600
+    rounded-md shadow-sm
+    focus:outline-none focus:ring-green-500 focus:border-green-500
+    bg-white dark:bg-gray-700
+    text-gray-900 dark:text-gray-100
+    placeholder-gray-400 dark:placeholder-gray-500
+  `;
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-green-100 to-green-300 dark:from-green-900 dark:to-green-950 transition-colors duration-300">
       <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-green-800 text-center">Register</h2>
+        <h2 className="text-2xl font-bold mb-6 text-green-800 dark:text-green-100 text-center">
+          Register
+        </h2>
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Username</label>
+            <label
+              htmlFor="register-username"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+              Username
+            </label>
             <input
+              id="register-username"
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
               placeholder="Your username"
+              className={inputClasses}
             />
           </div>
           <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
+            <label
+              htmlFor="register-email"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+              Email
+            </label>
             <input
+              id="register-email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
               placeholder="you@example.com"
+              className={inputClasses}
             />
           </div>
           <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
+            <label
+              htmlFor="register-password"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+              Password
+            </label>
             <input
+              id="register-password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
               placeholder="••••••••"
+              className={inputClasses}
             />
           </div>
           <button
