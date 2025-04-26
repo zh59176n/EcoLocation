@@ -99,54 +99,6 @@ function About() {
           </div>
         </div>
       </div>
-
-      {/* Team Section */}
-      <div className="text-left max-w-6xl mx-auto">
-        <h2 className="text-3xl font-semibold text-green-900 dark:text-green-100 mb-4">
-          <span className="mr-2">👥</span> Team Members
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-          {[
-            {
-              name: "Grace Langton",
-              image: "/grace.jpg",
-              role: "Product Owner",
-              bg: "bg-pink-200 dark:bg-pink-900",
-            },
-            {
-              name: "Donovan Lane",
-              image: "/donovan.jpg",
-              role: "Developer",
-              bg: "bg-blue-200 dark:bg-blue-900",
-            },
-            {
-              name: "Zara Hameedi",
-              image: "/zara.jpg",
-              role: "Developer",
-              bg: "bg-red-200 dark:bg-red-900",
-            },
-            {
-              name: "Patrick Casseus",
-              image: "/patrick.jpg",
-              role: "Scrum Master",
-              bg: "bg-yellow-200 dark:bg-yellow-900",
-            },
-          ].map((member) => (
-            <div
-              key={member.name}
-              className={`${member.bg} rounded-lg shadow p-4 text-center transform transition duration-300 hover:scale-105 hover:shadow-xl`}
-            >
-              <img
-                src={member.image}
-                alt={member.name}
-                className="mx-auto rounded-md mb-3 h-32 object-cover"
-              />
-              <h3 className="font-bold text-lg text-gray-900 dark:text-white">{member.name}</h3>
-              <p className="text-sm text-gray-700 dark:text-gray-200">{member.role}</p>
-            </div>
-          ))}
-        </div>
-      </div>
     </div>
   );
 }
