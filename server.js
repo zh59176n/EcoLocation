@@ -6,7 +6,7 @@ import axios from "axios";
 const app  = express();
 const PORT = process.env.PORT || 3001;
 
-const GUARDIAN_API_KEY = process.env.GUARDIAN_API_KEY;
+const GUARDIAN_API_KEY = "4f14c9e8-77a2-419a-8333-56e7c8ca2ba8";
 
 function stripHtmlTags(str) {
   return str.replace(/<[^>]*>/g, "");
