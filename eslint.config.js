@@ -5,6 +5,18 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 
 export default [
   { ignores: ['dist'] },
+  module.exports = {
+    overrides: [
+      {
+        files: ["cypress/**/*.cy.js", "cypress/**/*.spec.js"],
+        env: {
+          "cypress/globals": true
+        },
+        plugins: ["cypress"],
+        extends: ["plugin:cypress/recommended"]
+      }
+    ]
+  },
   {
     files: ['**/*.{js,jsx}'],
     languageOptions: {
