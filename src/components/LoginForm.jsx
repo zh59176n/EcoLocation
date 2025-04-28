@@ -8,6 +8,7 @@ import {
 } from "firebase/auth";
 import { auth } from "../firebase";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { requestNotificationPermission } from "../utils/notifications"; // <-- ADDED this import
 
 function LoginForm() {
   const [email, setEmail] = useState("");
@@ -30,6 +31,10 @@ function LoginForm() {
         rememberMe ? browserLocalPersistence : browserSessionPersistence
       );
       await signInWithEmailAndPassword(auth, email, password);
+
+      // ✅ Ask for notification permission after successful login
+      await requestNotificationPermission();
+
       const from = new URLSearchParams(location.search).get("redirect") || "/";
       navigate(from, { replace: true });
     } catch (err) {
