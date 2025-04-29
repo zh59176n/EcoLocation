@@ -57,7 +57,7 @@ const House = () => {
 
         try {
           const res = await fetch(
-            `https://api.openchargemap.io/v3/poi/?output=json&countrycode=US&latitude=${latitude}&longitude=${longitude}&distance=10&maxresults=50&key=YOUR_API_KEY`
+            `https://api.openchargemap.io/v3/poi/?output=json&countrycode=US&latitude=${latitude}&longitude=${longitude}&distance=10&maxresults=50&key=4b28e9a4-80f7-4dd3-ab70-761860034964`
           );
           const data = await res.json();
           setStations(data);
@@ -188,7 +188,7 @@ const House = () => {
         className="w-full h-[400px] rounded-xl shadow-md border border-green-300 dark:border-green-700"
       />
 
-      {/* Stations */}
+      {/* Stations List */}
       {sortedStations.length === 0 ? (
         <div className="text-center text-gray-500 dark:text-gray-300 mt-6">
           🚫 No EV Charging Stations found.
