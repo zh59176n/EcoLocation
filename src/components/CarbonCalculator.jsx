@@ -15,9 +15,9 @@ import app from "../Firebase";
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const CAR_CO2_PER_MILE = 0.411; // kg CO2 per mile
-const ENERGY_CO2_PER_KWH = 0.92; // kg CO2 per kWh
-const AIR_CO2_PER_MILE = 0.2; // kg CO2 per mile
+const CAR_CO2_PER_MILE = 0.411;
+const ENERGY_CO2_PER_KWH = 0.92;
+const AIR_CO2_PER_MILE = 0.2;
 
 function CarbonCalculator() {
   const [commute, setCommute] = useState("");
@@ -25,8 +25,8 @@ function CarbonCalculator() {
   const [airMiles, setAirMiles] = useState("");
   const [result, setResult] = useState(null);
   const [history, setHistory] = useState([]);
+  const [error, setError] = useState("");
 
-  // Fetch last 7 entries on mount
   useEffect(() => {
     const fetchHistory = async () => {
       if (!auth.currentUser) return;
@@ -38,7 +38,7 @@ function CarbonCalculator() {
       );
       try {
         const snapshot = await getDocs(q);
-        setHistory(snapshot.docs.map(doc => doc.data()));
+        setHistory(snapshot.docs.map((doc) => doc.data()));
       } catch (err) {
         console.error("Failed to fetch carbon history:", err);
       }
@@ -47,8 +47,17 @@ function CarbonCalculator() {
     fetchHistory();
   }, []);
 
-  const handleCalculate = async e => {
+  const handleCalculate = async (e) => {
     e.preventDefault();
+
+    if (commute === "" || energy === "" || airMiles === "") {
+      setError("Please fill out all fields.");
+      setResult(null);
+      return;
+    }
+
+    setError("");
+
     const commuteNum = parseFloat(commute) || 0;
     const energyNum = parseFloat(energy) || 0;
     const airMilesNum = parseFloat(airMiles) || 0;
@@ -61,7 +70,6 @@ function CarbonCalculator() {
     const formatted = totalCO2.toFixed(2);
     setResult(formatted);
 
-    // Persist entry to Firestore
     try {
       await addDoc(collection(db, "carbon_history"), {
         userId: auth.currentUser.uid,
@@ -73,7 +81,6 @@ function CarbonCalculator() {
       console.error("Failed to save carbon entry:", err);
     }
 
-    // Refresh history
     try {
       const q = query(
         collection(db, "carbon_history"),
@@ -82,7 +89,7 @@ function CarbonCalculator() {
         limit(7)
       );
       const snapshot = await getDocs(q);
-      setHistory(snapshot.docs.map(doc => doc.data()));
+      setHistory(snapshot.docs.map((doc) => doc.data()));
     } catch (err) {
       console.error("Failed to refresh carbon history:", err);
     }
@@ -103,9 +110,9 @@ function CarbonCalculator() {
             id="commute"
             type="number"
             value={commute}
-            onChange={e => setCommute(e.target.value)}
+            onChange={(e) => setCommute(e.target.value)}
             placeholder="e.g., 30"
-            className="w-full p-2 border border-green-300 rounded focus:outline-none focus:ring-2 focus:ring-green-400"
+            className="w-full p-2 border border-green-300 rounded focus:outline-none focus:ring-2 focus:ring-green-400 text-green-900 dark:text-white bg-white dark:bg-green-800 placeholder:text-gray-400 dark:placeholder:text-green-300"
           />
         </div>
 
@@ -117,9 +124,9 @@ function CarbonCalculator() {
             id="energy"
             type="number"
             value={energy}
-            onChange={e => setEnergy(e.target.value)}
+            onChange={(e) => setEnergy(e.target.value)}
             placeholder="e.g., 20"
-            className="w-full p-2 border border-green-300 rounded focus:outline-none focus:ring-2 focus:ring-green-400"
+            className="w-full p-2 border border-green-300 rounded focus:outline-none focus:ring-2 focus:ring-green-400 text-green-900 dark:text-white bg-white dark:bg-green-800 placeholder:text-gray-400 dark:placeholder:text-green-300"
           />
         </div>
 
@@ -131,11 +138,18 @@ function CarbonCalculator() {
             id="airMiles"
             type="number"
             value={airMiles}
-            onChange={e => setAirMiles(e.target.value)}
+            onChange={(e) => setAirMiles(e.target.value)}
             placeholder="e.g., 5000"
-            className="w-full p-2 border border-green-300 rounded focus:outline-none focus:ring-2 focus:ring-green-400"
+            className="w-full p-2 border border-green-300 rounded focus:outline-none focus:ring-2 focus:ring-green-400 text-green-900 dark:text-white bg-white dark:bg-green-800 placeholder:text-gray-400 dark:placeholder:text-green-300"
           />
         </div>
+
+        {error && (
+          <div className="flex items-center gap-2 text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-800 px-3 py-2 rounded mt-2 animate-fade-in">
+            <span className="text-xl">⚠️</span>
+            <span className="text-sm font-medium">{error}</span>
+          </div>
+        )}
 
         <button
           type="submit"
@@ -146,11 +160,11 @@ function CarbonCalculator() {
       </form>
 
       {result && (
-        <div className="mt-6 p-4 bg-green-100 dark:bg-green-800 rounded border border-green-300 dark:border-green-700 shadow-sm">
+        <div className="mt-6 p-4 bg-green-100 dark:bg-green-800 rounded border border-green-300 dark:border-green-700 shadow-sm animate-fade-in">
           <p className="text-green-800 dark:text-green-100 text-center font-semibold">
-            Your daily CO₂ footprint is:
+            Your estimated CO₂ footprint:
           </p>
-          <p className="text-center text-2xl font-bold text-green-900 dark:text-green-50">
+          <p className="text-center text-3xl font-bold text-green-900 dark:text-green-50">
             {result} kg
           </p>
           <p className="mt-2 text-sm text-center text-green-700 dark:text-green-200">
@@ -161,10 +175,12 @@ function CarbonCalculator() {
 
       {history.length > 0 && (
         <div className="mt-8">
-          <h3 className="text-xl font-semibold text-green-700 dark:text-green-200 mb-2">Last 7 Entries</h3>
+          <h3 className="text-xl font-semibold text-green-700 dark:text-green-200 mb-2">
+            Last 7 Entries
+          </h3>
           <ul className="list-disc list-inside space-y-1 text-gray-800 dark:text-gray-200">
-            {history.map((h) => (
-              <li key={h.timestamp}>
+            {history.map((h, index) => (
+              <li key={index}>
                 {new Date(h.timestamp).toLocaleDateString()}: {h.result} kg CO₂
               </li>
             ))}
