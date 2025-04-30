@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../Firebase";
-import {
-  collection,
-  doc,
-  setDoc,
-  onSnapshot,
-} from "firebase/firestore";
+import { collection, doc, setDoc, onSnapshot } from "firebase/firestore";
+
+const medalIcons = ["🥇", "🥈", "🥉"];
 
 export default function Leaderboard({ weekStart, user, completedDays, className }) {
   const [leaders, setLeaders] = useState([]);
   const weekKey = weekStart.toISOString().split("T")[0];
 
-  /* 1. Persist this user’s progress every time it changes */
+  /* 1. Save this user's current progress */
   useEffect(() => {
     if (!user) return;
 
@@ -19,16 +16,16 @@ export default function Leaderboard({ weekStart, user, completedDays, className 
     setDoc(
       ref,
       {
-        weekStart   : weekKey,
-        uid         : user.uid,
-        displayName : user.displayName || user.email.split("@")[0],
+        weekStart: weekKey,
+        uid: user.uid,
+        displayName: user.displayName || user.email.split("@")[0],
         completedDays,
       },
       { merge: true }
     ).catch((err) => console.error("Leaderboard write failed:", err));
   }, [user, weekKey, completedDays]);
 
-  /* 2. Real‑time listener (no composite index needed) */
+  /* 2. Real-time leaderboard fetching */
   useEffect(() => {
     const unsubscribe = onSnapshot(
       collection(db, "challengeProgress"),
@@ -46,20 +43,32 @@ export default function Leaderboard({ weekStart, user, completedDays, className 
   }, [weekKey]);
 
   return (
-    <div className={className}>
-      <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">
-        🏆 This Week’s Top
+    <div className={`bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md ${className}`}>
+      <h3 className="text-2xl font-bold text-green-800 dark:text-green-300 text-center mb-6">
+        🏆 Weekly Eco Leaderboard
       </h3>
 
       {leaders.length === 0 ? (
-        <p className="text-gray-600 dark:text-gray-400">No entries yet.</p>
+        <p className="text-center text-gray-600 dark:text-gray-400">No entries yet. Be the first!</p>
       ) : (
-        leaders.map((u, i) => (
-          <div key={u.uid} className="flex justify-between text-gray-800 dark:text-gray-100">
-            <span>{i + 1}. {u.displayName}</span>
-            <span>{u.completedDays}/7</span>
-          </div>
-        ))
+        <div className="space-y-4">
+          {leaders.map((u, i) => (
+            <div
+              key={u.uid}
+              className={`flex justify-between items-center px-4 py-2 rounded-md ${
+                i === 0
+                  ? "bg-green-100 dark:bg-green-700"
+                  : "bg-gray-100 dark:bg-gray-700"
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <span className="text-2xl">{medalIcons[i] || "🎖️"}</span>
+                <span className="text-lg font-semibold text-gray-800 dark:text-gray-100">{u.displayName}</span>
+              </div>
+              <div className="text-green-700 dark:text-green-300 font-bold">{u.completedDays}/7</div>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );

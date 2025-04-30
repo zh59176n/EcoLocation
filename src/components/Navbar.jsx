@@ -1,6 +1,6 @@
 // src/components/Navbar.jsx
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase";
 import { signOut } from "firebase/auth";
@@ -9,10 +9,9 @@ import logo from "../assets/logo.png";
 function Navbar({ darkMode, setDarkMode }) {
   const [isOpen, setIsOpen] = useState(false);
   const [user] = useAuthState(auth);
+  const navigate = useNavigate();
 
-  const handleLogout = () => {
-    signOut(auth);
-  };
+  const handleLogout = () => signOut(auth);
 
   const linkClasses =
     "hover:underline hover:bg-green-700 hover:text-white px-2 py-1 rounded focus:outline-none focus:ring-2 focus:ring-white";
@@ -21,25 +20,11 @@ function Navbar({ darkMode, setDarkMode }) {
     <>
       <Link to="/" className={linkClasses}>Home</Link>
 
-      {user && (
-        <Link to="/solar" className={linkClasses}>
-          Solar Providers
-        </Link>
-      )}
-
+      {user && <Link to="/solar" className={linkClasses}>Solar Providers</Link>}
       <Link to="/news" className={linkClasses}>News Feed</Link>
 
-      {user && (
-        <Link to="/carbon" className={linkClasses}>
-          Carbon Calculator
-        </Link>
-      )}
-
-      {user && (
-        <Link to="/challenges" className={linkClasses}>
-          Challenges
-        </Link>
-      )}
+      {user && <Link to="/carbon" className={linkClasses}>Carbon Calculator</Link>}
+      {user && <Link to="/challenges" className={linkClasses}>Challenges</Link>}
 
       <Link to="/about" className={linkClasses}>About</Link>
 
@@ -48,7 +33,17 @@ function Navbar({ darkMode, setDarkMode }) {
 
       {user && (
         <>
-          <span className="text-sm">Welcome, {user.email}</span>
+          <div
+            className="relative group cursor-pointer"
+            onClick={() => navigate("/profile")}
+          >
+            <span className="bg-white text-green-700 font-semibold px-3 py-1 rounded hover:bg-green-200 transition duration-200">
+              {user.email.split("@")[0]}
+            </span>
+            <div className="absolute left-0 mt-1 w-max bg-gray-800 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+              Go to Profile
+            </div>
+          </div>
           <button onClick={handleLogout} className={`${linkClasses} underline`}>
             Logout
           </button>
@@ -68,13 +63,8 @@ function Navbar({ darkMode, setDarkMode }) {
     <nav className="bg-green-600 dark:bg-gray-900 text-white px-4 py-3 flex items-center justify-between relative shadow-md z-50 h-16">
       {/* Logo + Title */}
       <Link to="/" className="flex items-center">
-        <img
-          src={logo}
-          alt="EcoLocation Logo"
-          style={{ height: "55px", width: "auto" }}
-          className="object-contain relative top-[5px]"
-        />
-        <span className="text-xl font-bold leading-none -ml-1">EcoLocation</span>
+        <img src={logo} alt="EcoLocation Logo" className="h-10 w-auto object-contain relative top-[2px]" />
+        <span className="text-xl font-bold leading-none ml-2">EcoLocation</span>
       </Link>
 
       {/* Hamburger for mobile */}

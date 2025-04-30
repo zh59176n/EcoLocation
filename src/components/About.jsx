@@ -1,103 +1,120 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+
+const ecoQuotes = [
+  "The Earth is what we all have in common. — Wendell Berry",
+  "In nature, nothing exists alone. — Rachel Carson",
+  "The future depends on what you do today. — Mahatma Gandhi",
+  "We do not inherit the Earth from our ancestors; we borrow it from our children. — Native American Proverb",
+  "One small action, one giant impact. 🌎",
+];
 
 function About() {
-  const [points, setPoints] = useState(0);
-  const [selectedAction, setSelectedAction] = useState('');
-  const actions = ['Recycled ♻️', 'Biked 🚲', 'Used Solar ☀️', 'Avoided Plastic 🚫', 'Carpooled 🚗'];
-  const progressPercent = (points / 20) * 100;
+  const [quoteIndex, setQuoteIndex] = useState(0);
+  const [co2Saved, setCo2Saved] = useState(0);
+  const [stationsFound, setStationsFound] = useState(0);
+  const [solarConnections, setSolarConnections] = useState(0);
 
-  const addPoint = () => {
-    if (!selectedAction) return alert("Please select an action!");
-    setPoints((prev) => Math.min(prev + 1, 20));
-    setSelectedAction('');
-  };
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setQuoteIndex((prev) => (prev + 1) % ecoQuotes.length);
+    }, 7000);
+    return () => clearInterval(interval);
+  }, []);
 
-  const resetPoints = () => setPoints(0);
+  useEffect(() => {
+    const counter = setInterval(() => {
+      setCo2Saved((prev) => Math.min(prev + 5, 10000));
+      setStationsFound((prev) => Math.min(prev + 1, 1200));
+      setSolarConnections((prev) => Math.min(prev + 1, 800));
+    }, 50);
+    return () => clearInterval(counter);
+  }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-green-100 to-green-300 dark:from-green-800 dark:to-green-900 px-4 py-12 text-center text-gray-800 dark:text-gray-100 transition-all duration-300">
-      <h1 className="text-5xl font-bold text-green-800 dark:text-green-200 mb-6">About EcoLocation</h1>
-      <p className="text-lg max-w-3xl mx-auto mb-12">
-        EcoLocation is designed to help users find sustainable and environmentally friendly
-        locations. Our mission is to make eco-conscious living easier for everyone.
-      </p>
+    <div className="min-h-screen bg-gradient-to-tr from-green-100 via-green-200 to-green-300 dark:from-green-800 dark:via-green-900 dark:to-gray-800 text-gray-800 dark:text-gray-100 py-12 px-6 transition-all">
 
-      {/* Mission Icons Layout */}
-      <div className="flex flex-wrap justify-between items-start gap-6 max-w-6xl mx-auto mb-12">
-        <div className="w-full sm:w-[25%] flex flex-col gap-6">
-          <div className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
-            <h3 className="text-xl font-semibold text-green-800 dark:text-green-100 mb-2">♻️ Reduce</h3>
-            <p className="text-sm">Cut down on single-use waste and overconsumption.</p>
-          </div>
-          <div className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
-            <h3 className="text-xl font-semibold text-yellow-600 mb-2">☀️ Use Renewables</h3>
-            <p className="text-sm">Opt for solar, wind, and green energy sources.</p>
+      {/* Parallax Section */}
+      <div className="relative overflow-hidden rounded-xl mb-16">
+        <div className="bg-fixed bg-center bg-cover h-64 flex items-center justify-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1542281286-9e0a16bb7366?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80')" }}>
+          <div className="bg-black bg-opacity-50 w-full h-full flex items-center justify-center">
+            <h1 className="text-4xl md:text-5xl font-bold text-white animate-pulse">
+              Why We Exist: Make Eco Living Easy 🌿
+            </h1>
           </div>
         </div>
+      </div>
 
-        {/* Track Your Green Actions */}
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg border border-green-400 w-full sm:w-[45%]">
-          <h2 className="text-2xl font-bold text-green-800 dark:text-green-200 flex items-center justify-center mb-3">
-            <span className="animate-pulse mr-2">🌱</span> Track Your Green Actions
-          </h2>
-          <p className="text-md text-gray-600 dark:text-gray-300 mb-4">
-            Earn <span className="font-semibold text-green-600">Green Points</span> by doing something eco-friendly today.
-          </p>
-          <div className="bg-green-50 dark:bg-green-900 p-4 rounded-md shadow-inner mb-4">
-            <div className="text-2xl font-semibold mb-2">Green Points: {points}</div>
-            <div className="w-full bg-gray-300 dark:bg-gray-700 h-3 rounded-full overflow-hidden mb-3">
-              <div
-                className="bg-green-600 h-full transition-all duration-500"
-                style={{ width: `${progressPercent}%` }}
-              ></div>
-            </div>
+      {/* Global Impact Counters */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center mb-16">
+        <div className="bg-white dark:bg-green-900 p-8 rounded-xl shadow-lg">
+          <h2 className="text-3xl font-bold text-green-700 dark:text-green-300">{co2Saved.toLocaleString()} kg</h2>
+          <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">CO₂ Saved Globally</p>
+        </div>
+        <div className="bg-white dark:bg-green-900 p-8 rounded-xl shadow-lg">
+          <h2 className="text-3xl font-bold text-green-700 dark:text-green-300">{stationsFound.toLocaleString()}</h2>
+          <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">EV Stations Found</p>
+        </div>
+        <div className="bg-white dark:bg-green-900 p-8 rounded-xl shadow-lg">
+          <h2 className="text-3xl font-bold text-green-700 dark:text-green-300">{solarConnections.toLocaleString()}</h2>
+          <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">Solar Connections Made</p>
+        </div>
+      </div>
 
-            {points >= 20 && (
-              <div className="text-green-700 dark:text-green-300 font-semibold mb-2">
-                🏅 Weekly Eco Badge Achieved!
-              </div>
-            )}
-
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-2 mb-3">
-              <select
-                value={selectedAction}
-                onChange={(e) => setSelectedAction(e.target.value)}
-                className="p-2 border rounded-md dark:bg-gray-700 dark:text-white"
-              >
-                <option value="">Select an action</option>
-                {actions.map((action, index) => (
-                  <option key={index} value={action}>
-                    {action}
-                  </option>
-                ))}
-              </select>
-              <button
-                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
-                onClick={addPoint}
-              >
-                Submit
-              </button>
-            </div>
-
-            <button
-              className="text-sm text-red-500 underline hover:text-red-700"
-              onClick={resetPoints}
-            >
-              Reset
-            </button>
+      {/* Eco Stories */}
+      <div className="max-w-5xl mx-auto mb-16">
+        <h2 className="text-3xl font-bold text-center mb-8">🌱 Real Eco Stories</h2>
+        <div className="flex flex-col sm:flex-row gap-6">
+          <div className="bg-green-100 dark:bg-green-800 p-6 rounded-lg shadow-md">
+            <p className="italic">"Using EcoLocation helped me find a solar installer within 5 miles!"</p>
+            <p className="mt-2 font-semibold">- Sarah, Brooklyn</p>
+          </div>
+          <div className="bg-green-100 dark:bg-green-800 p-6 rounded-lg shadow-md">
+            <p className="italic">"Tracking my footprint motivated me to switch to an electric car."</p>
+            <p className="mt-2 font-semibold">- Jamal, Queens</p>
+          </div>
+          <div className="bg-green-100 dark:bg-green-800 p-6 rounded-lg shadow-md">
+            <p className="italic">"The weekly challenges made it fun to be more eco-conscious."</p>
+            <p className="mt-2 font-semibold">- Lina, Manhattan</p>
           </div>
         </div>
+      </div>
 
-        <div className="w-full sm:w-[25%] flex flex-col gap-6">
-          <div className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
-            <h3 className="text-xl font-semibold text-blue-600 mb-2">🚲 Greener Travel</h3>
-            <p className="text-sm">Walk, bike, or carpool to reduce carbon output.</p>
+      {/* Explore Grid */}
+      <div className="max-w-6xl mx-auto mb-16">
+        <h2 className="text-3xl font-bold text-center mb-8">🔎 Explore Your Power</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="bg-white dark:bg-green-900 p-6 rounded-lg shadow hover:scale-105 transition-transform">
+            <h3 className="font-semibold text-lg text-green-700 dark:text-green-300 mb-2">⚡ EV Charging</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-300">Find EV stations near you in seconds.</p>
           </div>
-          <div className="bg-white dark:bg-gray-700 p-4 rounded-lg shadow">
-            <h3 className="text-xl font-semibold text-green-600 mb-2">🌿 Conserve Resources</h3>
-            <p className="text-sm">Turn off lights and save water when not needed.</p>
+          <div className="bg-white dark:bg-green-900 p-6 rounded-lg shadow hover:scale-105 transition-transform">
+            <h3 className="font-semibold text-lg text-yellow-600 mb-2">☀️ Solar Providers</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-300">Explore sustainable solar energy options.</p>
+          </div>
+          <div className="bg-white dark:bg-green-900 p-6 rounded-lg shadow hover:scale-105 transition-transform">
+            <h3 className="font-semibold text-lg text-blue-600 mb-2">🧮 Carbon Calculator</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-300">Estimate your carbon footprint easily.</p>
+          </div>
+          <div className="bg-white dark:bg-green-900 p-6 rounded-lg shadow hover:scale-105 transition-transform">
+            <h3 className="font-semibold text-lg text-pink-600 mb-2">🏆 Weekly Challenges</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-300">Compete and win eco badges!</p>
           </div>
         </div>
+      </div>
+
+      {/* Eco Quotes Rotating Wall */}
+      <div className="text-center max-w-4xl mx-auto mb-12">
+        <h2 className="text-2xl font-bold mb-6">💬 Get Inspired</h2>
+        <blockquote className="italic text-xl text-green-800 dark:text-green-300 transition-opacity animate-fade-in">
+          {ecoQuotes[quoteIndex]}
+        </blockquote>
+      </div>
+
+      {/* CTA Button */}
+      <div className="text-center">
+        <a href="/solar" className="inline-block px-8 py-4 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg shadow-lg transition-all">
+          Start Your Eco Journey
+        </a>
       </div>
     </div>
   );
