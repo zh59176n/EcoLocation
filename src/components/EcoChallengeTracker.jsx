@@ -35,8 +35,8 @@ function getWeekDates(start) {
   });
 }
 
-function dateKey(date) {
-  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+function dateKey(date, weekTitle) {
+  return `${weekTitle}_${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 }
 
 const challenges = [
@@ -45,74 +45,36 @@ const challenges = [
   { title: "No-Plastic Week", description: "Say no to plastic bags, bottles, and straws." },
 ];
 
-const dailyChallenges = [
-  "Bring your own cup to a café ☕",
-  "Walk or bike instead of driving 🚲",
-  "Take a 3-minute shower 🚿",
-  "Unplug 3 unused devices 🔌",
-  "Recycle something today ♻️",
-  "Skip meat for the day 🥗",
-  "Share an eco-tip with a friend 💬"
-];
-
-const ecoTips = [
-  {
-    icon: "♻️",
-    title: "Reduce Waste",
-    description: "Avoid single-use plastics and recycle whenever possible.",
-  },
-  {
-    icon: "🚲",
-    title: "Greener Commute",
-    description: "Bike, walk, or carpool instead of driving alone.",
-  },
-  {
-    icon: "💡",
-    title: "Save Energy",
-    description: "Turn off lights and unplug chargers when not needed.",
-  },
-  {
-    icon: "🌞",
-    title: "Use Renewables",
-    description: "Install solar panels or switch to green energy providers.",
-  },
-];
-
 export default function EcoChallengeTracker() {
   const [user] = useAuthState(auth);
   const { width, height } = useWindowSize();
 
-  const [weekOffset, setWeekOffset] = useState(0);
+  const [weekIndex, setWeekIndex] = useState(0);
+  const currentChallenge = challenges[weekIndex];
   const baseMonday = getWeekStart(new Date());
-  const adjustedMonday = new Date(baseMonday.getTime() + weekOffset * msPerWeek);
-  const weekKey = dateKey(adjustedMonday);
+  const adjustedMonday = new Date(baseMonday.getTime() + weekIndex * msPerWeek);
   const weekDates = getWeekDates(adjustedMonday);
-  const today = new Date();
-  const todayStr = today.toDateString();
 
-  const todayIndex = today.getDay() === 0 ? 6 : today.getDay() - 1;
+  const today = new Date();
   const [progress, setProgress] = useState(Array(7).fill(false));
   const completedDays = progress.filter(Boolean).length;
-
-  const challenge = challenges[(Math.floor(+adjustedMonday / msPerWeek)) % challenges.length];
-  const dailyTip = dailyChallenges[todayIndex];
   const [showConfetti, setShowConfetti] = useState(false);
 
-  // Load progress
+  const weekKey = dateKey(adjustedMonday, currentChallenge.title);
+
   useEffect(() => {
     if (!user) return;
     const ref = doc(db, "challengeProgress", `${weekKey}_${user.uid}`);
     return onSnapshot(ref, snap => {
       if (snap.exists()) {
         const d = snap.data();
-        if (Array.isArray(d.progress) && d.progress.length === 7) {
-          setProgress(d.progress);
-        }
+        if (Array.isArray(d.progress) && d.progress.length === 7) setProgress(d.progress);
+      } else {
+        setProgress(Array(7).fill(false));
       }
     });
   }, [user, weekKey]);
 
-  // Save progress
   const saveProgress = updated => {
     if (!user) return;
     setDoc(doc(db, "challengeProgress", `${weekKey}_${user.uid}`), {
@@ -124,27 +86,24 @@ export default function EcoChallengeTracker() {
     }, { merge: true }).catch(console.error);
   };
 
-  // Handle day toggle
   const toggleDay = idx => {
-    const clickedDate = weekDates[idx];
-    if (clickedDate > today) {
+    const dayDate = weekDates[idx];
+    if (dayDate > today) {
       alert("⏳ This day hasn't arrived yet!");
       return;
     }
-
-    const updated = [...progress];
-    updated[idx] = !updated[idx];
-
+    const updated = progress.map((v, i) => (i === idx ? !v : v));
     setProgress(updated);
     saveProgress(updated);
 
-    setShowConfetti(true);
-    setTimeout(() => setShowConfetti(false), 4000);
+    if (!progress[idx]) {
+      setShowConfetti(true);
+      setTimeout(() => setShowConfetti(false), 3000);
+    }
   };
 
-  // Reset button
   const resetProgress = () => {
-    if (window.confirm("Reset your progress for this week?")) {
+    if (window.confirm("Are you sure you want to reset this week's progress?")) {
       const empty = Array(7).fill(false);
       setProgress(empty);
       saveProgress(empty);
@@ -154,13 +113,7 @@ export default function EcoChallengeTracker() {
   return (
     <div className="max-w-5xl mx-auto p-6 space-y-8">
       {showConfetti && (
-        <Confetti
-          width={width}
-          height={height}
-          numberOfPieces={300}
-          recycle={false}
-          className="pointer-events-none fixed inset-0 z-50"
-        />
+        <Confetti width={width} height={height} numberOfPieces={200} recycle={false} className="pointer-events-none fixed inset-0 z-50" />
       )}
 
       <div className="text-center">
@@ -178,14 +131,31 @@ export default function EcoChallengeTracker() {
 
       <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow space-y-4">
         <div className="flex justify-between items-center">
-          <button onClick={() => setWeekOffset(w => Math.max(w - 1, 0))} className="text-green-600 hover:underline">← Previous</button>
-          <h2 className="text-xl font-bold">{challenge.title}</h2>
-          <button onClick={() => setWeekOffset(w => w + 1)} className="text-green-600 hover:underline">Next →</button>
+          <button
+            onClick={() => setWeekIndex(prev => Math.max(prev - 1, 0))}
+            disabled={weekIndex === 0}
+            className={`text-green-500 hover:underline ${weekIndex === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
+          >
+            ← Previous
+          </button>
+          <h2 className="text-xl font-bold">{currentChallenge.title}</h2>
+          <button
+            onClick={() => setWeekIndex(prev => Math.min(prev + 1, challenges.length - 1))}
+            disabled={weekIndex === challenges.length - 1}
+            className={`text-green-500 hover:underline ${weekIndex === challenges.length - 1 ? "opacity-50 cursor-not-allowed" : ""}`}
+          >
+            Next →
+          </button>
         </div>
-        <p className="text-sm text-gray-600 dark:text-gray-400">{challenge.description}</p>
+        <p className="text-sm text-gray-600 dark:text-gray-400">{currentChallenge.description}</p>
 
         <div className="text-right">
-          <button onClick={resetProgress} className="bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded">Reset Progress</button>
+          <button
+            onClick={resetProgress}
+            className="mt-2 bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-1 rounded"
+          >
+            Reset Progress
+          </button>
         </div>
 
         <div className="text-green-700 font-semibold">
@@ -198,7 +168,7 @@ export default function EcoChallengeTracker() {
 
         <div className="grid grid-cols-7 gap-2 mt-3">
           {weekDates.map((date, i) => {
-            const isToday = date.toDateString() === todayStr;
+            const isToday = date.toDateString() === today.toDateString();
             const isFuture = date > today;
             const isPastUnfilled = date < today && !progress[i];
 
@@ -225,20 +195,7 @@ export default function EcoChallengeTracker() {
         </div>
 
         <div className="mt-2 text-sm italic text-blue-600 dark:text-blue-300">
-          🔄 Today’s challenge: {dailyTip}
-        </div>
-      </div>
-
-      <div>
-        <h2 className="text-2xl font-bold text-center mt-10 mb-4">🌿 Sustainability Tips</h2>
-        <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
-          {ecoTips.map((tip, i) => (
-            <div key={i} className="bg-green-100 dark:bg-green-700 text-center p-4 rounded shadow">
-              <div className="text-3xl mb-2">{tip.icon}</div>
-              <div className="font-semibold text-green-800 dark:text-green-100">{tip.title}</div>
-              <p className="text-sm text-gray-700 dark:text-gray-300">{tip.description}</p>
-            </div>
-          ))}
+          🔄 Today’s challenge: Share an eco-tip with a friend 💬
         </div>
       </div>
     </div>
