@@ -8,10 +8,9 @@ export default function Leaderboard({ weekStart, user, completedDays, className 
   const [leaders, setLeaders] = useState([]);
   const weekKey = weekStart.toISOString().split("T")[0];
 
-  /* 1. Save this user's current progress */
+  // Save this user's current progress
   useEffect(() => {
     if (!user) return;
-
     const ref = doc(db, "challengeProgress", `${weekKey}_${user.uid}`);
     setDoc(
       ref,
@@ -25,7 +24,7 @@ export default function Leaderboard({ weekStart, user, completedDays, className 
     ).catch((err) => console.error("Leaderboard write failed:", err));
   }, [user, weekKey, completedDays]);
 
-  /* 2. Real-time leaderboard fetching */
+  // Real-time leaderboard fetching
   useEffect(() => {
     const unsubscribe = onSnapshot(
       collection(db, "challengeProgress"),
@@ -63,7 +62,9 @@ export default function Leaderboard({ weekStart, user, completedDays, className 
             >
               <div className="flex items-center gap-3">
                 <span className="text-2xl">{medalIcons[i] || "🎖️"}</span>
-                <span className="text-lg font-semibold text-gray-800 dark:text-gray-100">{u.displayName}</span>
+                <span className="text-lg font-semibold text-gray-800 dark:text-gray-100">
+                  {u.displayName}
+                </span>
               </div>
               <div className="text-green-700 dark:text-green-300 font-bold">{u.completedDays}/7</div>
             </div>
