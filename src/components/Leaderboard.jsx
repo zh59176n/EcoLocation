@@ -60,9 +60,9 @@ export default function Leaderboard({ weekStart, user, completedDays, className 
                   : "bg-gray-100 dark:bg-gray-700"
               }`}
             >
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 flex-wrap">
                 <span className="text-2xl">{medalIcons[i] || "🎖️"}</span>
-                <span className="text-lg font-semibold text-gray-800 dark:text-gray-100">
+                <span className="text-lg font-semibold text-gray-800 dark:text-gray-100 break-all">
                   {u.displayName}
                 </span>
               </div>
