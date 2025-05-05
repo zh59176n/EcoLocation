@@ -131,6 +131,55 @@ We’ve wrapped up **Sprint 2**, implementing advanced features, eco-specific UI
 
 ___
 
+## 🚀 Sprint 3 — Planning & Progress
+
+We’ve successfully wrapped up **Sprint 3**, delivering key personalization features, major map upgrades, and performance improvements across EcoLocation’s user-facing pages.
+
+---
+
+### ✅ Selected User Stories:
+- **T3.2**: NewsFeed → Guardian Resilience *(3 pts)*
+- **T3.4**: Solar Provider Filters + Search *(5 pts)*
+- **T3.5**: User Profile Page *(6 pts)*
+- **T3.6**: Eco Challenge → Push Notification Opt-in *(5 pts)*
+- **T3.7**: Carbon Calculator → Persist History *(4 pts)*
+- **T3.11**: CI/CD to Vercel *(3 pts)*
+- **T3.12**: Leaderboard → Weekly Rank Logic *(3 pts)*
+- **T3.14**: NewsFeed → Sort + Pagination *(5 pts)*
+- **T3.15**: NewsFeed → Fallback + Retry Messaging *(3 pts)*
+- **T3.19**: Solar UI → Mobile Responsive QA *(1 pt)*
+
+> **Planned Velocity**: 27 points  
+> *Personalization + advanced map tools + resilience improvements*
+
+---
+
+### 📄 Sprint Docs:
+- [Sprint 3 Spreadsheet](https://docs.google.com/spreadsheets/d/1V1j0ffJiR_iQvUImlrDzco2Sz34ZC-l-Mt9YnEWp6GI/edit#gid=123456)
+- [Sprint 3 Notes](https://docs.google.com/document/d/1p6QRJ5_DuGICe584cZBOos4Pocob7prhDT4nd-K0WYE/edit)
+- [Retro Document](https://docs.google.com/document/d/1p6QRJ5_DuGICe584cZBOos4Pocob7prhDT4nd-K0WYE/edit)
+
+---
+
+### 🎥 Demo 3 Video
+- [Watch Demo 3](#) *()*
+
+---
+
+### 👥 Team Workload — *16 hrs each*:
+- **Grace** – Profile page UI, leaderboard logic, NewsFeed pagination
+- **Donovan** – Firebase integration, push notifications, CI/CD pipeline
+- **Patrick** – Carbon calculator persistence, NewsFeed resilience, mobile QA
+- **Zara** – Map filtering, solar UI tweaks, accessibility passes
+
+---
+
+### 👑 Team Roles:
+- **Scrum Master** – *Patrick Casseus*
+- **Product Owner** – *Grace Langton*
+
+___
+
 ## 🛠 Setup Instructions
 
 ### 🧪 Local Development
