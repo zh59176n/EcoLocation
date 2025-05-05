@@ -63,8 +63,8 @@ function Navbar({ darkMode, setDarkMode }) {
     <nav className="bg-green-600 dark:bg-gray-900 text-white px-4 py-3 flex items-center justify-between relative shadow-md z-50 h-16">
       {/* Logo + Title */}
       <Link to="/" className="flex items-center">
-        <img src={logo} alt="EcoLocation Logo" className="h-10 w-auto object-contain relative top-[2px]" />
-        <span className="text-xl font-bold leading-none ml-2">EcoLocation</span>
+        <img src={logo} alt="EcoLocation Logo" className="h-16 w-auto min-w-[50px] object-contain relative top-[2px]" />
+        <span className="text-2xl font-bold leading-none ml-2">EcoLocation</span>
       </Link>
 
       {/* Hamburger for mobile */}

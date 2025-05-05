@@ -1,3 +1,4 @@
+// House.jsx
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -86,16 +87,16 @@ const House = () => {
     );
   }, []);
 
-  const saveFavorite = (station) => {
-    const existing = favorites.find((fav) => fav.ID === station.ID);
-    if (!existing) {
-      const updated = [...favorites, station];
-      setFavorites(updated);
-      localStorage.setItem('favorites', JSON.stringify(updated));
-      alert('❤️ Added to Favorites!');
+  const toggleFavorite = (station) => {
+    const exists = favorites.some((fav) => fav.ID === station.ID);
+    let updated;
+    if (exists) {
+      updated = favorites.filter((fav) => fav.ID !== station.ID);
     } else {
-      alert('Already in Favorites!');
+      updated = [...favorites, station];
     }
+    setFavorites(updated);
+    localStorage.setItem('favorites', JSON.stringify(updated));
   };
 
   const scrollToMarker = (station) => {
@@ -198,6 +199,7 @@ const House = () => {
           {sortedStations.map((station, idx) => {
             const info = station.AddressInfo || {};
             const conn = station.Connections?.[0] || {};
+            const isFavorited = favorites.some((fav) => fav.ID === station.ID);
 
             return (
               <div
@@ -215,21 +217,25 @@ const House = () => {
                 <div className="flex gap-2 mt-3">
                   <button
                     onClick={() => scrollToMarker(station)}
-                    className="bg-green-600 hover:bg-green-700 text-white text-sm px-3 py-1 rounded"
+                    className="bg-green-500 hover:bg-green-600 dark:bg-green-700 dark:hover:bg-green-800 text-white text-sm px-3 py-1 rounded shadow"
                   >
                     View on Map
                   </button>
                   <button
                     onClick={() => toggleExpand(idx)}
-                    className="bg-white dark:bg-green-700 border border-gray-300 dark:border-green-600 hover:bg-gray-100 dark:hover:bg-green-600 text-sm text-gray-800 dark:text-white px-3 py-1 rounded"
+                    className="bg-yellow-400 hover:bg-yellow-500 dark:bg-yellow-600 dark:hover:bg-yellow-700 text-gray-900 dark:text-white text-sm px-3 py-1 rounded shadow"
                   >
                     {expandedIndex === idx ? 'Hide Info' : 'More Info'}
                   </button>
                   <button
-                    onClick={() => saveFavorite(station)}
-                    className="bg-red-500 hover:bg-red-600 text-white text-sm px-3 py-1 rounded"
+                    onClick={() => toggleFavorite(station)}
+                    className={`${
+                      isFavorited
+                        ? 'bg-red-500 hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-800'
+                        : 'bg-red-400 hover:bg-red-500 dark:bg-red-600 dark:hover:bg-red-700'
+                    } text-white text-sm px-3 py-1 rounded shadow`}
                   >
-                    ❤️ Favorite
+                    ❤️ {isFavorited ? 'Favorited' : 'Favorite'}
                   </button>
                 </div>
 
