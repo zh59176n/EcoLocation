@@ -124,9 +124,9 @@ export default function Profile() {
   const progressPercentage = Math.round((totalPoints / (challenges.length * 7)) * 100) || 0;
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6 animate-fadeIn">
+    <div className="max-w-4xl mx-auto p-4 sm:p-6 space-y-6 animate-fadeIn">
       {/* Welcome Section */}
-      <div className="bg-gradient-to-r from-green-100 to-green-200 dark:from-green-900 dark:to-green-800 p-6 rounded-lg shadow flex items-center space-x-6 relative">
+      <div className="bg-gradient-to-r from-green-100 to-green-200 dark:from-green-900 dark:to-green-800 p-4 sm:p-6 rounded-lg shadow flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-6">
         <div className="relative">
           {user?.photoURL ? (
             <img
@@ -145,9 +145,9 @@ export default function Profile() {
             <FaEdit />
           </button>
         </div>
-        <div className="flex-1">
-          <h1 className="text-3xl font-bold text-green-900 dark:text-green-100">Welcome,</h1>
-          <p className="text-green-700 dark:text-green-300 text-lg mb-2">
+        <div className="flex-1 text-center md:text-left">
+          <h1 className="text-2xl sm:text-3xl font-bold text-green-900 dark:text-green-100">Welcome,</h1>
+          <p className="text-green-700 dark:text-green-300 text-base sm:text-lg mb-2 break-words">
             {user?.displayName || user?.email}
           </p>
           <div className="relative w-full bg-gray-200 dark:bg-gray-700 rounded-full h-5 shadow-inner overflow-hidden">
@@ -207,118 +207,118 @@ export default function Profile() {
         </div>
       )}
 
-      {/* Favorites Section */}
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-2xl transition-transform duration-500 transform hover:scale-105">
-        <h2 className="text-2xl font-bold flex items-center gap-3 text-green-700 dark:text-green-300 mb-4">
-          ❤️ Your Favorites
-        </h2>
-        {evFavorites.length === 0 && solarFavorites.length === 0 ? (
-          <p className="text-gray-600 dark:text-gray-400">You haven't added any favorites yet.</p>
-        ) : (
-          <>
-            {/* EV Favorites */}
-            {evFavorites.length > 0 && (
-              <div>
-                <h3 className="text-lg font-semibold mt-4 mb-2 flex items-center gap-2 text-green-700 dark:text-green-300">
-                  <FaChargingStation /> EV Charging Stations
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {evFavorites.map((fav, idx) => (
-                    <div
-                      key={idx}
-                      className="border border-green-300 dark:border-green-600 bg-green-50 dark:bg-green-900 p-4 rounded-lg shadow flex flex-col gap-3 transition-transform hover:scale-105 hover:shadow-xl"
-                    >
-                      <p className="font-bold text-green-800 dark:text-green-200">{fav.AddressInfo?.Title}</p>
-                      <p className="text-sm text-gray-700 dark:text-gray-300">{fav.AddressInfo?.AddressLine1}</p>
-                      <div className="flex justify-end">
-                        <button
-                          onClick={() => handleRemoveEv(idx)}
-                          className="flex items-center gap-1 text-xs bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded shadow"
-                        >
-                          <FaTrash /> Remove
-                        </button>
-                      </div>
-                      <span className="text-xs bg-green-100 dark:bg-green-700 text-green-700 dark:text-green-100 px-2 py-1 rounded-full w-max">
-                        EV Charger
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Solar Favorites */}
-            {solarFavorites.length > 0 && (
-              <div>
-                <h3 className="text-lg font-semibold mt-6 mb-2 flex items-center gap-2 text-yellow-700 dark:text-yellow-300">
-                  <FaSolarPanel /> Solar Providers
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {solarFavorites.map((fav, idx) => (
-                    <div
-                      key={idx}
-                      className="border border-yellow-300 dark:border-yellow-600 bg-yellow-50 dark:bg-yellow-900 p-4 rounded-lg shadow flex flex-col gap-3 transition-transform hover:scale-105 hover:shadow-xl"
-                    >
-                      <p className="font-bold text-yellow-800 dark:text-yellow-200">{fav.AddressInfo?.Title}</p>
-                      <p className="text-sm text-gray-700 dark:text-gray-300">{fav.AddressInfo?.AddressLine1}</p>
-                      <div className="flex justify-end">
-                        <button
-                          onClick={() => handleRemoveSolar(idx)}
-                          className="flex items-center gap-1 text-xs bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded shadow"
-                        >
-                          <FaTrash /> Remove
-                        </button>
-                      </div>
-                      <span className="text-xs bg-yellow-100 dark:bg-yellow-700 text-yellow-700 dark:text-yellow-100 px-2 py-1 rounded-full w-max">
-                        Solar Provider
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </>
-        )}
-      </div>
-
-      {/* Weekly Challenges */}
-      {challenges.map((challenge, idx) => {
-        const weekStart = new Date(baseMonday);
-        weekStart.setDate(weekStart.getDate() + idx * 7);
-        const weekDates = getWeekDates(weekStart);
-        const progress = weekProgress[challenge.key] || [];
-        const isEven = idx % 2 === 0;
-
-        return (
-          <div
-            key={challenge.key}
-            className={`p-6 rounded-lg shadow-lg hover:shadow-2xl transform transition-all duration-500 hover:scale-105 ${
-              isEven ? "bg-green-200 dark:bg-green-900" : "bg-blue-200 dark:bg-blue-900"
-            }`}
-          >
-            <h2 className="text-xl font-bold flex items-center gap-2 text-green-800 dark:text-green-200 mb-4">
-              <FaCalendarAlt className="text-blue-400 animate-spin-slow" /> {challenge.title} {challenge.icon}
-            </h2>
-            <div className="grid grid-cols-7 gap-4">
-              {weekDates.map((date, dayIdx) => {
-                const isCompleted = progress[dayIdx];
-                const fullDate = date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
-                return (
-                  <div
-                    key={dayIdx}
-                    className={`flex flex-col items-center justify-center w-14 h-14 rounded-full text-white font-bold shadow ${
-                      isCompleted ? "bg-green-500" : "bg-gray-300 dark:bg-gray-700"
-                    }`}
+{/* Favorites Section */}
+<div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg shadow-lg hover:shadow-2xl transition-transform duration-500 transform hover:scale-105">
+  <h2 className="text-2xl font-bold flex items-center gap-3 text-green-700 dark:text-green-300 mb-4">
+    ❤️ Your Favorites
+  </h2>
+  {evFavorites.length === 0 && solarFavorites.length === 0 ? (
+    <p className="text-gray-600 dark:text-gray-400">You haven't added any favorites yet.</p>
+  ) : (
+    <>
+      {/* EV Favorites */}
+      {evFavorites.length > 0 && (
+        <div>
+          <h3 className="text-lg font-semibold mt-4 mb-2 flex items-center gap-2 text-green-700 dark:text-green-300">
+            <FaChargingStation /> EV Charging Stations
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {evFavorites.map((fav, idx) => (
+              <div
+                key={idx}
+                className="border border-green-300 dark:border-green-600 bg-green-50 dark:bg-green-900 p-4 rounded-lg shadow flex flex-col gap-3 transition-transform hover:scale-105 hover:shadow-xl"
+              >
+                <p className="font-bold text-green-800 dark:text-green-200">{fav.AddressInfo?.Title}</p>
+                <p className="text-sm text-gray-700 dark:text-gray-300">{fav.AddressInfo?.AddressLine1}</p>
+                <div className="flex justify-end">
+                  <button
+                    onClick={() => handleRemoveEv(idx)}
+                    className="flex items-center gap-1 text-xs bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded shadow"
                   >
-                    <span>{isCompleted ? <FaCheckCircle /> : date.toLocaleDateString("en-US", { weekday: "short" }).charAt(0)}</span>
-                    <span className="text-[10px] mt-1 text-gray-700 dark:text-gray-300">{fullDate}</span>
-                  </div>
-                );
-              })}
-            </div>
+                    <FaTrash /> Remove
+                  </button>
+                </div>
+                <span className="text-xs bg-green-100 dark:bg-green-700 text-green-700 dark:text-green-100 px-2 py-1 rounded-full w-max">
+                  EV Charger
+                </span>
+              </div>
+            ))}
           </div>
-        );
-      })}
+        </div>
+      )}
+
+      {/* Solar Favorites */}
+      {solarFavorites.length > 0 && (
+        <div>
+          <h3 className="text-lg font-semibold mt-6 mb-2 flex items-center gap-2 text-yellow-700 dark:text-yellow-300">
+            <FaSolarPanel /> Solar Providers
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {solarFavorites.map((fav, idx) => (
+              <div
+                key={idx}
+                className="border border-yellow-300 dark:border-yellow-600 bg-yellow-50 dark:bg-yellow-900 p-4 rounded-lg shadow flex flex-col gap-3 transition-transform hover:scale-105 hover:shadow-xl"
+              >
+                <p className="font-bold text-yellow-800 dark:text-yellow-200">{fav.AddressInfo?.Title}</p>
+                <p className="text-sm text-gray-700 dark:text-gray-300">{fav.AddressInfo?.AddressLine1}</p>
+                <div className="flex justify-end">
+                  <button
+                    onClick={() => handleRemoveSolar(idx)}
+                    className="flex items-center gap-1 text-xs bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded shadow"
+                  >
+                    <FaTrash /> Remove
+                  </button>
+                </div>
+                <span className="text-xs bg-yellow-100 dark:bg-yellow-700 text-yellow-700 dark:text-yellow-100 px-2 py-1 rounded-full w-max">
+                  Solar Provider
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </>
+  )}
+</div>
+
+{/* Weekly Challenges */}
+{challenges.map((challenge, idx) => {
+  const weekStart = new Date(baseMonday);
+  weekStart.setDate(weekStart.getDate() + idx * 7);
+  const weekDates = getWeekDates(weekStart);
+  const progress = weekProgress[challenge.key] || [];
+  const isEven = idx % 2 === 0;
+
+  return (
+    <div
+      key={challenge.key}
+      className={`p-4 sm:p-6 rounded-lg shadow-lg hover:shadow-2xl transform transition-all duration-500 hover:scale-105 ${
+        isEven ? "bg-green-200 dark:bg-green-900" : "bg-blue-200 dark:bg-blue-900"
+      }`}
+    >
+      <h2 className="text-xl font-bold flex items-center gap-2 text-green-800 dark:text-green-200 mb-4">
+        <FaCalendarAlt className="text-blue-400 animate-spin-slow" /> {challenge.title} {challenge.icon}
+      </h2>
+      <div className="grid grid-cols-4 sm:grid-cols-7 gap-4 overflow-x-auto">
+        {weekDates.map((date, dayIdx) => {
+          const isCompleted = progress[dayIdx];
+          const fullDate = date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+          return (
+            <div
+              key={dayIdx}
+              className={`flex flex-col items-center justify-center w-14 h-14 rounded-full text-white font-bold shadow text-center ${
+                isCompleted ? "bg-green-500" : "bg-gray-300 dark:bg-gray-700"
+              }`}
+            >
+              <span>{isCompleted ? <FaCheckCircle /> : date.toLocaleDateString("en-US", { weekday: "short" }).charAt(0)}</span>
+              <span className="text-[10px] mt-1 text-gray-700 dark:text-gray-300">{fullDate}</span>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
-}
+})}
+  </div>  
+);        
+}  
