@@ -1,3 +1,4 @@
+// SolarMap.jsx
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -5,6 +6,7 @@ import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import 'leaflet.markercluster';
 
+// Custom icon for solar providers
 const solarIcon = new L.Icon({
   iconUrl: 'https://cdn-icons-png.flaticon.com/512/169/169367.png',
   iconSize: [32, 32],
@@ -18,6 +20,9 @@ const SolarMap = () => {
   const markerCluster = useRef(null);
   const markersRef = useRef({});
   const [providers, setProviders] = useState([]);
+  const [favorites, setFavorites] = useState(() =>
+    JSON.parse(localStorage.getItem('solarFavorites')) || []
+  );
   const [searchQuery, setSearchQuery] = useState('');
   const [boroughFilter, setBoroughFilter] = useState('');
   const [expandedIndex, setExpandedIndex] = useState(null);
@@ -40,7 +45,7 @@ const SolarMap = () => {
         const { latitude, longitude } = coords;
         leafletMap.current.setView([latitude, longitude], 12);
 
-        // 📍 Add user location pin
+        // 📍 User location pin
         L.marker([latitude, longitude], {
           icon: L.divIcon({ html: '📍', className: 'emoji-pin' }),
         })
@@ -54,7 +59,6 @@ const SolarMap = () => {
           );
           const data = await res.json();
 
-          // ⚡ Filter only Level 2 and Level 3 chargers
           const solarFriendly = data.filter((provider) =>
             provider.Connections?.some((conn) =>
               conn.Level?.Title?.includes('Level 2') || conn.Level?.Title?.includes('Level 3')
@@ -84,6 +88,18 @@ const SolarMap = () => {
       }
     );
   }, []);
+
+  const toggleFavorite = (provider) => {
+    const existing = favorites.find((fav) => fav.ID === provider.ID);
+    let updated;
+    if (existing) {
+      updated = favorites.filter((fav) => fav.ID !== provider.ID);
+    } else {
+      updated = [...favorites, provider];
+    }
+    setFavorites(updated);
+    localStorage.setItem('solarFavorites', JSON.stringify(updated));
+  };
 
   const scrollToMarker = (provider) => {
     const marker = markersRef.current[provider.ID];
@@ -148,48 +164,68 @@ const SolarMap = () => {
         <div className="text-center text-gray-500 dark:text-gray-300 mt-6">🚫 No Providers found.</div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-          {filtered.map((provider, idx) => (
-            <div
-              key={provider.ID}
-              className="bg-white dark:bg-green-900 text-gray-900 dark:text-white border border-gray-300 dark:border-green-700 rounded-xl shadow p-5 hover:shadow-lg transition-all duration-300"
-            >
-              <h3 className="font-semibold text-lg text-green-800 dark:text-green-200">
-                ☀️ {provider.AddressInfo.Title}
-              </h3>
-              <p className="text-sm">🏠 {provider.AddressInfo.AddressLine1}</p>
-              <p className="text-sm">🏙️ {provider.AddressInfo.Town}</p>
+          {filtered.map((provider, idx) => {
+            const isFavorited = favorites.some((fav) => fav.ID === provider.ID);
+            return (
+              <div
+                key={provider.ID}
+                className="bg-white dark:bg-green-900 text-gray-900 dark:text-white border border-gray-300 dark:border-green-700 rounded-xl shadow p-5 hover:shadow-lg transition-all duration-300"
+              >
+                <h3 className="font-semibold text-lg text-green-800 dark:text-green-200">
+                  ☀️ {provider.AddressInfo.Title}
+                </h3>
+                <p className="text-sm">🏠 {provider.AddressInfo.AddressLine1}</p>
+                <p className="text-sm">🏙️ {provider.AddressInfo.Town}</p>
 
-              <div className="flex gap-2 mt-3">
-                <button
-                  onClick={() => scrollToMarker(provider)}
-                  className="bg-green-600 hover:bg-green-700 text-white text-sm px-3 py-1 rounded"
-                >
-                  View on Map
-                </button>
-                <button
-                  onClick={() => toggleExpand(idx)}
-                  className="bg-white dark:bg-green-700 border border-gray-300 dark:border-green-600 hover:bg-gray-100 dark:hover:bg-green-600 text-sm text-gray-800 dark:text-white px-3 py-1 rounded"
-                >
-                  {expandedIndex === idx ? 'Hide Info' : 'More Info'}
-                </button>
-              </div>
-
-              {expandedIndex === idx && (
-                <div className="mt-3 border-t pt-3 text-sm space-y-1 bg-gray-50 dark:bg-green-800 p-3 rounded-md">
-                  <p>📞 Contact: {provider.AddressInfo.ContactTelephone1 || 'N/A'}</p>
-                  <p>🌐 Website: {provider.AddressInfo.RelatedURL ? (
-                    <a href={provider.AddressInfo.RelatedURL} target="_blank" rel="noreferrer" className="underline text-blue-400">
-                      Visit Site
-                    </a>
-                  ) : (
-                    'N/A'
-                  )}
-                  </p>
-                  <p>💼 Services: Solar Services (Simulated)</p>
+                <div className="flex gap-2 mt-3">
+                  <button
+                    onClick={() => scrollToMarker(provider)}
+                    className="bg-green-500 hover:bg-green-600 dark:bg-green-700 dark:hover:bg-green-800 text-white text-sm px-3 py-1 rounded shadow"
+                  >
+                    View on Map
+                  </button>
+                  <button
+                    onClick={() => toggleExpand(idx)}
+                    className="bg-yellow-400 hover:bg-yellow-500 dark:bg-yellow-600 dark:hover:bg-yellow-700 text-gray-900 dark:text-white text-sm px-3 py-1 rounded shadow"
+                  >
+                    {expandedIndex === idx ? 'Hide Info' : 'More Info'}
+                  </button>
+                  <button
+                    onClick={() => toggleFavorite(provider)}
+                    className={`${
+                      isFavorited
+                        ? 'bg-red-500 hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-800'
+                        : 'bg-red-400 hover:bg-red-500 dark:bg-red-600 dark:hover:bg-red-700'
+                    } text-white text-sm px-3 py-1 rounded shadow`}
+                  >
+                    ❤️ {isFavorited ? 'Favorited' : 'Favorite'}
+                  </button>
                 </div>
-              )}
-            </div>
-          ))}
+
+                {expandedIndex === idx && (
+                  <div className="mt-3 border-t pt-3 text-sm space-y-1 bg-gray-50 dark:bg-green-800 p-3 rounded-md">
+                    <p>📞 Contact: {provider.AddressInfo.ContactTelephone1 || 'N/A'}</p>
+                    <p>
+                      🌐 Website:{' '}
+                      {provider.AddressInfo.RelatedURL ? (
+                        <a
+                          href={provider.AddressInfo.RelatedURL}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="underline text-blue-400"
+                        >
+                          Visit Site
+                        </a>
+                      ) : (
+                        'N/A'
+                      )}
+                    </p>
+                    <p>💼 Services: Solar Services (Simulated)</p>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       )}
     </div>

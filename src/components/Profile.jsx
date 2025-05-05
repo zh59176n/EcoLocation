@@ -1,13 +1,39 @@
-// Profile.jsx
 import React, { useState, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../Firebase";
-import { collection, doc, onSnapshot } from "firebase/firestore";
+import { updateProfile } from "firebase/auth";
+import { doc, onSnapshot } from "firebase/firestore";
+import {
+  FaLeaf,
+  FaMedal,
+  FaCalendarAlt,
+  FaCheckCircle,
+  FaUserCircle,
+  FaTrophy,
+  FaEdit,
+  FaChargingStation,
+  FaSolarPanel,
+  FaTrash,
+} from "react-icons/fa";
+
+const avatarOptions = [
+  "/Avatars/avatar1.png",
+  "/Avatars/avatar2.png",
+  "/Avatars/avatar3.png",
+  "/Avatars/avatar4.png",
+  "/Avatars/avatar5.png",
+  "/Avatars/avatar6.png",
+  "/Avatars/avatar7.png",
+  "/Avatars/avatar8.png",
+  "/Avatars/avatar9.png",
+  "/Avatars/avatar10.png",
+  "/Avatars/avatar11.png",
+];
 
 const challenges = [
-  { title: "Green Commuter Week", key: "Green Commuter Week" },
-  { title: "Energy Saver Week", key: "Energy Saver Week" },
-  { title: "No-Plastic Week", key: "No-Plastic Week" },
+  { title: "Green Commuter Week", key: "Green Commuter Week", icon: "🚲" },
+  { title: "Energy Saver Week", key: "Energy Saver Week", icon: "💡" },
+  { title: "No-Plastic Week", key: "No-Plastic Week", icon: "🚯" },
 ];
 
 function getWeekDates(start) {
@@ -27,6 +53,10 @@ export default function Profile() {
   const [badgeCount, setBadgeCount] = useState(0);
   const [totalPoints, setTotalPoints] = useState(0);
   const [weekProgress, setWeekProgress] = useState({});
+  const [achievements, setAchievements] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [evFavorites, setEvFavorites] = useState([]);
+  const [solarFavorites, setSolarFavorites] = useState([]);
 
   const baseMonday = new Date();
   baseMonday.setDate(baseMonday.getDate() - ((baseMonday.getDay() + 6) % 7));
@@ -35,74 +65,224 @@ export default function Profile() {
   useEffect(() => {
     if (!user) return;
 
+    let cumulativePoints = 0;
+    let totalBadges = 0;
+    const tempAchievements = new Set();
+
     challenges.forEach((challenge, idx) => {
       const weekStart = new Date(baseMonday);
       weekStart.setDate(weekStart.getDate() + idx * 7);
       const weekKey = dateKey(weekStart, challenge.key);
 
       const ref = doc(db, "challengeProgress", `${weekKey}_${user.uid}`);
-      onSnapshot(ref, snap => {
+      onSnapshot(ref, (snap) => {
         if (snap.exists()) {
           const data = snap.data();
-          setWeekProgress(prev => ({ ...prev, [challenge.key]: data.progress }));
+          setWeekProgress((prev) => ({ ...prev, [challenge.key]: data.progress }));
           const points = data.progress.filter(Boolean).length;
-          setTotalPoints(prev => prev + points);
+          cumulativePoints += points;
+
           if (points === 7) {
-            setBadgeCount(prev => Math.max(prev, idx + 1));
+            totalBadges += 1;
+            tempAchievements.add(`🏆 Mastered ${challenge.title}`);
+          }
+          if (points >= 1) {
+            tempAchievements.add(`✅ Started ${challenge.title}`);
           }
         }
+        setTotalPoints(cumulativePoints);
+        setBadgeCount(totalBadges);
+        setAchievements(Array.from(tempAchievements));
       });
     });
+
+    // Load favorites from localStorage
+    const ev = JSON.parse(localStorage.getItem("favorites")) || [];
+    const solar = JSON.parse(localStorage.getItem("solarFavorites")) || [];
+    setEvFavorites(ev);
+    setSolarFavorites(solar);
   }, [user]);
 
+  const handleAvatarChange = async (url) => {
+    if (user) {
+      await updateProfile(user, { photoURL: url });
+      setShowModal(false);
+    }
+  };
+
+  const handleRemoveEv = (idxToRemove) => {
+    const updated = evFavorites.filter((_, idx) => idx !== idxToRemove);
+    setEvFavorites(updated);
+    localStorage.setItem("favorites", JSON.stringify(updated));
+  };
+
+  const handleRemoveSolar = (idxToRemove) => {
+    const updated = solarFavorites.filter((_, idx) => idx !== idxToRemove);
+    setSolarFavorites(updated);
+    localStorage.setItem("solarFavorites", JSON.stringify(updated));
+  };
+
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-6">
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow space-y-2">
-        <h1 className="text-2xl font-bold">Welcome,</h1>
-        <p className="text-green-600 dark:text-green-300">{user?.email}</p>
-      </div>
-
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow space-y-4">
-        <h2 className="text-xl font-bold flex items-center gap-2">
-          🌿 Green Points & Badges
-        </h2>
-        <div>Total Points: {totalPoints}</div>
-        <div className="w-full bg-gray-300 rounded-full h-2 mb-2">
-          <div
-            className="bg-green-500 h-2 rounded-full"
-            style={{ width: `${Math.min(100, (totalPoints / 21) * 100)}%` }}
-          />
+    <div className="max-w-4xl mx-auto p-6 space-y-6 animate-fadeIn">
+      {/* Welcome Section */}
+      <div className="bg-gradient-to-r from-green-100 to-green-200 dark:from-green-900 dark:to-green-800 p-6 rounded-lg shadow flex items-center space-x-4 relative">
+        <div className="relative">
+          {user?.photoURL ? (
+            <img
+              src={user.photoURL}
+              alt="User Avatar"
+              className="w-20 h-20 rounded-full border-2 border-green-500 shadow-lg object-cover"
+            />
+          ) : (
+            <FaUserCircle className="w-20 h-20 text-green-500" />
+          )}
+          <button
+            onClick={() => setShowModal(true)}
+            className="absolute bottom-0 right-0 bg-green-500 text-white p-1 rounded-full hover:bg-green-600 shadow"
+            title="Change Avatar"
+          >
+            <FaEdit />
+          </button>
         </div>
-        <div>🏅 Badges Earned: {badgeCount}</div>
-        {badgeCount > 0 &&
-          [...Array(badgeCount)].map((_, i) => (
-            <span key={i} className="inline-block bg-yellow-400 text-white px-3 py-1 rounded-full mr-2 mt-2">
-              🌟 Eco Badge #{i + 1}
-            </span>
-          ))}
+        <div>
+          <h1 className="text-2xl font-bold text-green-900 dark:text-green-100">Welcome,</h1>
+          <p className="text-green-700 dark:text-green-300 text-lg">
+            {user?.displayName || user?.email}
+          </p>
+        </div>
       </div>
 
+      {/* Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg space-y-4 max-w-sm w-full">
+            <h2 className="text-xl font-bold mb-4 text-green-700 dark:text-green-300">Choose an Avatar</h2>
+            <div className="grid grid-cols-3 gap-4">
+              {avatarOptions.map((url, idx) => (
+                <img
+                  key={idx}
+                  src={url}
+                  alt={`Avatar ${idx + 1}`}
+                  className="w-20 h-20 rounded-full border-2 border-gray-300 hover:border-green-500 cursor-pointer transition-transform transform hover:scale-110 hover:shadow-lg"
+                  onClick={() => handleAvatarChange(url)}
+                />
+              ))}
+            </div>
+            <button
+              onClick={() => setShowModal(false)}
+              className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 w-full"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Favorites Section */}
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg hover:shadow-2xl transition-transform duration-500 transform hover:scale-105">
+        <h2 className="text-2xl font-bold flex items-center gap-3 text-green-700 dark:text-green-300 mb-4">
+          ❤️ Your Favorites
+        </h2>
+        {evFavorites.length === 0 && solarFavorites.length === 0 ? (
+          <p className="text-gray-600 dark:text-gray-400">You haven't added any favorites yet.</p>
+        ) : (
+          <>
+            {/* EV Favorites */}
+            {evFavorites.length > 0 && (
+              <div>
+                <h3 className="text-lg font-semibold mt-4 mb-2 flex items-center gap-2 text-green-700 dark:text-green-300">
+                  <FaChargingStation /> EV Charging Stations
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {evFavorites.map((fav, idx) => (
+                    <div
+                      key={idx}
+                      className="border border-green-300 dark:border-green-600 bg-green-50 dark:bg-green-900 p-4 rounded-lg shadow flex flex-col gap-3 transition-transform hover:scale-105 hover:shadow-xl"
+                    >
+                      <p className="font-bold text-green-800 dark:text-green-200">{fav.AddressInfo?.Title}</p>
+                      <p className="text-sm text-gray-700 dark:text-gray-300">{fav.AddressInfo?.AddressLine1}</p>
+                      <div className="flex justify-end">
+                        <button
+                          onClick={() => handleRemoveEv(idx)}
+                          className="flex items-center gap-1 text-xs bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded shadow"
+                        >
+                          <FaTrash /> Remove
+                        </button>
+                      </div>
+                      <span className="text-xs bg-green-100 dark:bg-green-700 text-green-700 dark:text-green-100 px-2 py-1 rounded-full w-max">
+                        EV Charger
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Solar Favorites */}
+            {solarFavorites.length > 0 && (
+              <div>
+                <h3 className="text-lg font-semibold mt-6 mb-2 flex items-center gap-2 text-yellow-700 dark:text-yellow-300">
+                  <FaSolarPanel /> Solar Providers
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {solarFavorites.map((fav, idx) => (
+                    <div
+                      key={idx}
+                      className="border border-yellow-300 dark:border-yellow-600 bg-yellow-50 dark:bg-yellow-900 p-4 rounded-lg shadow flex flex-col gap-3 transition-transform hover:scale-105 hover:shadow-xl"
+                    >
+                      <p className="font-bold text-yellow-800 dark:text-yellow-200">{fav.AddressInfo?.Title}</p>
+                      <p className="text-sm text-gray-700 dark:text-gray-300">{fav.AddressInfo?.AddressLine1}</p>
+                      <div className="flex justify-end">
+                        <button
+                          onClick={() => handleRemoveSolar(idx)}
+                          className="flex items-center gap-1 text-xs bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded shadow"
+                        >
+                          <FaTrash /> Remove
+                        </button>
+                      </div>
+                      <span className="text-xs bg-yellow-100 dark:bg-yellow-700 text-yellow-700 dark:text-yellow-100 px-2 py-1 rounded-full w-max">
+                        Solar Provider
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </>
+        )}
+      </div>
+
+      {/* Weekly Challenges */}
       {challenges.map((challenge, idx) => {
         const weekStart = new Date(baseMonday);
         weekStart.setDate(weekStart.getDate() + idx * 7);
         const weekDates = getWeekDates(weekStart);
+        const progress = weekProgress[challenge.key] || [];
+        const isEven = idx % 2 === 0;
 
         return (
-          <div key={idx} className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow space-y-4">
-            <h2 className="text-xl font-bold flex items-center gap-2">
-              📅 {challenge.title}
+          <div
+            key={challenge.key}
+            className={`p-6 rounded-lg shadow-lg hover:shadow-2xl transform transition-all duration-500 hover:scale-105 ${
+              isEven ? "bg-green-200 dark:bg-green-900" : "bg-blue-200 dark:bg-blue-900"
+            }`}
+          >
+            <h2 className="text-xl font-bold flex items-center gap-2 text-green-800 dark:text-green-200 mb-4">
+              <FaCalendarAlt className="text-blue-400 animate-spin-slow" /> {challenge.title} {challenge.icon}
             </h2>
-            <div className="grid grid-cols-7 gap-2 mt-3">
-              {weekDates.map((date, i) => {
-                const completed = weekProgress[challenge.key]?.[i];
+            <div className="grid grid-cols-7 gap-4">
+              {weekDates.map((date, dayIdx) => {
+                const isCompleted = progress[dayIdx];
+                const fullDate = date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
                 return (
                   <div
-                    key={i}
-                    className={`rounded-full w-10 h-10 flex items-center justify-center font-semibold text-sm ${
-                      completed ? "bg-green-600 text-white" : "bg-gray-300 text-gray-600"
+                    key={dayIdx}
+                    className={`flex flex-col items-center justify-center w-14 h-14 rounded-full text-white font-bold shadow ${
+                      isCompleted ? "bg-green-500" : "bg-gray-300 dark:bg-gray-700"
                     }`}
                   >
-                    {date.toLocaleDateString(undefined, { weekday: "narrow" })}
+                    <span>{isCompleted ? <FaCheckCircle /> : date.toLocaleDateString("en-US", { weekday: "short" }).charAt(0)}</span>
+                    <span className="text-[10px] mt-1 text-gray-700 dark:text-gray-300">{fullDate}</span>
                   </div>
                 );
               })}
