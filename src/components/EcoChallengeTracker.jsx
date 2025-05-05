@@ -166,7 +166,7 @@ export default function EcoChallengeTracker() {
           <div className="bg-green-500 h-2 rounded-full" style={{ width: `${(completedDays / 7) * 100}%` }} />
         </div>
 
-        <div className="grid grid-cols-7 gap-2 mt-3">
+        <div className="grid grid-cols-4 sm:grid-cols-7 gap-2 mt-3 overflow-x-auto">
           {weekDates.map((date, i) => {
             const isToday = date.toDateString() === today.toDateString();
             const isFuture = date > today;
