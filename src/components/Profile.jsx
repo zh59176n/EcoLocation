@@ -96,7 +96,6 @@ export default function Profile() {
       });
     });
 
-    // Load favorites from localStorage
     const ev = JSON.parse(localStorage.getItem("favorites")) || [];
     const solar = JSON.parse(localStorage.getItem("solarFavorites")) || [];
     setEvFavorites(ev);
@@ -122,19 +121,21 @@ export default function Profile() {
     localStorage.setItem("solarFavorites", JSON.stringify(updated));
   };
 
+  const progressPercentage = Math.round((totalPoints / (challenges.length * 7)) * 100) || 0;
+
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-6 animate-fadeIn">
       {/* Welcome Section */}
-      <div className="bg-gradient-to-r from-green-100 to-green-200 dark:from-green-900 dark:to-green-800 p-6 rounded-lg shadow flex items-center space-x-4 relative">
+      <div className="bg-gradient-to-r from-green-100 to-green-200 dark:from-green-900 dark:to-green-800 p-6 rounded-lg shadow flex items-center space-x-6 relative">
         <div className="relative">
           {user?.photoURL ? (
             <img
               src={user.photoURL}
               alt="User Avatar"
-              className="w-20 h-20 rounded-full border-2 border-green-500 shadow-lg object-cover"
+              className="w-24 h-24 rounded-full border-2 border-green-500 shadow-lg object-cover transition-transform hover:scale-105"
             />
           ) : (
-            <FaUserCircle className="w-20 h-20 text-green-500" />
+            <FaUserCircle className="w-24 h-24 text-green-500" />
           )}
           <button
             onClick={() => setShowModal(true)}
@@ -144,11 +145,39 @@ export default function Profile() {
             <FaEdit />
           </button>
         </div>
-        <div>
-          <h1 className="text-2xl font-bold text-green-900 dark:text-green-100">Welcome,</h1>
-          <p className="text-green-700 dark:text-green-300 text-lg">
+        <div className="flex-1">
+          <h1 className="text-3xl font-bold text-green-900 dark:text-green-100">Welcome,</h1>
+          <p className="text-green-700 dark:text-green-300 text-lg mb-2">
             {user?.displayName || user?.email}
           </p>
+          <div className="relative w-full bg-gray-200 dark:bg-gray-700 rounded-full h-5 shadow-inner overflow-hidden">
+            <div
+              className="bg-green-500 h-5 text-xs font-bold text-white text-center transition-all duration-700 ease-in-out"
+              style={{ width: `${progressPercentage}%` }}
+            >
+              {progressPercentage}%
+            </div>
+          </div>
+          <div className="mt-3 flex flex-col gap-1">
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              <FaLeaf className="inline mr-1" /> Total Points: {totalPoints}
+            </p>
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              <FaMedal className="inline mr-1" /> Badges Earned: {badgeCount}
+            </p>
+            {achievements.length > 0 && (
+              <div className="mt-2">
+                <p className="text-sm font-semibold flex items-center text-gray-700 dark:text-gray-300">
+                  <FaTrophy className="inline mr-2 text-yellow-500" /> Achievements
+                </p>
+                <ul className="list-disc list-inside text-sm text-gray-600 dark:text-gray-300 space-y-1">
+                  {achievements.map((ach, idx) => (
+                    <li key={idx}>{ach}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
