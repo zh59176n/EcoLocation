@@ -1,7 +1,7 @@
 # EcoLocation 🌱⚡  
 ### *Sustainable Energy Found Simple*
 
-![EcoLocation Poster](src/assets/EcoLocation%Poster.png)
+![EcoLocation Poster](src/assets/EcoLocation Poster.png)
 
 ---
 
