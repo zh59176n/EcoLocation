@@ -168,7 +168,7 @@ We’ve successfully wrapped up **Sprint 3**, delivering key personalization fea
 
 ### 📄 Sprint Docs:
 - [Sprint 3 Spreadsheet](https://docs.google.com/spreadsheets/d/1V1j0ffJiR_iQvUImlrDzco2Sz34ZC-l-Mt9YnEWp6GI/edit#gid=123456)  
-- [Sprint 3 Notes](https://docs.google.com/document/d/1p6QRJ5_DuGICe584cZBOos4Pocob7prhDT4nd-K0WYE/edit)  
+- [Sprint 3 Notes](https://docs.google.com/document/d/1bnLyXPCKPVjfwZvzAg-fsqB9oC3pqbDjBiXTS9wzOGI/edit?usp=drivesdk)  
 - [Retro Document](https://docs.google.com/document/d/1LhWgTO3WkUCB1M_NMv3dSuTDfi5x5LbCxwAh7g0ZYYI/edit?usp=sharing)
 
 **🎥 Demo 3 Video**  
