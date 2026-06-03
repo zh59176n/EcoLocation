@@ -1,4 +1,3 @@
-// src/App.jsx
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -12,16 +11,17 @@ import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
 import PublicRoute from "./components/PublicRoute";
 import PrivateRoute from "./components/PrivateRoute";
-import SolarProviderList from "./components/SolarProviderList";
+import StationExplorer from "./components/StationExplorer";
 import ForgotPassword from "./components/ForgotPassword";
-import CantAccessAccount from "./components/CantAccessAccount";
+import AccountRecovery from "./components/AccountRecovery";
 import NewsFeed from "./components/NewsFeed";
-import House from "./components/House";
+import EVMap from "./components/EVMap";
 import CarbonCalculator from "./components/CarbonCalculator";
-import EcoChallengeTracker from "./components/EcoChallengeTracker";
+import ChallengeTracker from "./components/ChallengeTracker";
 import Profile from "./components/Profile";
 import Dashboard from "./components/Dashboard";
 import NotFound from "./components/NotFound";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -43,78 +43,20 @@ function App() {
         <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
         <main id="main-content" className="text-gray-900 dark:text-white transition-all duration-300">
           <Routes>
-            {/* Public pages */}
             <Route path="/" element={<Home />} />
-            <Route
-              path="/login"
-              element={
-                <PublicRoute>
-                  <LoginForm />
-                </PublicRoute>
-              }
-            />
-            <Route
-              path="/register"
-              element={
-                <PublicRoute>
-                  <RegisterForm />
-                </PublicRoute>
-              }
-            />
-            <Route path="/news" element={<NewsFeed />} />
+            <Route path="/login" element={<PublicRoute><LoginForm /></PublicRoute>} />
+            <Route path="/register" element={<PublicRoute><RegisterForm /></PublicRoute>} />
+            <Route path="/news" element={<ErrorBoundary fallback="The news feed couldn't load."><NewsFeed /></ErrorBoundary>} />
             <Route path="/about" element={<About />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/cant-access-account" element={<CantAccessAccount />} />
+            <Route path="/cant-access-account" element={<AccountRecovery />} />
 
-            {/* Protected pages */}
-            <Route
-              path="/solar"
-              element={
-                <PrivateRoute>
-                  <SolarProviderList />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/map"
-              element={
-                <PrivateRoute>
-                  <House />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/carbon"
-              element={
-                <PrivateRoute>
-                  <CarbonCalculator />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/challenges"
-              element={
-                <PrivateRoute>
-                  <EcoChallengeTracker />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/profile"
-              element={
-                <PrivateRoute>
-                  <Profile />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/dashboard"
-              element={
-                <PrivateRoute>
-                  <Dashboard />
-                </PrivateRoute>
-              }
-            />
+            <Route path="/solar" element={<PrivateRoute><ErrorBoundary fallback="The map couldn't load."><StationExplorer /></ErrorBoundary></PrivateRoute>} />
+            <Route path="/map" element={<PrivateRoute><ErrorBoundary fallback="The map couldn't load."><EVMap /></ErrorBoundary></PrivateRoute>} />
+            <Route path="/carbon" element={<PrivateRoute><CarbonCalculator /></PrivateRoute>} />
+            <Route path="/challenges" element={<PrivateRoute><ChallengeTracker /></PrivateRoute>} />
+            <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+            <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
@@ -125,3 +67,4 @@ function App() {
 }
 
 export default App;
+
