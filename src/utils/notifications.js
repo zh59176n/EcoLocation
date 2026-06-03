@@ -11,7 +11,7 @@ export const requestNotificationPermission = async () => {
 
     const messaging = getMessaging(app);
     const token = await getToken(messaging, {
-      vapidKey: "BAoM53EmY1QAyo14kYX9NO5-IxSCc3scxANRb6wRuRxeTrwgGfd3P0Qt6YZhinhwg85g93X8QOWL1fDEtzmP-WY", // from Firebase Console -> Project Settings -> Cloud Messaging
+      vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
     });
 
     if (token) {
