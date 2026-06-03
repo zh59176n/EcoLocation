@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase";
 import { useUserStats } from "../hooks/useUserStats";
+import { useFavorites } from "../hooks/useFavorites";
 import {
   BarChart,
   Bar,
@@ -173,12 +174,45 @@ function ChallengeWidget({ stats }) {
   );
 }
 
+function SavedStations({ favorites }) {
+  const recent = [...favorites].sort((a, b) => b.createdAt - a.createdAt).slice(0, 4);
+  if (favorites.length === 0) return null;
+
+  return (
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-5 space-y-3">
+      <div className="flex items-center justify-between">
+        <h2 className="text-lg font-bold text-green-800 dark:text-green-200">Recent Saves</h2>
+        <Link to="/solar" className="text-sm text-green-600 dark:text-green-400 hover:underline">
+          View map →
+        </Link>
+      </div>
+      <ul className="space-y-2">
+        {recent.map((fav) => (
+          <li key={fav.stationId} className="flex items-center justify-between gap-3 text-sm">
+            <span className="text-gray-800 dark:text-gray-200 truncate">{fav.title}</span>
+            <span className={`shrink-0 text-xs px-2 py-0.5 rounded-full font-medium ${
+              fav.type === "ev"
+                ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
+                : "bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300"
+            }`}>
+              {fav.type === "ev" ? "EV" : "Solar"}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 export default function Dashboard() {
   const [user] = useAuthState(auth);
   const { carbonHistory, challengeStats, loading } = useUserStats(user);
+  const { favorites, loading: favLoading } = useFavorites(user);
 
   const hasData =
-    carbonHistory.length > 0 || (challengeStats?.totalDays ?? 0) > 0;
+    carbonHistory.length > 0 ||
+    (challengeStats?.totalDays ?? 0) > 0 ||
+    favorites.length > 0;
 
   const totalCO2 = carbonHistory.reduce((sum, e) => sum + e.co2, 0);
 
@@ -193,13 +227,13 @@ export default function Dashboard() {
         </p>
       </div>
 
-      {loading ? (
+      {loading || favLoading ? (
         <LoadingSkeleton />
       ) : !hasData ? (
         <EmptyState />
       ) : (
         <div className="space-y-6">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <StatCard
               icon="🌍"
               label="Total CO₂ Tracked"
@@ -218,11 +252,19 @@ export default function Dashboard() {
               value={`${challengeStats?.currentWeekDays ?? 0} / 7`}
               sub="Green Commuter Week"
             />
+            <StatCard
+              icon="❤️"
+              label="Saved Stations"
+              value={favorites.length}
+              sub={`${favorites.filter(f => f.type === "ev").length} EV · ${favorites.filter(f => f.type === "solar").length} Solar`}
+            />
           </div>
 
           {carbonHistory.length >= 2 && <CO2Chart data={carbonHistory} />}
 
           {challengeStats && <ChallengeWidget stats={challengeStats} />}
+
+          <SavedStations favorites={favorites} />
         </div>
       )}
     </div>

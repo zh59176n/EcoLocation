@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase";
 
@@ -16,6 +16,8 @@ function Home() {
   const [user] = useAuthState(auth);
   const [quoteIndex, setQuoteIndex] = useState(0);
   const [fade, setFade] = useState(true);
+
+  if (user) return <Navigate to="/dashboard" replace />;
 
   // Handle rotating quotes
   useEffect(() => {

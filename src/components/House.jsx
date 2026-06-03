@@ -1,5 +1,7 @@
-// House.jsx
 import React, { useEffect, useRef, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '../firebase';
+import { useFavorites } from '../hooks/useFavorites';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
@@ -20,8 +22,9 @@ const House = () => {
   const leafletMap = useRef(null);
   const markerCluster = useRef(null);
   const markersRef = useRef({});
+  const [user] = useAuthState(auth);
+  const { toggleFavorite: toggleFav, isFavorited } = useFavorites(user);
   const [stations, setStations] = useState([]);
-  const [favorites, setFavorites] = useState(() => JSON.parse(localStorage.getItem('favorites')) || []);
   const [searchQuery, setSearchQuery] = useState('');
   const [boroughFilter, setBoroughFilter] = useState('');
   const [levelFilter, setLevelFilter] = useState('');
@@ -87,17 +90,7 @@ const House = () => {
     );
   }, []);
 
-  const toggleFavorite = (station) => {
-    const exists = favorites.some((fav) => fav.ID === station.ID);
-    let updated;
-    if (exists) {
-      updated = favorites.filter((fav) => fav.ID !== station.ID);
-    } else {
-      updated = [...favorites, station];
-    }
-    setFavorites(updated);
-    localStorage.setItem('favorites', JSON.stringify(updated));
-  };
+  const toggleFavorite = (station) => toggleFav(station, 'ev');
 
   const scrollToMarker = (station) => {
     const marker = markersRef.current[station.ID];
@@ -199,7 +192,7 @@ const House = () => {
           {sortedStations.map((station, idx) => {
             const info = station.AddressInfo || {};
             const conn = station.Connections?.[0] || {};
-            const isFavorited = favorites.some((fav) => fav.ID === station.ID);
+            const isStationFavorited = isFavorited(station.ID);
 
             return (
               <div
@@ -230,12 +223,12 @@ const House = () => {
                   <button
                     onClick={() => toggleFavorite(station)}
                     className={`${
-                      isFavorited
+                      isStationFavorited
                         ? 'bg-red-500 hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-800'
                         : 'bg-red-400 hover:bg-red-500 dark:bg-red-600 dark:hover:bg-red-700'
                     } text-white text-sm px-3 py-1 rounded shadow`}
                   >
-                    ❤️ {isFavorited ? 'Favorited' : 'Favorite'}
+                    ❤️ {isStationFavorited ? 'Favorited' : 'Favorite'}
                   </button>
                 </div>
 
