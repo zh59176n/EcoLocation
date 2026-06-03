@@ -1,8 +1,5 @@
-// SolarMap.jsx
+
 import React, { useEffect, useRef, useState } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '../firebase';
-import { useFavorites } from '../hooks/useFavorites';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
@@ -17,14 +14,15 @@ const solarIcon = new L.Icon({
   popupAnchor: [0, -30],
 });
 
-const SolarMap = () => {
+const StationMap = () => {
   const mapRef = useRef(null);
   const leafletMap = useRef(null);
   const markerCluster = useRef(null);
   const markersRef = useRef({});
-  const [user] = useAuthState(auth);
-  const { toggleFavorite: toggleFav, isFavorited } = useFavorites(user);
   const [providers, setProviders] = useState([]);
+  const [favorites, setFavorites] = useState(() =>
+    JSON.parse(localStorage.getItem('solarFavorites')) || []
+  );
   const [searchQuery, setSearchQuery] = useState('');
   const [boroughFilter, setBoroughFilter] = useState('');
   const [expandedIndex, setExpandedIndex] = useState(null);
@@ -91,7 +89,17 @@ const SolarMap = () => {
     );
   }, []);
 
-  const toggleFavorite = (provider) => toggleFav(provider, 'solar');
+  const toggleFavorite = (provider) => {
+    const existing = favorites.find((fav) => fav.ID === provider.ID);
+    let updated;
+    if (existing) {
+      updated = favorites.filter((fav) => fav.ID !== provider.ID);
+    } else {
+      updated = [...favorites, provider];
+    }
+    setFavorites(updated);
+    localStorage.setItem('solarFavorites', JSON.stringify(updated));
+  };
 
   const scrollToMarker = (provider) => {
     const marker = markersRef.current[provider.ID];
@@ -157,7 +165,7 @@ const SolarMap = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
           {filtered.map((provider, idx) => {
-            const isProviderFavorited = isFavorited(provider.ID);
+            const isFavorited = favorites.some((fav) => fav.ID === provider.ID);
             return (
               <div
                 key={provider.ID}
@@ -185,12 +193,12 @@ const SolarMap = () => {
                   <button
                     onClick={() => toggleFavorite(provider)}
                     className={`${
-                      isProviderFavorited
+                      isFavorited
                         ? 'bg-red-500 hover:bg-red-600 dark:bg-red-700 dark:hover:bg-red-800'
                         : 'bg-red-400 hover:bg-red-500 dark:bg-red-600 dark:hover:bg-red-700'
                     } text-white text-sm px-3 py-1 rounded shadow`}
                   >
-                    ❤️ {isProviderFavorited ? 'Favorited' : 'Favorite'}
+                    ❤️ {isFavorited ? 'Favorited' : 'Favorite'}
                   </button>
                 </div>
 
@@ -224,4 +232,4 @@ const SolarMap = () => {
   );
 };
 
-export default SolarMap;
+export default StationMap;

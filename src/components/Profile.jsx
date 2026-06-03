@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../Firebase";
+import { useFavorites } from "../hooks/useFavorites";
 import { updateProfile } from "firebase/auth";
 import { doc, onSnapshot } from "firebase/firestore";
 import {
@@ -50,13 +51,15 @@ function dateKey(date, weekTitle) {
 
 export default function Profile() {
   const [user] = useAuthState(auth);
+  const { favorites, removeFavorite } = useFavorites(user);
+  const evFavorites = favorites.filter((f) => f.type === "ev");
+  const solarFavorites = favorites.filter((f) => f.type === "solar");
+
   const [badgeCount, setBadgeCount] = useState(0);
   const [totalPoints, setTotalPoints] = useState(0);
   const [weekProgress, setWeekProgress] = useState({});
   const [achievements, setAchievements] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [evFavorites, setEvFavorites] = useState([]);
-  const [solarFavorites, setSolarFavorites] = useState([]);
 
   const baseMonday = new Date();
   baseMonday.setDate(baseMonday.getDate() - ((baseMonday.getDay() + 6) % 7));
@@ -96,10 +99,6 @@ export default function Profile() {
       });
     });
 
-    const ev = JSON.parse(localStorage.getItem("favorites")) || [];
-    const solar = JSON.parse(localStorage.getItem("solarFavorites")) || [];
-    setEvFavorites(ev);
-    setSolarFavorites(solar);
   }, [user]);
 
   const handleAvatarChange = async (url) => {
@@ -109,17 +108,6 @@ export default function Profile() {
     }
   };
 
-  const handleRemoveEv = (idxToRemove) => {
-    const updated = evFavorites.filter((_, idx) => idx !== idxToRemove);
-    setEvFavorites(updated);
-    localStorage.setItem("favorites", JSON.stringify(updated));
-  };
-
-  const handleRemoveSolar = (idxToRemove) => {
-    const updated = solarFavorites.filter((_, idx) => idx !== idxToRemove);
-    setSolarFavorites(updated);
-    localStorage.setItem("solarFavorites", JSON.stringify(updated));
-  };
 
   const progressPercentage = Math.round((totalPoints / (challenges.length * 7)) * 100) || 0;
 
@@ -223,16 +211,16 @@ export default function Profile() {
             <FaChargingStation /> EV Charging Stations
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {evFavorites.map((fav, idx) => (
+            {evFavorites.map((fav) => (
               <div
-                key={idx}
+                key={fav.stationId}
                 className="border border-green-300 dark:border-green-600 bg-green-50 dark:bg-green-900 p-4 rounded-lg shadow flex flex-col gap-3 transition-transform hover:scale-105 hover:shadow-xl"
               >
-                <p className="font-bold text-green-800 dark:text-green-200">{fav.AddressInfo?.Title}</p>
-                <p className="text-sm text-gray-700 dark:text-gray-300">{fav.AddressInfo?.AddressLine1}</p>
+                <p className="font-bold text-green-800 dark:text-green-200">{fav.title}</p>
+                <p className="text-sm text-gray-700 dark:text-gray-300">{fav.address}</p>
                 <div className="flex justify-end">
                   <button
-                    onClick={() => handleRemoveEv(idx)}
+                    onClick={() => removeFavorite(fav.stationId)}
                     className="flex items-center gap-1 text-xs bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded shadow"
                   >
                     <FaTrash /> Remove
@@ -254,16 +242,16 @@ export default function Profile() {
             <FaSolarPanel /> Solar Providers
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {solarFavorites.map((fav, idx) => (
+            {solarFavorites.map((fav) => (
               <div
-                key={idx}
+                key={fav.stationId}
                 className="border border-yellow-300 dark:border-yellow-600 bg-yellow-50 dark:bg-yellow-900 p-4 rounded-lg shadow flex flex-col gap-3 transition-transform hover:scale-105 hover:shadow-xl"
               >
-                <p className="font-bold text-yellow-800 dark:text-yellow-200">{fav.AddressInfo?.Title}</p>
-                <p className="text-sm text-gray-700 dark:text-gray-300">{fav.AddressInfo?.AddressLine1}</p>
+                <p className="font-bold text-yellow-800 dark:text-yellow-200">{fav.title}</p>
+                <p className="text-sm text-gray-700 dark:text-gray-300">{fav.address}</p>
                 <div className="flex justify-end">
                   <button
-                    onClick={() => handleRemoveSolar(idx)}
+                    onClick={() => removeFavorite(fav.stationId)}
                     className="flex items-center gap-1 text-xs bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded shadow"
                   >
                     <FaTrash /> Remove
