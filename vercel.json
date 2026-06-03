@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/eco-news", "destination": "/api/eco-news" }
+  ]
+}
