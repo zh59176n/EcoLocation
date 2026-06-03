@@ -1,14 +1,27 @@
 import React, { useState, useEffect } from "react";
 
-// Utility function to remove HTML tags from a string.
 function stripHtmlTags(str) {
   return str.replace(/<[^>]*>/g, "");
 }
 
+function ArticleSkeleton() {
+  return (
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 flex flex-col animate-pulse">
+      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-4" />
+      <div className="space-y-2 flex-grow">
+        <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded" />
+        <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded" />
+        <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-5/6" />
+      </div>
+      <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/4 mt-4" />
+    </div>
+  );
+}
+
 function NewsFeed() {
   const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  // Pagination state: current page and number of articles per page.
   const [currentPage, setCurrentPage] = useState(1);
   const articlesPerPage = 9;
 
@@ -19,24 +32,20 @@ function NewsFeed() {
         return res.json();
       })
       .then((data) => {
-        // Filter out articles with too-short descriptions.
         const validArticles = data.articles.filter(
           (article) =>
             article.title &&
             article.description &&
             stripHtmlTags(article.description).length > 30
         );
-
-        // Clean the articles by stripping out HTML.
-        const cleanedArticles = validArticles.map((article) => ({
+        setArticles(validArticles.map((article) => ({
           ...article,
           title: stripHtmlTags(article.title),
           description: stripHtmlTags(article.description),
-        }));
-
-        setArticles(cleanedArticles);
+        })));
       })
-      .catch((err) => setError(err.message));
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false));
   }, []);
 
   // Calculate the range of articles to display.
@@ -75,10 +84,12 @@ function NewsFeed() {
             Error: {error}
           </div>
         )}
-        {!error && articles.length === 0 && (
-          <p className="text-center text-gray-600 dark:text-gray-300">Loading articles...</p>
-        )}
 
+        {loading ? (
+          <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+            {Array(9).fill(0).map((_, i) => <ArticleSkeleton key={i} />)}
+          </div>
+        ) : (
         <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {currentArticles.map((article, index) => (
             <article
@@ -106,6 +117,7 @@ function NewsFeed() {
             </article>
           ))}
         </div>
+        )}
 
         {/* Pagination Controls */}
         {articles.length > articlesPerPage && (

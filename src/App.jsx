@@ -21,6 +21,7 @@ import CarbonCalculator from "./components/CarbonCalculator";
 import EcoChallengeTracker from "./components/EcoChallengeTracker";
 import Profile from "./components/Profile";
 import Dashboard from "./components/Dashboard";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -60,7 +61,7 @@ function App() {
                 </PublicRoute>
               }
             />
-            <Route path="/news" element={<NewsFeed />} />
+            <Route path="/news" element={<ErrorBoundary fallback="The news feed couldn't load."><NewsFeed /></ErrorBoundary>} />
             <Route path="/about" element={<About />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/cant-access-account" element={<CantAccessAccount />} />
@@ -70,7 +71,9 @@ function App() {
               path="/solar"
               element={
                 <PrivateRoute>
-                  <SolarProviderList />
+                  <ErrorBoundary fallback="The map couldn't load.">
+                    <SolarProviderList />
+                  </ErrorBoundary>
                 </PrivateRoute>
               }
             />
@@ -78,7 +81,9 @@ function App() {
               path="/map"
               element={
                 <PrivateRoute>
-                  <House />
+                  <ErrorBoundary fallback="The map couldn't load.">
+                    <House />
+                  </ErrorBoundary>
                 </PrivateRoute>
               }
             />
