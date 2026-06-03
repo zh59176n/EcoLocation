@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { db } from "../Firebase";
+import { db } from "../firebase";
 import { collection, doc, setDoc, onSnapshot } from "firebase/firestore";
 
 const medalIcons = ["🥇", "🥈", "🥉"];

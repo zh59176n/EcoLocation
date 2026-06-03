@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../Firebase";
+import { auth } from "../firebase";
 
 // 🌿 Rotating inspirational quotes
 const quotes = [
@@ -79,17 +79,6 @@ function Home() {
         {quotes[quoteIndex]}
       </div>
 
-      {/* 🌍 Custom CSS for spin */}
-      <style>{`
-        @keyframes spin-slow {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-
-        .animate-spin-slow {
-          animation: spin-slow 20s linear infinite;
-        }
-      `}</style>
     </div>
   );
 }

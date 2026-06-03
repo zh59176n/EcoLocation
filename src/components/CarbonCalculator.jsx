@@ -10,7 +10,7 @@ import {
   limit,
   getDocs,
 } from "firebase/firestore";
-import app from "../Firebase";
+import app from "../firebase";
 
 const auth = getAuth(app);
 const db = getFirestore(app);

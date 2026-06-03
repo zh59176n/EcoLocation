@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Confetti from "react-confetti";
-import { auth, db } from "../Firebase";
+import { auth, db } from "../firebase";
 import { collection, doc, setDoc, onSnapshot } from "firebase/firestore";
 import Leaderboard from "./Leaderboard";
 

@@ -13,7 +13,7 @@ describe('🌱 EcoLocation Smoke Test', () => {
     cy.url().should('not.include', '/login');
 
     // Carbon Calculator
-    cy.visit('http://localhost:5173/calculator');
+    cy.visit('http://localhost:5173/carbon');
     cy.contains('Carbon Footprint Calculator').should('exist');
 
     // Challenge Tracker
