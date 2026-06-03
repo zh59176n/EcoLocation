@@ -18,7 +18,7 @@ vi.mock('firebase/messaging', () => ({
 }));
 
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../Firebase';
+import { auth } from '../../firebase';
 
 global.Notification = {
   requestPermission: vi.fn(() => Promise.resolve("granted")),
