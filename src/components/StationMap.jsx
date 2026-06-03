@@ -55,7 +55,7 @@ const StationMap = () => {
 
         try {
           const res = await fetch(
-            `https://api.openchargemap.io/v3/poi/?output=json&countrycode=US&latitude=${latitude}&longitude=${longitude}&distance=10&maxresults=50&key=4b28e9a4-80f7-4dd3-ab70-761860034964`
+            `https://api.openchargemap.io/v3/poi/?output=json&countrycode=US&latitude=${latitude}&longitude=${longitude}&distance=10&maxresults=50&key=${import.meta.env.VITE_OPENCHARGEMAP_KEY}`
           );
           const data = await res.json();
 

@@ -1,9 +1,9 @@
-// src/components/CantAccessAccount.jsx
+
 import React, { useState } from 'react';
 import { sendPasswordResetEmail } from 'firebase/auth';
-import { auth } from '../Firebase';
+import { auth } from '../firebase';
 
-const CantAccessAccount = () => {
+const AccountRecovery = () => {
   const [email, setEmail]     = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
@@ -77,4 +77,4 @@ const CantAccessAccount = () => {
   );
 };
 
-export default CantAccessAccount;
+export default AccountRecovery;

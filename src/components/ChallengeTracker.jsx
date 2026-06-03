@@ -1,4 +1,4 @@
-// EcoChallengeTracker.jsx
+
 import React, { useState, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Confetti from "react-confetti";
@@ -45,7 +45,7 @@ const challenges = [
   { title: "No-Plastic Week", description: "Say no to plastic bags, bottles, and straws." },
 ];
 
-export default function EcoChallengeTracker() {
+export default function ChallengeTracker() {
   const [user] = useAuthState(auth);
   const { width, height } = useWindowSize();
 
