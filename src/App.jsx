@@ -19,7 +19,8 @@ import NewsFeed from "./components/NewsFeed";
 import House from "./components/House";
 import CarbonCalculator from "./components/CarbonCalculator";
 import EcoChallengeTracker from "./components/EcoChallengeTracker";
-import Profile from "./components/Profile"; // ✅ ADD THIS
+import Profile from "./components/Profile";
+import Dashboard from "./components/Dashboard";
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -102,6 +103,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <Profile />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/dashboard"
+              element={
+                <PrivateRoute>
+                  <Dashboard />
                 </PrivateRoute>
               }
             />

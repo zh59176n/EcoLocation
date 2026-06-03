@@ -35,7 +35,7 @@ function LoginForm() {
       // ✅ Ask for notification permission after successful login
       await requestNotificationPermission();
 
-      const from = new URLSearchParams(location.search).get("redirect") || "/";
+      const from = new URLSearchParams(location.search).get("redirect") || "/dashboard";
       navigate(from, { replace: true });
     } catch (err) {
       switch (err.code) {
