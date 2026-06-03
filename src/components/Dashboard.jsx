@@ -175,13 +175,18 @@ function ChallengeWidget({ stats }) {
 }
 
 function SavedStations({ favorites }) {
-  const recent = [...favorites].sort((a, b) => b.createdAt - a.createdAt).slice(0, 4);
+  const recent = [...favorites]
+    .sort((a, b) => b.createdAt - a.createdAt)
+    .slice(0, 4);
+
   if (favorites.length === 0) return null;
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-5 space-y-3">
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-bold text-green-800 dark:text-green-200">Recent Saves</h2>
+        <h2 className="text-lg font-bold text-green-800 dark:text-green-200">
+          Recent Saves
+        </h2>
         <Link to="/solar" className="text-sm text-green-600 dark:text-green-400 hover:underline">
           View map →
         </Link>

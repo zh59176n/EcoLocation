@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, db } from "../firebase";
+import { auth, db } from "../Firebase";
 import { useFavorites } from "../hooks/useFavorites";
 import { updateProfile } from "firebase/auth";
 import { doc, onSnapshot } from "firebase/firestore";
