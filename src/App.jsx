@@ -21,6 +21,7 @@ import CarbonCalculator from "./components/CarbonCalculator";
 import EcoChallengeTracker from "./components/EcoChallengeTracker";
 import Profile from "./components/Profile";
 import Dashboard from "./components/Dashboard";
+import NotFound from "./components/NotFound";
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -114,6 +115,7 @@ function App() {
                 </PrivateRoute>
               }
             />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
       </div>
