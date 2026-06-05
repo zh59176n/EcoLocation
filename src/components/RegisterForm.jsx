@@ -29,17 +29,17 @@ function RegisterForm() {
 
   const inputClasses = `
     mt-1 block w-full px-4 py-2 border
-    border-gray-300 dark:border-gray-600
-    rounded-md shadow-sm
-    focus:outline-none focus:ring-green-500 focus:border-green-500
-    bg-white dark:bg-gray-700
+    border-white/40 dark:border-white/10
+    rounded-lg shadow-sm
+    focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400
+    bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm
     text-gray-900 dark:text-gray-100
     placeholder-gray-400 dark:placeholder-gray-500
   `;
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-green-100 to-green-300 dark:from-green-900 dark:to-green-950 transition-colors duration-300">
-      <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md w-full max-w-md">
+    <div className="flex items-center justify-center min-h-screen">
+      <div className="bg-white/60 dark:bg-gray-900/50 backdrop-blur-xl border border-white/40 dark:border-white/10 p-8 rounded-2xl shadow-xl w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6 text-green-800 dark:text-green-100 text-center">
           Register
         </h2>

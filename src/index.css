@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.eco-bg {
+  background-color: #bbf7d0;
+  background-image:
+    radial-gradient(ellipse at 15% 40%, rgba(52, 211, 153, 0.6) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 15%, rgba(74, 222, 128, 0.5) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 90%, rgba(163, 230, 53, 0.35) 0%, transparent 55%),
+    radial-gradient(ellipse at 72% 60%, rgba(16, 185, 129, 0.35) 0%, transparent 40%);
+  background-attachment: fixed;
+}
+
+.dark .eco-bg {
+  background-color: #030f06;
+  background-image:
+    radial-gradient(ellipse at 20% 35%, rgba(16, 185, 129, 0.35) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 15%, rgba(52, 211, 153, 0.25) 0%, transparent 50%),
+    radial-gradient(ellipse at 55% 85%, rgba(4, 120, 87, 0.4) 0%, transparent 55%),
+    radial-gradient(ellipse at 75% 65%, rgba(5, 150, 105, 0.3) 0%, transparent 40%);
+  background-attachment: fixed;
+}

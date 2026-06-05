@@ -32,10 +32,17 @@ function Home() {
   }, []);
 
   return (
-    <div className="relative min-h-screen flex flex-col items-center justify-center text-center px-6 py-12 bg-gradient-to-b from-green-100 via-emerald-100 to-lime-200 dark:from-green-800 dark:via-emerald-800 dark:to-green-900 text-gray-900 dark:text-gray-100 transition-all duration-300 overflow-hidden">
+    <div className="relative min-h-screen flex flex-col items-center justify-center text-center px-6 py-12 text-gray-900 dark:text-gray-100 overflow-hidden">
+
+      {/* Aurora blobs */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute -top-24 left-1/4 w-[480px] h-[480px] rounded-full bg-emerald-400/45 dark:bg-emerald-400/30 blur-3xl animate-pulse" />
+        <div className="absolute top-1/3 -right-20 w-[360px] h-[360px] rounded-full bg-lime-300/40 dark:bg-lime-300/20 blur-3xl animate-pulse" style={{ animationDelay: "1.5s" }} />
+        <div className="absolute bottom-0 left-1/3 w-[400px] h-[300px] rounded-full bg-green-400/35 dark:bg-green-400/25 blur-3xl animate-pulse" style={{ animationDelay: "3s" }} />
+      </div>
 
       {/* 🌍 Spinning Earth */}
-      <div className="text-5xl mb-4 animate-spin-slow">🌍</div>
+      <div className="text-5xl mb-4 animate-spin-slow" role="img" aria-label="Earth">🌍</div>
 
       {/* Heading */}
       <h1 className="text-6xl md:text-7xl font-extrabold text-green-800 dark:text-green-100 mb-6 drop-shadow-lg">
@@ -52,33 +59,39 @@ function Home() {
         <div className="flex flex-col sm:flex-row gap-4 mb-12">
           <Link
             to="/register"
-            className="bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-3 rounded-lg shadow transition duration-200 flex items-center gap-2"
+            className="bg-green-600 hover:bg-green-500 text-white font-semibold px-8 py-3 rounded-lg shadow-lg shadow-green-500/50 hover:shadow-xl hover:shadow-green-400/60 transition-all duration-200 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2"
           >
-            ✍️ Get Started
+            <span aria-hidden="true">✍️</span> Get Started
           </Link>
           <Link
             to="/login"
-            className="border border-green-600 text-green-800 dark:text-green-300 hover:bg-green-100 dark:hover:bg-green-800 font-semibold px-8 py-3 rounded-lg shadow transition duration-200 flex items-center gap-2"
+            className="border border-green-600 text-green-800 dark:text-green-300 hover:bg-green-100 dark:hover:bg-green-800 font-semibold px-8 py-3 rounded-lg shadow-md shadow-green-400/30 hover:shadow-lg hover:shadow-green-400/50 transition-all duration-200 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2"
           >
-            🔐 Returning User
+            <span aria-hidden="true">🔐</span> Returning User
           </Link>
           <Link
             to="/about"
-            className="bg-white dark:bg-transparent border border-green-600 text-green-800 dark:text-green-300 hover:bg-green-50 dark:hover:bg-green-800 font-semibold px-8 py-3 rounded-lg shadow transition duration-200 flex items-center gap-2"
+            className="bg-white/70 dark:bg-transparent border border-green-600 text-green-800 dark:text-green-300 hover:bg-green-50 dark:hover:bg-green-800 font-semibold px-8 py-3 rounded-lg shadow-md shadow-green-400/30 hover:shadow-lg hover:shadow-green-400/50 transition-all duration-200 flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2"
           >
-            ℹ️ Learn More
+            <span aria-hidden="true">ℹ️</span> Learn More
           </Link>
         </div>
       )}
 
       {/* 💬 Rotating Quote */}
       <div
-        key={quoteIndex}
-        className={`mt-4 max-w-2xl bg-white/80 dark:bg-[#2f2f2f]/80 border border-green-300 dark:border-green-700 rounded-md shadow p-6 text-lg italic text-green-900 dark:text-green-200 transition-opacity duration-500 ${
-          fade ? "opacity-100" : "opacity-0"
-        }`}
+        aria-live="polite"
+        aria-atomic="true"
+        className="mt-4 max-w-2xl w-full"
       >
-        {quotes[quoteIndex]}
+        <div
+          key={quoteIndex}
+          className={`bg-white/30 dark:bg-white/5 backdrop-blur-md border border-white/40 dark:border-white/10 rounded-2xl shadow-lg p-6 text-lg italic text-green-900 dark:text-green-100 transition-opacity duration-500 ${
+            fade ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          {quotes[quoteIndex]}
+        </div>
       </div>
 
     </div>
