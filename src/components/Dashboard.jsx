@@ -19,7 +19,7 @@ const US_DAILY_AVG_KG = 43.8;
 
 function StatCard({ icon, label, value, sub }) {
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-5 flex flex-col gap-1">
+    <div className="bg-white/80 dark:bg-gray-800/70 backdrop-blur-sm rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 border-l-4 border-l-green-500 p-5 flex flex-col gap-1 hover:-translate-y-1 hover:shadow-md hover:shadow-green-100 dark:hover:shadow-green-900/30 transition-all duration-200">
       <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">
         {icon} {label}
       </p>
