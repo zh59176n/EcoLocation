@@ -31,7 +31,7 @@ function About() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-tr from-green-100 via-green-200 to-green-300 dark:from-green-800 dark:via-green-900 dark:to-gray-800 text-gray-800 dark:text-gray-100 py-12 px-6 transition-all">
+    <div className="min-h-screen text-gray-800 dark:text-gray-100 py-12 px-6">
 
       {/* Parallax Section */}
       <div className="relative overflow-hidden rounded-xl mb-16">

@@ -186,7 +186,7 @@ export default function CarbonCalculator() {
           <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500 mb-3">
             🚗 Transport
           </h2>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className={labelClass}>Daily commute (miles)</label>
               <input type="number" min="0" className={inputClass} placeholder="e.g. 20"
@@ -208,7 +208,7 @@ export default function CarbonCalculator() {
           <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500 mb-3">
             ⚡ Home Energy
           </h2>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className={labelClass}>Daily electricity (kWh)</label>
               <input type="number" min="0" className={inputClass} placeholder="e.g. 15"
@@ -227,7 +227,7 @@ export default function CarbonCalculator() {
           <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400 dark:text-gray-500 mb-3">
             ✈️ Flights per year
           </h2>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className={labelClass}>Short haul (&lt;3 hrs)</label>
               <input type="number" min="0" className={inputClass} placeholder="e.g. 4"
