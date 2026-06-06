@@ -5,6 +5,14 @@
 
 ---
 
+## 📸 Screenshots
+
+| Home | Login |
+|:--:|:--:|
+| ![Home page](screenshots/home.png) | ![Login page](screenshots/login.png) |
+
+---
+
 ## 🚀 Features
 
 - 🔐 **Secure Login & Authentication**  
@@ -216,7 +224,7 @@ VITE_FIREBASE_APP_ID=your_app_id
 ```
 
 5. **Open the App**  
-> Once the server is running, open [http://localhost:5173](http://localhost:5173) in your browser.
+> Once the server is running, open [http://localhost:5175](http://localhost:5175) in your browser.
 
 ---
 
