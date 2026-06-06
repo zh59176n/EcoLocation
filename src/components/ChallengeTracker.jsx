@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Confetti from "react-confetti";
+import toast from "react-hot-toast";
 import { auth, db } from "../firebase";
 import { collection, doc, setDoc, onSnapshot } from "firebase/firestore";
 import Leaderboard from "./Leaderboard";
@@ -89,7 +90,7 @@ export default function ChallengeTracker() {
   const toggleDay = idx => {
     const dayDate = weekDates[idx];
     if (dayDate > today) {
-      alert("⏳ This day hasn't arrived yet!");
+      toast("⏳ This day hasn't arrived yet!", { icon: "🗓️" });
       return;
     }
     const updated = progress.map((v, i) => (i === idx ? !v : v));
@@ -103,11 +104,31 @@ export default function ChallengeTracker() {
   };
 
   const resetProgress = () => {
-    if (window.confirm("Are you sure you want to reset this week's progress?")) {
-      const empty = Array(7).fill(false);
-      setProgress(empty);
-      saveProgress(empty);
-    }
+    toast((t) => (
+      <div className="flex flex-col gap-2">
+        <p className="font-medium">Reset this week's progress?</p>
+        <div className="flex gap-2">
+          <button
+            onClick={() => {
+              const empty = Array(7).fill(false);
+              setProgress(empty);
+              saveProgress(empty);
+              toast.dismiss(t.id);
+              toast.success("Progress reset.");
+            }}
+            className="bg-red-500 hover:bg-red-600 text-white text-sm px-3 py-1 rounded"
+          >
+            Yes, reset
+          </button>
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            className="bg-gray-200 hover:bg-gray-300 text-gray-800 text-sm px-3 py-1 rounded"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    ), { duration: Infinity });
   };
 
   return (

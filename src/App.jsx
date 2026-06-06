@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./firebase";
 
@@ -33,6 +34,7 @@ function App() {
 
   return (
     <Router>
+      <Toaster position="top-right" toastOptions={{ duration: 4000, style: { borderRadius: "10px", background: "#1f2937", color: "#fff" } }} />
       <div className="min-h-screen eco-bg transition-colors duration-300">
         <a
           href="#main-content"
