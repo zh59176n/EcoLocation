@@ -150,7 +150,7 @@ export default function ChallengeTracker() {
         />
       )}
 
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow space-y-4">
+      <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-white/30 dark:border-white/10 p-6 rounded-2xl shadow space-y-4">
         <div className="flex justify-between items-center">
           <button
             onClick={() => setWeekIndex(prev => Math.max(prev - 1, 0))}
@@ -215,9 +215,6 @@ export default function ChallengeTracker() {
           })}
         </div>
 
-        <div className="mt-2 text-sm italic text-blue-600 dark:text-blue-300">
-          🔄 Today’s challenge: Share an eco-tip with a friend 💬
-        </div>
       </div>
     </div>
   );

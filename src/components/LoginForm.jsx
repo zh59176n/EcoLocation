@@ -138,18 +138,12 @@ function LoginForm() {
             Sign In
           </button>
 
-          <div className="flex flex-col items-center mt-4 space-y-2">
+          <div className="flex flex-col items-center mt-4">
             <Link
               to="/forgot-password"
               className="text-sm text-green-700 dark:text-green-300 hover:underline"
             >
               Forgot your password?
-            </Link>
-            <Link
-              to="/cant-access-account"
-              className="text-sm text-red-600 dark:text-red-400 hover:underline"
-            >
-              Can’t access your account?
             </Link>
           </div>
         </form>
