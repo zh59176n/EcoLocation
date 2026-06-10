@@ -96,6 +96,55 @@ function BreakdownChart({ breakdown }) {
   );
 }
 
+const TIP_ICONS = ["🌱", "⚡", "🌍"];
+
+function EcoTips({ tips, loading }) {
+  if (loading) {
+    return (
+      <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-white/30 dark:border-white/10 rounded-2xl p-5">
+        <h3 className="text-base font-bold text-green-800 dark:text-green-200 mb-4">
+          AI-powered eco tips
+        </h3>
+        <div className="space-y-3">
+          {[1, 2, 3].map(i => (
+            <div key={i} className="animate-pulse flex gap-3">
+              <div className="w-9 h-9 rounded-full bg-green-100 dark:bg-green-900/40 flex-shrink-0" />
+              <div className="flex-1 space-y-2 py-1">
+                <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/3" />
+                <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-5/6" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (!tips || tips.length === 0) return null;
+
+  return (
+    <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-white/30 dark:border-white/10 rounded-2xl p-5 space-y-3">
+      <h3 className="text-base font-bold text-green-800 dark:text-green-200">
+        AI-powered eco tips
+      </h3>
+      {tips.map((tip, i) => (
+        <div key={i} className="flex gap-3 items-start">
+          <span className="text-xl mt-0.5 flex-shrink-0" aria-hidden="true">{TIP_ICONS[i]}</span>
+          <div>
+            <p className="font-semibold text-sm text-green-700 dark:text-green-300">{tip.title}</p>
+            <p className="text-sm text-gray-600 dark:text-gray-300 mt-0.5">{tip.tip}</p>
+            {tip.impact && (
+              <span className="inline-block mt-1 text-xs text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-900/30 px-2 py-0.5 rounded-full">
+                {tip.impact}
+              </span>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 const labelClass = "block text-sm font-medium text-green-700 dark:text-green-200 mb-1";
 const inputClass = "w-full p-2 border border-green-300 rounded focus:outline-none focus:ring-2 focus:ring-green-400 text-gray-900 dark:text-white bg-white dark:bg-gray-700 placeholder:text-gray-400";
 const selectClass = inputClass;
@@ -115,6 +164,8 @@ export default function CarbonCalculator() {
   const [breakdown, setBreakdown] = useState(null);
   const [history, setHistory]     = useState([]);
   const [error, setError]         = useState("");
+  const [tips, setTips]           = useState(null);
+  const [tipsLoading, setTipsLoading] = useState(false);
 
   useEffect(() => {
     if (!user) return;
@@ -145,6 +196,17 @@ export default function CarbonCalculator() {
 
     setResult(total);
     setBreakdown(bd);
+    setTips(null);
+    setTipsLoading(true);
+    fetch("/eco-tips", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ breakdown: bd, total }),
+    })
+      .then(r => r.ok ? r.json() : Promise.reject())
+      .then(data => setTips(data.tips))
+      .catch(() => setTips([]))
+      .finally(() => setTipsLoading(false));
 
     if (!user) return;
     try {
@@ -271,6 +333,7 @@ export default function CarbonCalculator() {
         <>
           <ResultCard total={result} />
           <BreakdownChart breakdown={breakdown} />
+          <EcoTips tips={tips} loading={tipsLoading} />
         </>
       )}
 
