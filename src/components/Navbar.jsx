@@ -28,8 +28,7 @@ function Navbar({ darkMode, setDarkMode }) {
       <Link to="/" className={linkClasses} onClick={onNavigate}>Home</Link>
 
       {user && <Link to="/dashboard" className={linkClasses} onClick={onNavigate}>Dashboard</Link>}
-      {user && <Link to="/solar" className={linkClasses} onClick={onNavigate}>EV Stations</Link>}
-      {user && <Link to="/map" className={linkClasses} onClick={onNavigate}>Map</Link>}
+      {user && <Link to="/map" className={linkClasses} onClick={onNavigate}>EV Stations</Link>}
       <Link to="/news" className={linkClasses} onClick={onNavigate}>News</Link>
       {user && <Link to="/carbon" className={linkClasses} onClick={onNavigate}>Carbon</Link>}
       {user && <Link to="/challenges" className={linkClasses} onClick={onNavigate}>Challenges</Link>}

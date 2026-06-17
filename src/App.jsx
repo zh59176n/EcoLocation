@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./firebase";
 
@@ -11,9 +12,7 @@ import LoginForm from "./components/LoginForm";
 import RegisterForm from "./components/RegisterForm";
 import PublicRoute from "./components/PublicRoute";
 import PrivateRoute from "./components/PrivateRoute";
-import StationExplorer from "./components/StationExplorer";
 import ForgotPassword from "./components/ForgotPassword";
-import AccountRecovery from "./components/AccountRecovery";
 import NewsFeed from "./components/NewsFeed";
 import EVMap from "./components/EVMap";
 import CarbonCalculator from "./components/CarbonCalculator";
@@ -33,6 +32,7 @@ function App() {
 
   return (
     <Router>
+      <Toaster position="top-right" toastOptions={{ duration: 4000, style: { borderRadius: "10px", background: "#1f2937", color: "#fff" } }} />
       <div className="min-h-screen eco-bg transition-colors duration-300">
         <a
           href="#main-content"
@@ -49,9 +49,8 @@ function App() {
             <Route path="/news" element={<ErrorBoundary fallback="The news feed couldn't load."><NewsFeed /></ErrorBoundary>} />
             <Route path="/about" element={<About />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/cant-access-account" element={<AccountRecovery />} />
+            <Route path="/cant-access-account" element={<ForgotPassword />} />
 
-            <Route path="/solar" element={<PrivateRoute><ErrorBoundary fallback="The map couldn't load."><StationExplorer /></ErrorBoundary></PrivateRoute>} />
             <Route path="/map" element={<PrivateRoute><ErrorBoundary fallback="The map couldn't load."><EVMap /></ErrorBoundary></PrivateRoute>} />
             <Route path="/carbon" element={<PrivateRoute><CarbonCalculator /></PrivateRoute>} />
             <Route path="/challenges" element={<PrivateRoute><ChallengeTracker /></PrivateRoute>} />

@@ -13,13 +13,13 @@ const StationExplorer = () => {
     }`;
 
   return (
-    <div className="pt-20 px-6 space-y-8">
-      <div className="flex space-x-4 mb-8 justify-center">
+    <div className="pt-4 sm:pt-8 px-4 sm:px-6 space-y-6">
+      <div className="flex flex-wrap gap-3 justify-center">
         <button className={tabClass('ev')} onClick={() => setActiveTab('ev')}>
-          EV Charging Stations
+          ⚡ EV Stations
         </button>
         <button className={tabClass('solar')} onClick={() => setActiveTab('solar')}>
-          Level 2 / DC Fast
+          ☀️ Solar / DC Fast
         </button>
       </div>
 

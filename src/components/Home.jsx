@@ -45,12 +45,12 @@ function Home() {
       <div className="text-5xl mb-4 animate-spin-slow" role="img" aria-label="Earth">🌍</div>
 
       {/* Heading */}
-      <h1 className="text-6xl md:text-7xl font-extrabold text-green-800 dark:text-green-100 mb-6 drop-shadow-lg">
+      <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold text-green-800 dark:text-green-100 mb-6 drop-shadow-lg">
         Welcome to EcoLocation
       </h1>
 
       {/* Subheading */}
-      <p className="text-xl md:text-2xl max-w-3xl text-gray-700 dark:text-gray-300 mb-10 leading-relaxed">
+      <p className="text-base sm:text-xl md:text-2xl max-w-3xl text-gray-700 dark:text-gray-300 mb-10 leading-relaxed">
         EcoLocation helps you live sustainably by connecting you to local EV stations, solar providers, and daily eco challenges — all while tracking your green impact 
       </p>
 
